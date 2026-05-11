@@ -10,21 +10,21 @@ int pos_y;
 int dir_pxl;
 
 // ___________________________________________________________________________
-void init_Terminal() {
+void initTerminal() {
   initscr();
   curs_set(false);
   noecho();
   nodelay(stdscr, true);
   keypad(stdscr, true);
-  dim_x = LINES;
-  dim_y = COLS;
+  dim_x = COLS;
+  dim_y = LINES;
   start_color();
   init_pair(1, COLOR_RED, COLOR_BLACK);
   init_pair(2, COLOR_GREEN, COLOR_BLACK);
 }
 
 // ___________________________________________________________________________
-void init_Game() {
+void initGame() {
   pos_x = dim_x / 2;
   pos_y = dim_y / 2;
   dir_pxl = KEY_RIGHT;
@@ -34,34 +34,33 @@ void init_Game() {
 void drawPixel(int row, int column, int color) {
   attron(COLOR_PAIR(color));
   attron(A_REVERSE);
-  mvprintw(row, column * 2, "  ");
+  mvprintw(row, column, "  ");
   attroff(A_REVERSE);
   attroff(COLOR_PAIR(color));
 }
 
 // ___________________________________________________________________________
 void drawBorder(int color) {
-  for (int i = 0; i < dim_x, ++i) {
+  for (int i = 0; i < dim_x; ++i) {
     drawPixel(0, i, color);
-    drawPixel(dim_x, i, color);
+    drawPixel(dim_y - 1, i, color);
   }
 
-  for (int j = 0, j < dim_y, ++j) {
+  for (int j = 0; j < dim_y; ++j) {
     drawPixel(j, 0 color);
-    drawPixel(j, dim_y, color);
+    drawPixel(j, dim_x - 1, color);
   }
 }
 
 // ___________________________________________________________________________
-void drawSnake() {
-	drawPixel(pos_y, pos_x, color);
-
+void drawSnake(int color) { drawPixel(pos_y, pos_x, color); }
 // ___________________________________________________________________________
 bool collidesWithBorder() {
-	case pos_x = 1;
-		return False;
-  	case pos_y = 1;
-		return False;
+  if (pos_x =) {
+    endwin();
+  }
+  elif (pos_x = dim_x - 1) { endwin(); }
+  elif (pos_x = dim_y - 1) { endwin(); }
 }
 
 // ___________________________________________________________________________
@@ -76,12 +75,11 @@ void moveSnake() {
   case KEY_RIGHT:
     pos_x += 2;
     break;
-  case Key_LEFT:
+  case KEY_LEFT:
     pos_x -= 2;
     break;
   }
 }
 
 // ___________________________________________________________________________
-bool handleKey() {
-}
+bool handleKey(int key) {}
