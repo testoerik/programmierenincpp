@@ -3,22 +3,22 @@
 
 all: clean compile test checkstyle
 
-NcursesDemo.o: Snake.cpp Snake.h
+Snake.o: Snake.cpp Snake.h
 	clang++ -c Snake.cpp
 
-# NcursesDemoMain.o: Snake.cpp Snake.h
-# 	clang++ -c Snake.cpp
-# 
-# NcursesDemoTest.o: Snake.cpp Snake.h
-# 	clang++ -c Snake.cpp
-# 
-# NcursesDemoMain: NcursesDemoMain.o NcursesDemo.o
-# 	clang++ -o NcursesDemoMain NcursesDemoMain.o NcursesDemo.o -lncurses
-# 
-# NcursesDemoTest: NcursesDemoTest.o NcursesDemo.o
-# 	clang++ -o NcursesDemoTest NcursesDemoTest.o NcursesDemo.o -lgtest -lgtest_main -lncurses
-# 
-#  compile:
+SnakeMain.o: Snake.cpp Snake.h
+ 	clang++ -c Snake.cpp
+ 
+SnakeTest.o: Snake.cpp Snake.h
+ 	clang++ -c Snake.cpp
+ 
+SnakeMain: SnakeMain.o SnakeDemo.o
+ 	clang++ -o SnakeMain SnakeMain.o SnakeDemo.o -lncurses
+ 
+SnakeTest: SnakeTest.o Snake.o
+ 	clang++ -o SnakeTest SnakeTest.o Snake.o -lgtest -lgtest_main -lncurses
+ 
+compile:
  
 checkstyle:
 	clang-format-18 Snake.cpp --dry-run -Werror
@@ -28,4 +28,4 @@ format:
 test: SnakeTest
  	./SnakeTest
 clean:
-	rm -f ./NcursesDemoMain ./NcursesDemoTest *.o
+	rm -f ./SnakeMain ./SnakeDemoTest *.o
