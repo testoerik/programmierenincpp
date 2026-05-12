@@ -7,7 +7,7 @@ int main() {
   initGame();
   double speed = 5.0;
   double acceleration = 0.5;
-  
+
   clear();
   drawBorder(1);
   drawSnake(2);
@@ -16,10 +16,10 @@ int main() {
   while (true) {
     int key = getch();
     if (key != ERR) {
-	if (handleKey(key)) {
-		break;
-	}
-    }	
+      if (handleKey(key)) {
+        break;
+      }
     }
   }
+}
 }
