@@ -23,11 +23,11 @@ int main() {
       }
     }
     moveSnake();
-    if collidesWithBorder () {
+    if (collidesWithBorder()) {
       break;
     }
     clear();
-    drawBooder(1);
+    drawBorder(1);
     drawSnake(2);
     refresh();
 
@@ -41,7 +41,7 @@ int main() {
     if (getch() == 27) {
       break;
     }
-    uslepp(1000);
+    usleep(1000);
     endwin();
   }
 }

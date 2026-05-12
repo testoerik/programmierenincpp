@@ -9,9 +9,9 @@ extern int pos_y;
 
 extern int dir_pxl;
 
-void init_Terminal();
+void initTerminal();
 
-void init_Game();
+void initGame();
 
 void drawPixel(int row, int column, int color);
 
@@ -21,7 +21,7 @@ void drawSnake(int color);
 
 bool collidesWithBorder();
 
-void moveSnake;
+void moveSnake();
 
 bool handleKey(int key);
 

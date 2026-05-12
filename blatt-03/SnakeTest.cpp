@@ -38,3 +38,4 @@ TEST(SnakeTest, handleKey) {
   EXPECT_FALSE(handleKey(KEY_LEFT));
   EXPECT_EQ(dir_pxl, KEY_RIGHT);
 }
+

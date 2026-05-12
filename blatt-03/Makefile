@@ -1,33 +1,29 @@
 .SUFFIXES:
-.PHONY: all compile checkstyle test clean
+.PHONY: all compile checkstyle format test clean
 
 CXX = clang++
 
-all: clean compile test checkstyle
+all: compile test checkstyle
 
-Snake.o: Snake.cpp Snake.h
-	clang++ -c Snake.cpp
+compile: SnakeMain SnakeTest
 
-SnakeMain.o: Snake.cpp Snake.h
- 	clang++ -c Snake.cpp
- 
-SnakeTest.o: Snake.cpp Snake.h
- 	clang++ -c Snake.cpp
- 
-SnakeMain: SnakeMain.o SnakeDemo.o
- 	clang++ -o SnakeMain SnakeMain.o SnakeDemo.o -lncurses
- 
+%.o: %.cpp Snake.h
+		$(CXX) -o $@ -c $<
+
+%Main: %.o Snake.o
+	$(CXX) -o $@ $^ -lncurses
+
 SnakeTest: SnakeTest.o Snake.o
- 	clang++ -o SnakeTest SnakeTest.o Snake.o -lgtest -lgtest_main -lncurses
- 
-compile:
- 
+	$(CXX) SnakeTest.o Snake.o -lgtest -lgtest_main -pthread -o SnakeTest
+
 checkstyle:
-	clang-format-18 Snake.cpp --dry-run -Werror
+	clang-format-18 *.cpp *.h --dry-run -Werror
+
 format:
-	clang-format-18 -i Snake.cpp
+	clang-format-18 -i *.cpp *.h
 
 test: SnakeTest
- 	./SnakeTest
+	./SnakeTest
+
 clean:
-	rm -f ./SnakeMain ./SnakeDemoTest *.o
+	rm -f SnakeMain SnakeTest Snake.o SnakeMain.o SnakeTest.o
