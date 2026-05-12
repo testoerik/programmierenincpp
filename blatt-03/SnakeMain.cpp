@@ -3,26 +3,23 @@
 #include <unistd.h>
 
 int main() {
-  startNcurses();
   initTerminal();
   initGame();
+  double speed = 5.0;
+  double acceleration = 0.5;
+  
+  clear();
+  drawBorder(1);
+  drawSnake(2);
+  refresh();
+
   while (true) {
-    clear();
-    drawBorder();
-    drawSnake();
-    for (int i, i <= 10'000, ++i) {
-      int key = getch();
-      if (key != ERR) {
-        mvprintw(2, 2, "Key: %3d", key);
-        refresh();
-      }
-      if (handleKey(key) {
-        break;
+    int key = getch();
+    if (key != ERR) {
+	if (handleKey(key)) {
+		break;
 	}
-      moveSnake();
-      if (collidesWithBorder()) {
-        break;
-	}
+    }	
     }
   }
 }
