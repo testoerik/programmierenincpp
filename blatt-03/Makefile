@@ -1,6 +1,8 @@
 .SUFFIXES:
 .PHONY: all compile checkstyle test clean
 
+CXX = clang++
+
 all: clean compile test checkstyle
 
 Snake.o: Snake.cpp Snake.h
