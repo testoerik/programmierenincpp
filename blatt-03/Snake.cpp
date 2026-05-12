@@ -59,7 +59,7 @@ bool collidesWithBorder() {
   bool collision = false;
   if (pos_x <= 0 || pos_x >= dim_x - 1) {
     collision = true;
-  } else if (pos_y <= dim_y || pos_y >= dim_y - 1) {
+  } else if (pos_y <= 0 || pos_y >= dim_y - 1) {
     collision = true;
   }
   return collision;
@@ -91,12 +91,10 @@ bool handleKey(int key) {
     dir_pxl = KEY_UP;
   } else if (key == KEY_DOWN && dir_pxl != KEY_UP) {
     dir_pxl = KEY_DOWN;
-        }
-  else if (key == KEY_LEFT && dir_pxl != KEY_RIGHT {
+  } else if (key == KEY_LEFT && dir_pxl != KEY_RIGHT) {
     dir_pxl = KEY_LEFT;
-	}
-  else if (key == KEY_RIGHT && dir_pxl != KEY_LEFT) {
+  } else if (key == KEY_RIGHT && dir_pxl != KEY_LEFT) {
     dir_pxl = KEY_RIGHT;
-	}
-return false;
+  }
+  return false;
 }

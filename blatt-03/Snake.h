@@ -1,14 +1,12 @@
 #include <ncurses.h>
+#pragma once
 
-// Dimensions of the
 extern int dim_x;
 extern int dim_y;
 
-// Current position of the Pixel
 extern int pos_x;
 extern int pos_y;
 
-// Direction
 extern int dir_pxl;
 
 void init_Terminal();

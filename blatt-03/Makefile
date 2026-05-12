@@ -25,7 +25,7 @@ checkstyle:
 format:
 	clang-format-18 -i Snake.cpp
 
-# test: NcursesDemoTest
-# 	./NcursesDemoTest
+test: SnakeTest
+ 	./SnakeTest
 clean:
 	rm -f ./NcursesDemoMain ./NcursesDemoTest *.o
