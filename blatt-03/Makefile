@@ -11,8 +11,7 @@ compile: SnakeMain SnakeTest
 		$(CXX) -o $@ -c $<
 
 %Main: %.o Snake.o
-	$(CXX) -o $@ $^ -lncurses
-
+	$(CXX) -o SnakeMain SnakeMain.cpp Snake.o -lncures
 SnakeTest: SnakeTest.o Snake.o
 	$(CXX) SnakeTest.o Snake.o -lgtest -lgtest_main -pthread -o SnakeTest
 
