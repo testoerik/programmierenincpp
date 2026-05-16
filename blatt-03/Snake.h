@@ -24,5 +24,3 @@ bool collidesWithBorder();
 void moveSnake();
 
 bool handleKey(int key);
-
-

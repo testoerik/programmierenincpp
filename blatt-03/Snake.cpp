@@ -53,7 +53,7 @@ void drawBorder(int color) {
 }
 
 // ___________________________________________________________________________
-void drawSnake(int color) { drawPixel(pos_y, pos_x, color); }
+void drawSnake(int color) { drawPixel(pos_y / 2, pos_x / 2, color); }
 // ___________________________________________________________________________
 bool collidesWithBorder() {
   bool collision = false;

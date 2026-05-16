@@ -42,6 +42,6 @@ int main() {
       break;
     }
     usleep(1000);
-    endwin();
   }
+  endwin();
 }

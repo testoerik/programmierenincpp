@@ -11,9 +11,10 @@ compile: SnakeMain SnakeTest
 		$(CXX) -o $@ -c $<
 
 %Main: %.o Snake.o
-	$(CXX) -o SnakeMain SnakeMain.cpp Snake.o -lncures
+	$(CXX) -o SnakeMain SnakeMain.cpp Snake.o -lncurses
+
 SnakeTest: SnakeTest.o Snake.o
-	$(CXX) SnakeTest.o Snake.o -lgtest -lgtest_main -pthread -o SnakeTest
+	$(CXX) SnakeTest.o Snake.o -lgtest -lgtest_main -pthread -lncurses -o SnakeTest
 
 checkstyle:
 	clang-format-18 *.cpp *.h --dry-run -Werror
