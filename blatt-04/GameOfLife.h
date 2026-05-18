@@ -6,8 +6,8 @@
 extern bool actualState[];
 extern bool nextState[];
 
-int *a = actualState;
-int *n = nextState;
+extern bool* a;
+extern bool* n;
 
 extern int x;
 extern int y;
@@ -16,9 +16,6 @@ extern int numSteps;
 extern int numAliveCells;
 
 extern bool StateGame;
-
-const int MAX_NUM_CELLS;
-
 
 // Initialize the terminal for use with ncurses commands.
 void initTerminal();
