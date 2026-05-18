@@ -1,11 +1,11 @@
 #include "GameOfLife.h"
 #include <ncurses.h>
 
-int dimX;
-int dimY;
-
 int numRows;
 int numCols;
+
+int dimX = COLS;
+int dimY = LINES;
 
 // ___________________________________________________________________________
 const int MAX_NUM_CELLS = 10'000;
@@ -35,8 +35,8 @@ void initTerminal() {
 
 // ___________________________________________________________________________
 void initGame() {
-  posX = dimX / 2;
-  posY = dimY / 2;
+  posX = numCols / 2;
+  posY = numRows / 2;
   for (int i = 0; i < MAX_NUM_CELLS; ++i) {
     actualState[i] = false;
   }
@@ -46,20 +46,21 @@ void initGame() {
 // ___________________________________________________________________________
 
 void ShowState() {
-  start_color() attron(color_pair(1));
+  start_color();
+  attron(COLOR_PAIR(1));
   for (int row = 0; row < numRows; ++row) {
-    for (int col = 0; col < numCols, ++col) {
-      cellValue = actualState[row * numCols + col];
+    for (int col = 0; col < numCols; ++col) {
+      bool cellValue = actualState[row * numCols + col];
       if (cellValue) {
         attron(A_REVERSE);
       }
-      mvprint(row, 2 * col, "  ");
+      mvprintw(row, 2 * col, "  ");
       if (cellValue) {
-        attroff(A_REVERSE)
+        attroff(A_REVERSE);
       }
     }
   }
-  attroff(color_pair(1));
+  attroff(COLOR_PAIR(1));
   return;
 }
 // ___________________________________________________________________________
@@ -77,12 +78,25 @@ bool processUserInput(int keycode) {
   return false;
 }
 
-int numAliveNeighbor(int row, int col) {
+int numAliveNeighbors(int row, int col) {
   int aliveCount = 0;
-  if (((row - 1) <= 0 && (row + 1) < dimY) &&
-      ((col - 1) <= 0 && (col + 1)) < dimX) {
-    endwin();
-                printf("Too many pixel": %d\n");
-		return;
+  if (((row - 1) >= 0 && (row + 1) < dimY) &&
+      ((col - 1) >= 0 && (col + 1)) < dimX) {
+    for (int i = -1; i <= 1; ++i) {
+      for (int j = -1; j <= 1; ++j) {
+        int nRow = row + i;
+        int nCol = col + j;
+        if (i == 0 && j == 0) {
+          continue;
+        }
+        if (nRow >= 0 && nRow < numRows && nCol >= 0 && nCol < numCols)
+          ;
+        if (*a[nRow * numCols + nCol]) {
+          aliveCount += 1;
+        }
+        continue;
+      }
+    }
+    return;
   }
 }

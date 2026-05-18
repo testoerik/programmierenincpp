@@ -1,8 +1,8 @@
 // Created by eh295
 
-#pragma onnce
+#pragma once
 #include <ncurses.h>
-#include <unistd>
+#include <unistd.h>
 
 // Dimensions of the window.
 extern int numRows;
@@ -32,7 +32,7 @@ void initGame();
 
 void ShowState();
 
-int numAliveNeighboors(int row, int col);
+int numAliveNeighbors(int row, int col);
 
 void updateState();
 
