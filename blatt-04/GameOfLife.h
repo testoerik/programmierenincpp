@@ -1,5 +1,6 @@
 // Created by eh295
 
+#pragma onnce
 #include <ncurses.h>
 #include <unistd>
 
