@@ -3,9 +3,12 @@
 
 int numRows;
 int numCols;
-
-int dimX = COLS;
-int dimY = LINES;
+int posX;
+int posY;
+int row;
+int col;
+int numAliveCells;
+bool StateGame;
 
 // ___________________________________________________________________________
 const int MAX_NUM_CELLS = 10'000;
@@ -13,8 +16,8 @@ bool actualState[MAX_NUM_CELLS] = {0};
 bool nextState[MAX_NUM_CELLS];
 
 // ___________________________________________________________________________
-bool *a = actualState[];
-bool *n = nextState[];
+bool *a = actualState;
+bool *n = nextState;
 
 // ___________________________________________________________________________
 void initTerminal() {
@@ -43,8 +46,8 @@ void initGame() {
   StateGame = false;
   numAliveCells = 0;
 }
-// ___________________________________________________________________________
 
+// ___________________________________________________________________________
 void ShowState() {
   start_color();
   attron(COLOR_PAIR(1));
@@ -78,25 +81,42 @@ bool processUserInput(int keycode) {
   return false;
 }
 
+// ___________________________________________________________________________
 int numAliveNeighbors(int row, int col) {
   int aliveCount = 0;
-  if (((row - 1) >= 0 && (row + 1) < dimY) &&
-      ((col - 1) >= 0 && (col + 1)) < dimX) {
-    for (int i = -1; i <= 1; ++i) {
-      for (int j = -1; j <= 1; ++j) {
-        int nRow = row + i;
-        int nCol = col + j;
-        if (i == 0 && j == 0) {
-          continue;
-        }
-        if (nRow >= 0 && nRow < numRows && nCol >= 0 && nCol < numCols)
-          ;
-        if (*a[nRow * numCols + nCol]) {
+  for (int i = -1; i <= 1; ++i) {
+    for (int j = -1; j <= 1; ++j) {
+      int nRow = row + i;
+      int nCol = col + j;
+      if (i == 0 && j == 0) {
+        continue;
+      }
+      if (nRow >= 0 && nRow < numRows && nCol >= 0 && nCol < numCols) {
+        if (a[nRow * numCols + nCol]) {
           aliveCount += 1;
         }
         continue;
       }
     }
-    return;
+    return aliveCount;
   }
+}
+
+// ___________________________________________________________________________
+void updateState() {
+  for (int row = 0; rol < numRows; ++row) {
+    for (int col = 0; col < numCols; ++col) {
+      int neighbors = numAliveNeighbor(row, col);
+      if (a[row * numCols + col] && neighbors == 2 || neighbors == 3) {
+        bool n[row * numCols + col] = true;
+      } else if (a[row * numCols + col] == false && neighbors == 3) {
+        bool n[row * numCols + col] == true;
+      } else {
+        bool n[row * numCols + col] == false;
+      }
+    }
+  }
+  bool *tmp = a;
+  a = n;
+  n = tmp;
 }
