@@ -26,7 +26,7 @@ void initTerminal() {
   noecho();
   curs_set(false);
   nodelay(stdscr, true);
-  keypad(stdscr, false);
+  keypad(stdscr, true);
   mousemask(ALL_MOUSE_EVENTS, NULL);
   mouseinterval(0);
   start_color();
@@ -68,18 +68,40 @@ void ShowState() {
 }
 // ___________________________________________________________________________
 bool processUserInput(int keycode) {
-  if (keycode == KEY_MOUSE) {
-    MEVENT event;
-    if (getmouse(&event) == OK) {
-      if (event.bstate & BUTTON1_PRESSED) {
-        row = event.y;
-        col = event.x / 2;
-        return true;
-      }
-    }
-  }
-  return false;
-}
+  switch (keycode) {
+	case KEY_MOUSE: {
+    		MEVENT event;
+    		if (getmouse(&event) == OK) {
+      			if (event.bstate & BUTTON1_PRESSED) {
+        			row = event.y;
+        			col = event.x / 2;
+				a[row * numCols + col] = !a[row * numCols + col];
+				return true;
+			}
+		}
+		 
+        	break;
+	}
+	case ' ':
+		stateGame = !stateGame;
+		break;
+	case 'r':
+		for (int row = 0; row < numRows; ++row) {
+			for (int col = 0, col < numCols, ++col) {
+				if (rand() % 5 == 0) {
+					a[row * numCols + col] = true;
+				}
+				else {
+					a[row * numCols + col] = false;
+				}
+			}
+		}
+		break;
+	case 'q':
+		endwin();
+		printf("Game ended");
+	case 's':
+			
 
 // ___________________________________________________________________________
 int numAliveNeighbors(int row, int col) {
@@ -98,21 +120,21 @@ int numAliveNeighbors(int row, int col) {
         continue;
       }
     }
-    return aliveCount;
   }
+  return aliveCount;
 }
 
 // ___________________________________________________________________________
 void updateState() {
-  for (int row = 0; rol < numRows; ++row) {
+  for (int row = 0; row < numRows; ++row) {
     for (int col = 0; col < numCols; ++col) {
-      int neighbors = numAliveNeighbor(row, col);
-      if (a[row * numCols + col] && neighbors == 2 || neighbors == 3) {
+      int neighbors = numAliveNeighbors(row, col);
+      if (a[row * numCols + col] && (neighbors == 2 || neighbors == 3)) {
         bool n[row * numCols + col] = true;
       } else if (a[row * numCols + col] == false && neighbors == 3) {
-        bool n[row * numCols + col] == true;
+        n[row * numCols + col] = true;
       } else {
-        bool n[row * numCols + col] == false;
+        n[row * numCols + col] = false;
       }
     }
   }
