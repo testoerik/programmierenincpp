@@ -1,6 +1,6 @@
 #include "GameOfLife.h"
 #include <ncurses.h>
-#include <stdlib>
+#include <cstdlib>
 
 int numRows;
 int numCols;
@@ -65,8 +65,7 @@ void ShowState() {
     }
   }
   attroff(COLOR_PAIR(1));
-  // brauche ich ein return ?
-  return;
+  refresh();
 }
 // ___________________________________________________________________________
 bool processUserInput(int keycode) {
@@ -106,9 +105,9 @@ bool processUserInput(int keycode) {
   case 'g': {
     if ((row >= 0 && row + 2 < numRows) && (col >= 0 && col + 2 < numCols)) {
       a[row * numCols + (col + 1)] = true;
-      a[row * numCols + (col + 2)] = true;
-      a[(row + 1) * numCols + (col + 1)] = true;
       a[(row + 1) * numCols + (col + 2)] = true;
+      a[(row + 2) * numCols + (col + 0)] = true;
+      a[(row + 2) * numCols + (col + 1)] = true;
       a[(row + 2) * numCols + (col + 2)] = true;
     } else {
       mvprintw(0, 0, "Error");
@@ -116,6 +115,7 @@ bool processUserInput(int keycode) {
     break;
   }
   }
+  return true;
 }
 
 // ___________________________________________________________________________
