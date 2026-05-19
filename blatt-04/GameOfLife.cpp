@@ -1,6 +1,6 @@
 #include "GameOfLife.h"
-#include <ncurses.h>
 #include <cstdlib>
+#include <ncurses.h>
 
 int numRows;
 int numCols;
@@ -110,7 +110,6 @@ bool processUserInput(int keycode) {
       a[(row + 2) * numCols + (col + 1)] = true;
       a[(row + 2) * numCols + (col + 2)] = true;
     } else {
-      mvprintw(0, 0, "Error");
     }
     break;
   }
