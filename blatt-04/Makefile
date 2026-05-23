@@ -6,13 +6,13 @@ CXX = clang++
 
 all: clean compile test checkstyle
 
-%.o: %.cpp NcursesDemo.h
+%.o: %.cpp GameOfLife.h
 	$(CXX) -o $@ -c $<
 
-%Main: %Main.o NcursesDemo.o
+%Main: %Main.o GameOfLife.o
 	$(CXX) -o $@ $^ -lncurses
 
-compile: NcursesDemoMain
+compile: GameOfLifeMain
 
 checkstyle:
 	clang-format-18 *.cpp --dry-run -Werror

@@ -5,16 +5,14 @@ int main() {
   initTerminal();
   initGame();
   while (true) {
-    if (processUserInput(getch())) {
-      if (StateGame) {
-        updateState();
-        showState();
-        usleep(50'000);
-      } else {
-        continue;
-      }
-    } else {
+    if (processUserInput(getch()) == false) {
       break;
     }
+    if (StateGame == true) {
+      updateState();
+    }
+    ShowState();
+    usleep(50'000);
   }
+  endwin();
 }
