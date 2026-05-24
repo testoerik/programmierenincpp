@@ -1,100 +1,106 @@
 #include "Snake.h"
-#include <ncurses.h>
 #include <unistd.h>
+#include "./TerminalManager.h"
+void Snake::play() {
+  initTerminal();
+  initGame();
+  double speed = 8.0;
+  double acceleration = 1.5;
 
-// ___________________________________________________________________________
-int dim_x;
-int dim_y;
-int pos_x;
-int pos_y;
-int dir_pxl;
+  clear();
+  drawBorder(1);
+  drawSnake(2);
+  refresh();
 
-// ___________________________________________________________________________
-void initTerminal() {
-  initscr();
-  curs_set(false);
-  noecho();
-  nodelay(stdscr, true);
-  keypad(stdscr, true);
-  dim_x = COLS;
-  dim_y = LINES;
-  start_color();
-  init_pair(1, COLOR_RED, COLOR_BLACK);
-  init_pair(2, COLOR_GREEN, COLOR_BLACK);
+  while (true) {
+    int sleep_time_us = 1'000'000 / speed;
+    usleep(sleep_time_us);
+    int key = getch();
+    if (key != ERR) {
+      if (handleKey(key)) {
+        break;
+      }
+    }
+    moveSnake();
+    if (collidesWithBorder()) {
+      break;
+    }
+    clear();
+    drawBorder(1);
+    drawSnake(2);
+    refresh();
+
+    speed += acceleration * (sleep_time_us / 1'000'000.0);
+  }
+  mvprintw(LINES / 2, (COLS / 2) - 5, "GAME OVER!");
+  mvprintw((LINES / 2) + 1, (COLS / 2) - 10, "Press ESC to exit...");
+  refresh();
+
+  while (true) {
+    if (getch() == 27) {
+      break;
+    }
+    usleep(1000);
+  }
+  endwin();
 }
 
 // ___________________________________________________________________________
-void initGame() {
-  pos_x = dim_x / 2;
-  pos_y = dim_y / 2;
-  dir_pxl = KEY_RIGHT;
+void Snake::initGame() {
+  posRow_ = LINES / 2;
+  posCol_ = COLS / 2;
+  dirCol_ = KEY_RIGHT;
 }
 
 // ___________________________________________________________________________
-void drawPixel(int row, int column, int color) {
-  attron(COLOR_PAIR(color));
-  attron(A_REVERSE);
-  mvprintw(row, column * 2, "  ");
-  attroff(A_REVERSE);
-  attroff(COLOR_PAIR(color));
-}
-
-// ___________________________________________________________________________
-void drawBorder(int color) {
-  for (int i = 0; i < dim_x; ++i) {
-    drawPixel(0, i, color);
-    drawPixel(dim_y - 1, i, color);
+void Snake::drawBorder(int color) {
+  for (int i = 0; i < posRow_; ++i) {
+   drawPixel(0, i, color);
+   drawPixel(posCol_ - 1, i, color);
   }
 
-  for (int j = 0; j < dim_y; ++j) {
-    drawPixel(j, 0, color);
-    drawPixel(j, dim_x - 1, color);
+  for (int j = 0; j < posCol_; ++j) {
+   drawPixel(j, 0, color);
+   drawPixel(j, posRow_ - 2, color);
   }
 }
 
 // ___________________________________________________________________________
-void drawSnake(int color) { drawPixel(pos_y / 2, pos_x / 2, color); }
+void Snake::drawSnake(int color) {drawPixel(posCol_ / 2, posRow_ / 2, color); }
 // ___________________________________________________________________________
-bool collidesWithBorder() {
-  bool collision = false;
-  if (pos_x <= 0 || pos_x >= dim_x - 1) {
-    collision = true;
-  } else if (pos_y <= 0 || pos_y >= dim_y - 1) {
-    collision = true;
-  }
-  return collision;
-}
+bool Snake::collidesWithBorder() {
+	return }
 
 // ___________________________________________________________________________
-void moveSnake() {
-  switch (dir_pxl) {
+void Snake::moveSnake() {
+  switch (dirPxl_) {
   case KEY_UP:
-    pos_y -= 1;
+    posCol_ -= 1;
     break;
   case KEY_DOWN:
-    pos_y += 1;
+    posCol_ += 1;
     break;
   case KEY_RIGHT:
-    pos_x += 1;
+    posRow_ += 1;
     break;
   case KEY_LEFT:
-    pos_x -= 1;
+    posRow_ -= 1;
     break;
   }
 }
 
 // ___________________________________________________________________________
-bool handleKey(int key) {
+bool Snake::handleKey(int key) {
   if (key == 27) {
     return true;
-  } else if (key == KEY_UP && dir_pxl != KEY_DOWN) {
-    dir_pxl = KEY_UP;
-  } else if (key == KEY_DOWN && dir_pxl != KEY_UP) {
-    dir_pxl = KEY_DOWN;
-  } else if (key == KEY_LEFT && dir_pxl != KEY_RIGHT) {
-    dir_pxl = KEY_LEFT;
-  } else if (key == KEY_RIGHT && dir_pxl != KEY_LEFT) {
-    dir_pxl = KEY_RIGHT;
+  } else if (key == KEY_UP && dirPxl_ != KEY_DOWN) {
+    dirPxl_ = KEY_UP;
+  } else if (key == KEY_DOWN && dirPxl_ != KEY_UP) {
+    dirPxl_ = KEY_DOWN;
+  } else if (key == KEY_LEFT && dirPxl_ != KEY_RIGHT) {
+    dirPxl_ = KEY_LEFT;
+  } else if (key == KEY_RIGHT && dirPxl_ != KEY_LEFT) {
+    dirPxl_ = KEY_RIGHT;
   }
   return false;
 }

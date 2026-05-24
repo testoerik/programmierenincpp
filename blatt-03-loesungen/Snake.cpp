@@ -25,7 +25,7 @@ void Snake::play() {
   double distance = 0;
   while (true) {
     while (true) {
-      if (handleKey(getch())) {
+      if (!handleKey(getch())) {
         endwin();
         return;
       }

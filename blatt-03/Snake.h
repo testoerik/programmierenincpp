@@ -1,26 +1,31 @@
-#include <ncurses.h>
 #pragma once
 
-extern int dim_x;
-extern int dim_y;
+class Snake {
 
-extern int pos_x;
-extern int pos_y;
+private:
+  // The current position of our snake.
+  int posRow_;
+  int posCol_;
 
-extern int dir_pxl;
+  // The current direction of our snake.
+  int dirRow_;
+  int dirCol_;
+  // The TerminalManager for rendering our game.
+  TerminalManager *terminalManager_;
 
-void initTerminal();
+public:
+  void play();
 
-void initGame();
+private:
+  void initGame();
 
-void drawPixel(int row, int column, int color);
+  void drawBorder(int color);
 
-void drawBorder(int color);
+  void drawSnake(int color);
 
-void drawSnake(int color);
+  bool collidesWithBorder();
 
-bool collidesWithBorder();
+  void moveSnake();
 
-void moveSnake();
-
-bool handleKey(int key);
+  bool handleKey(int key);
+};

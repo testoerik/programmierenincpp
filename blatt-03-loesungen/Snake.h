@@ -4,6 +4,7 @@
 //         Johannes Kalmbach <kalmbach@cs.uni-freiburg.de>
 
 #pragma once
+#include <gtest/gtest_prod.h>
 
 // ___________________________________________________________________________
 class Snake {
@@ -33,7 +34,7 @@ private:
 
   // Initialize the game.
   void initGame();
-
+  FRIEND_TEST(Snake, initGame);
   // Draw a pixel at the position given by y and x. Note that a pixel consists
   // of multiple space characters, depending on `pixelWidth` and `pixelHeight`.
   void drawPixel(int y, int x, int color);
