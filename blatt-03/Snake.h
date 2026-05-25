@@ -1,4 +1,5 @@
 #pragma once
+#include "TerminalManager.h"
 
 class Snake {
 

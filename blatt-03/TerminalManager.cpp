@@ -1,4 +1,4 @@
-
+#include <ncurses.h>
 #include "./TerminalManager.h"
 
 void TerminalManager::setup() {

@@ -1,8 +1,9 @@
+#include <ncurses.h>
 #include "Snake.h"
 #include <unistd.h>
-#include "./TerminalManager.h"
+#include "TerminalManager.h"
 void Snake::play() {
-  initTerminal();
+  terminalManager_->setup();
   initGame();
   double speed = 8.0;
   double acceleration = 1.5;
@@ -50,41 +51,44 @@ void Snake::initGame() {
   posRow_ = LINES / 2;
   posCol_ = COLS / 2;
   dirCol_ = KEY_RIGHT;
+  terminalManager_ = new TerminalManager();
 }
 
 // ___________________________________________________________________________
 void Snake::drawBorder(int color) {
   for (int i = 0; i < posRow_; ++i) {
-   drawPixel(0, i, color);
-   drawPixel(posCol_ - 1, i, color);
+   terminalManager_->drawPixel(0, i, color);
+   terminalManager_->drawPixel(posCol_ - 1, i, color);
   }
 
   for (int j = 0; j < posCol_; ++j) {
-   drawPixel(j, 0, color);
-   drawPixel(j, posRow_ - 2, color);
+   terminalManager_->drawPixel(j, 0, color);
+   terminalManager_->drawPixel(j, posRow_ - 2, color);
   }
 }
 
 // ___________________________________________________________________________
-void Snake::drawSnake(int color) {drawPixel(posCol_ / 2, posRow_ / 2, color); }
+void Snake::drawSnake(int color) {terminalManager_->drawPixel(posCol_ / 2, posRow_ / 2, color); }
 // ___________________________________________________________________________
 bool Snake::collidesWithBorder() {
-	return }
+	return posRow_ <= 0 || posRow_ >= LINES || posCol_ <= 0 || posCol_ >= COLS;}
 
 // ___________________________________________________________________________
 void Snake::moveSnake() {
-  switch (dirPxl_) {
+  switch (dirRow_) {
   case KEY_UP:
-    posCol_ -= 1;
+    posRow_ -= 1;
     break;
   case KEY_DOWN:
-    posCol_ += 1;
-    break;
-  case KEY_RIGHT:
     posRow_ += 1;
     break;
+  }
+  switch (dirCol_) {
+  case KEY_RIGHT:
+    posCol_ += 1;
+    break;
   case KEY_LEFT:
-    posRow_ -= 1;
+    posCol_ -= 1;
     break;
   }
 }
@@ -93,14 +97,14 @@ void Snake::moveSnake() {
 bool Snake::handleKey(int key) {
   if (key == 27) {
     return true;
-  } else if (key == KEY_UP && dirPxl_ != KEY_DOWN) {
-    dirPxl_ = KEY_UP;
-  } else if (key == KEY_DOWN && dirPxl_ != KEY_UP) {
-    dirPxl_ = KEY_DOWN;
-  } else if (key == KEY_LEFT && dirPxl_ != KEY_RIGHT) {
-    dirPxl_ = KEY_LEFT;
-  } else if (key == KEY_RIGHT && dirPxl_ != KEY_LEFT) {
-    dirPxl_ = KEY_RIGHT;
+  } else if (key == KEY_UP && dirRow_ != KEY_DOWN) {
+    dirRow_ = KEY_UP;
+  } else if (key == KEY_DOWN && dirRow_ != KEY_UP) {
+    dirRow_ = KEY_DOWN;
+  } else if (key == KEY_LEFT && dirCol_ != KEY_RIGHT) {
+    dirCol_ = KEY_LEFT;
+  } else if (key == KEY_RIGHT && dirCol_ != KEY_LEFT) {
+    dirCol_ = KEY_RIGHT;
   }
   return false;
 }
