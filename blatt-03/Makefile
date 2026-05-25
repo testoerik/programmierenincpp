@@ -1,16 +1,13 @@
 .SUFFIXES:
 .PHONY: all compile checkstyle test clean format
+.PRECIOUS: %.o
 
-#CXX = clang++ -g
+CXX = clang++-18
 BASENAME = Snake
-#OBJS = $(BASENAME).o TerminalManager.o
 LIBS = -lncurses
-CXX = clang++ -Wall -Wextra -O3 -I/usr/include/freetype2
-OBJS = $(BASENAME).o OpenGLTerminalManager.o
-LIBS = -lncurses -lglfw -lGL -lX11 -lrt -ldl -lfreetype
 TESTLIBS = -lgtest -lgtest_main -lpthread
 
-all: compile format checkstyle # test
+all: compile format checkstyle test
 
 compile: $(BASENAME)Main 
 
@@ -27,10 +24,10 @@ test: $(BASENAME)Test
 %.o: %.cpp *.h
 	$(CXX) -c $<
 
-%Main: %Main.o $(OBJS)
+%Main: %Main.o %.o
 	$(CXX) -o $@ $^ $(LIBS)
 
-%Test: %Test.o $(OBJS)
+%Test: %Test.o %.o
 	$(CXX) -o $@ $^ $(LIBS) $(TESTLIBS)
 
 

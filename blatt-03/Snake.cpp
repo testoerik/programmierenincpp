@@ -1,110 +1,131 @@
+// Copyright 2024, University of Freiburg
+// Chair of Algorithms and Data Structures
+// Author: Hannah Bast <bast@cs.uni-freiburg.de>,
+//         Johannes Kalmbach <kalmbach@cs.uni-freiburg.de>
+
+#include "./Snake.h"
 #include <ncurses.h>
-#include "Snake.h"
-#include <unistd.h>
-#include "TerminalManager.h"
-void Snake::play() {
-  terminalManager_->setup();
-  initGame();
-  double speed = 8.0;
-  double acceleration = 1.5;
 
-  clear();
-  drawBorder(1);
-  drawSnake(2);
-  refresh();
+// ____________________________________________________________________________
+// Global variables. See the header for documentation.
+//
+int posX;
+int posY;
 
-  while (true) {
-    int sleep_time_us = 1'000'000 / speed;
-    usleep(sleep_time_us);
-    int key = getch();
-    if (key != ERR) {
-      if (handleKey(key)) {
-        break;
-      }
-    }
-    moveSnake();
-    if (collidesWithBorder()) {
-      break;
-    }
-    clear();
-    drawBorder(1);
-    drawSnake(2);
-    refresh();
+int vx;
+int vy;
 
-    speed += acceleration * (sleep_time_us / 1'000'000.0);
-  }
-  mvprintw(LINES / 2, (COLS / 2) - 5, "GAME OVER!");
-  mvprintw((LINES / 2) + 1, (COLS / 2) - 10, "Press ESC to exit...");
-  refresh();
+int numPixelsX;
+int numPixelsY;
 
-  while (true) {
-    if (getch() == 27) {
-      break;
-    }
-    usleep(1000);
-  }
-  endwin();
+// ____________________________________________________________________________
+void initTerminal() {
+  initscr();
+  cbreak();
+  noecho();
+  curs_set(false);
+  nodelay(stdscr, true);
+  keypad(stdscr, true);
+
+  start_color();
+  // Initialize one color pair for each color.
+  // For simplicity reasons we only use the foreground
+  // colors.
+  init_pair(1, COLOR_GREEN, COLOR_GREEN);
+  init_pair(2, COLOR_RED, COLOR_RED);
+  init_pair(3, COLOR_BLACK, COLOR_BLACK);
+  init_pair(4, COLOR_BLUE, COLOR_BLUE);
+
+  // COLS and LINES are global variables from ncurses (dimensions of screen).
+  numPixelsX = COLS / 2;
+  numPixelsY = LINES;
 }
 
-// ___________________________________________________________________________
-void Snake::initGame() {
-  posRow_ = LINES / 2;
-  posCol_ = COLS / 2;
-  dirCol_ = KEY_RIGHT;
-  terminalManager_ = new TerminalManager();
+// ____________________________________________________________________________
+void initGame() {
+  posX = numPixelsX / 2;
+  posY = numPixelsY / 2;
+
+  vx = 1;
+  vy = 0;
 }
 
-// ___________________________________________________________________________
-void Snake::drawBorder(int color) {
-  for (int i = 0; i < posRow_; ++i) {
-   terminalManager_->drawPixel(0, i, color);
-   terminalManager_->drawPixel(posCol_ - 1, i, color);
+// _____________________________________________________________________________
+void drawPixel(int y, int x, int color) {
+  int colorPairNum = 1;
+  if (color == COLOR_RED) {
+    colorPairNum = 2;
+  } else if (color == COLOR_BLACK) {
+    colorPairNum = 3;
+  } else if (color == COLOR_BLUE) {
+    colorPairNum = 4;
   }
-
-  for (int j = 0; j < posCol_; ++j) {
-   terminalManager_->drawPixel(j, 0, color);
-   terminalManager_->drawPixel(j, posRow_ - 2, color);
+  attron(COLOR_PAIR(colorPairNum));
+  for (int j = 0; j < 2; j++) {
+    mvprintw(y, x * 2 + j, " ");
   }
 }
 
-// ___________________________________________________________________________
-void Snake::drawSnake(int color) {terminalManager_->drawPixel(posCol_ / 2, posRow_ / 2, color); }
-// ___________________________________________________________________________
-bool Snake::collidesWithBorder() {
-	return posRow_ <= 0 || posRow_ >= LINES || posCol_ <= 0 || posCol_ >= COLS;}
+// ____________________________________________________________________________
+void drawBorder(int color) {
+  for (int x = 0; x < numPixelsX; x++) {
+    drawPixel(0, x, color);
+    drawPixel(numPixelsY - 1, x, color);
+  }
 
-// ___________________________________________________________________________
-void Snake::moveSnake() {
-  switch (dirRow_) {
-  case KEY_UP:
-    posRow_ -= 1;
-    break;
+  for (int y = 0; y < numPixelsY; y++) {
+    drawPixel(y, 0, color);
+    drawPixel(y, numPixelsX - 1, color);
+  }
+}
+
+// ____________________________________________________________________________
+void drawSnake(int color) { drawPixel(posY, posX, color); }
+
+// ____________________________________________________________________________
+bool collidesWithBorder() {
+  int x = posX;
+  int y = posY;
+  return x <= 0 || x >= numPixelsX - 1 || y <= 0 || y >= numPixelsY - 1;
+}
+
+// ____________________________________________________________________________
+void moveSnake() {
+  posX = posX + vx;
+  posY = posY + vy;
+}
+
+// ____________________________________________________________________________
+bool handleKey(int key) {
+  int oldVx = vx;
+  int oldVy = vy;
+  switch (key) {
+  case 27: // ESC
+    return true;
   case KEY_DOWN:
-    posRow_ += 1;
+    vx = 0;
+    vy = 1;
     break;
-  }
-  switch (dirCol_) {
-  case KEY_RIGHT:
-    posCol_ += 1;
+  case KEY_UP:
+    vx = 0;
+    vy = -1;
     break;
   case KEY_LEFT:
-    posCol_ -= 1;
+    vx = -1;
+    vy = 0;
+    break;
+  case KEY_RIGHT:
+    vx = 1;
+    vy = 0;
+    break;
+  default:
     break;
   }
-}
-
-// ___________________________________________________________________________
-bool Snake::handleKey(int key) {
-  if (key == 27) {
-    return true;
-  } else if (key == KEY_UP && dirRow_ != KEY_DOWN) {
-    dirRow_ = KEY_UP;
-  } else if (key == KEY_DOWN && dirRow_ != KEY_UP) {
-    dirRow_ = KEY_DOWN;
-  } else if (key == KEY_LEFT && dirCol_ != KEY_RIGHT) {
-    dirCol_ = KEY_LEFT;
-  } else if (key == KEY_RIGHT && dirCol_ != KEY_LEFT) {
-    dirCol_ = KEY_RIGHT;
+  // Ignore the change of direction if it is illegal
+  if (oldVx + vx == 0 && oldVy + vy == 0) {
+    vx = oldVx;
+    vy = oldVy;
   }
+
   return false;
 }
