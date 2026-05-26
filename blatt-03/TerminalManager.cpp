@@ -1,5 +1,6 @@
+#include "./TerminalManager.h"
 #include <ncurses.h>
-TerminalManager::setup() {
+void TerminalManager::setup() {
   // Initialize ncurses and some settings suitable for our game.
   initscr();
   cbreak();
@@ -17,14 +18,14 @@ TerminalManager::setup() {
   numCols_ = COLS / 2;
 }
 
-TerminalManager::drawPixel(int row, int col, int color) {
+void TerminalManager::drawPixel(int row, int col, int color) {
   if (color == COLOR_GREEN) {
     attron(color_pair(1));
   }
   attron(A_REVERSE);
   mvprintw(row, 2 * col, "  ");
 }
-UserInput TerminalManager::getUserInput() {
+void UserInput TerminalManager::getUserInput() {
 	UserInput userInput;
 	userInput.keycode_ = getch();
 	return userInput}

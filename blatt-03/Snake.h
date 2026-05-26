@@ -1,4 +1,5 @@
 #pragma once
+#include "./TerminalManager.h"
 
 class Snake {
 private:
@@ -13,7 +14,8 @@ private:
   // The directions X and Y of our snake.
   int dirX_;
   int dirY_;
-
+  
+  TerminalManager terminalManager_;
 public:
   // Play a game of snake.
   void play();

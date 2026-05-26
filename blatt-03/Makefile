@@ -3,13 +3,13 @@
 .PRECIOUS: %.o
 
 CXX = clang++-18
-BASENAME = Snake
+BASENAME = Snake 
 LIBS = -lncurses
 TESTLIBS = -lgtest -lgtest_main -lpthread
 
 all: compile format checkstyle test
 
-compile: $(BASENAME)Main 
+compile: $(BASENAME)Main TerminalManager
 
 checkstyle:
 	clang-format-18 --dry-run -Werror *.h *.cpp
@@ -18,7 +18,7 @@ format:
 	clang-format-18 -i *.h *.cpp
 
 
-test: $(BASENAME)Test
+test: $(BASENAME)Test TerminalManager
 	./$<
 
 %.o: %.cpp *.h

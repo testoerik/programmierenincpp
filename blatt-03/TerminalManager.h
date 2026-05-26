@@ -1,13 +1,14 @@
+#pragma once
 class UserInput {
 public:
-  int keycode:
+  int keycode;
 	
   bool isEscape();
   bool isKeyUp();
   bool isKeyDown();
   bool isKeyLeft();
   bool isKeyRight();
-}  
+};  
 class TerminalManager {
 private:
   int numRows_;
@@ -20,5 +21,5 @@ public:
   void drawPixel(int y, int x, int color);
   void setup();
   
-  TerminalManager terminalManager_;
-}
+  UserInput userInput_;
+};
