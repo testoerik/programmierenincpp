@@ -1,6 +1,6 @@
 #pragma once
 #include "./TerminalManager.h"
-
+#include <gtest/gtest_prod.h>
 class Snake {
 private:
   // The total number of logical pixels on the screen.
@@ -14,8 +14,13 @@ private:
   // The directions X and Y of our snake.
   int dirX_;
   int dirY_;
-  
-  TerminalManager terminalManager_;
+
+  TerminalManager *terminalManager_;
+  FRIEND_TEST(SnakeTest, initGame);
+  FRIEND_TEST(SnakeTest, moveSnake);
+  FRIEND_TEST(SnakeTest, handleKey);
+  FRIEND_TEST(SnakeTest, collidesWithBorder);
+
 public:
   // Play a game of snake.
   void play();
@@ -41,6 +46,5 @@ public:
   void moveSnake();
 
   // Update the direction and the speed of the snake given the last pressed key.
-  // Return true if `escape` was pressed, return false for any other key.
-  bool handleKey(int key);
+  void handleKey(UserInput userInput);
 };

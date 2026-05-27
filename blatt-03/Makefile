@@ -2,15 +2,14 @@
 .PHONY: all compile checkstyle test clean format
 .PRECIOUS: %.o
 
-CXX = clang++-18
-BASENAME = Snake 
+CXX = clang++ -g
+BASENAME = Snake
 LIBS = -lncurses
 TESTLIBS = -lgtest -lgtest_main -lpthread
 
 all: compile format checkstyle test
 
-compile: $(BASENAME)Main TerminalManager
-
+compile: $(BASENAME)Main 
 checkstyle:
 	clang-format-18 --dry-run -Werror *.h *.cpp
 
@@ -18,16 +17,16 @@ format:
 	clang-format-18 -i *.h *.cpp
 
 
-test: $(BASENAME)Test TerminalManager
+test: $(BASENAME)Test 
 	./$<
 
 %.o: %.cpp *.h
 	$(CXX) -c $<
 
-%Main: %Main.o %.o
+%Main: %Main.o %.o TerminalManager.o
 	$(CXX) -o $@ $^ $(LIBS)
 
-%Test: %Test.o %.o
+%Test: %Test.o %.o TerminalManager.o
 	$(CXX) -o $@ $^ $(LIBS) $(TESTLIBS)
 
 

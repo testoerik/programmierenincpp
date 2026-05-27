@@ -1,9 +1,54 @@
 #include "./Snake.h"
-#include <ncurses.h>
+#include <unistd.h>
 
 // ____________________________________________________________________________
 void Snake::play() {
+  terminalManager_->setup();
+  initGame();
+  drawBorder(TerminalManager::Green);
+  drawSnake(TerminalManager::Red);
+  terminalManager_->refresh();
+
+  double speed = 10;
+
+  // Acceleration in pixel per second squared.
+  double acceleration = 2;
+
+  // The absolute distance moved since the last call to moveSnake(). If it
+  // becomes > 1 we have to move the snake by one pixel.
+  double distance = 0;
+  while (true) {
+    // Let the game run until the snake has moved by at least one pixel.
+    while (true) {
+      UserInput userInput = terminalManager_->getUserInput();
+      if (userInput.isEscape()) {
+        terminalManager_->cleanup();
+        return;
+      }
+      handleKey(userInput);
+      usleep(1000);
+      distance += speed / 1000;
+      speed += acceleration / 1000;
+      if (distance >= 1.0) {
+        distance -= 1.0;
+        break;
+      }
+    }
+
+    // Move the snake to the next position (leave a trail of white pixels).
+    drawSnake(TerminalManager::Green);
+    moveSnake();
+    drawSnake(TerminalManager::Red);
+    terminalManager_->refresh();
+
+    // If the snake collides with the border, quit after three seconds.
+    if (collidesWithBorder()) {
+      usleep(3'000'000);
+      terminalManager_->cleanup();
+      return;
+    }
   }
+}
 
 // ____________________________________________________________________________
 void Snake::initGame() {
@@ -17,18 +62,20 @@ void Snake::initGame() {
 // ____________________________________________________________________________
 void Snake::drawBorder(int color) {
   for (int x = 0; x < numPixelsX_; x++) {
-    terminalManager_.drawPixel(0, x, color);
-    terminalManager_.drawPixel(numPixelsY_ - 1, x, color);
+    terminalManager_->drawPixel(0, x, color);
+    terminalManager_->drawPixel(numPixelsY_ - 1, x, color);
   }
 
   for (int y = 0; y < numPixelsY_; y++) {
-    terminalManager_.drawPixel(y, 0, color);
-    terminalManager_.drawPixel(y, numPixelsX_ - 1, color);
+    terminalManager_->drawPixel(y, 0, color);
+    terminalManager_->drawPixel(y, numPixelsX_ - 1, color);
   }
 }
 
 // ____________________________________________________________________________
-void Snake::drawSnake(int color) {terminalManager_.drawPixel(posY_, posX_, color); }
+void Snake::drawSnake(int color) {
+  terminalManager_->drawPixel(posY_, posX_, color);
+}
 
 // ____________________________________________________________________________
 bool Snake::collidesWithBorder() {
@@ -44,36 +91,28 @@ void Snake::moveSnake() {
 }
 
 // ____________________________________________________________________________
-bool Snake::handleKey(int key) {
+void Snake::handleKey(UserInput userInput) {
   int oldVx = dirX_;
   int oldVy = dirY_;
-  switch (key) {
-  case 27: // ESC
-    return true;
-  case KEY_DOWN:
-    dirX_ = 0;
-    dirY_ = 1;
-    break;
-  case KEY_UP:
-    dirX_ = 0;
-    dirY_ = -1;
-    break;
-  case KEY_LEFT:
-    dirX_ = -1;
-    dirY_ = 0;
-    break;
-  case KEY_RIGHT:
-    dirX_ = 1;
-    dirY_ = 0;
-    break;
-  default:
-    break;
+  if (userInput.isKeyDown()) {
+    if (dirY_ != -1) {
+      dirY_ = 1;
+      dirX_ = 0;
+    }
+  } else if (userInput.isKeyUp()) {
+    if (dirY_ != 1) {
+      dirY_ = -1;
+      dirX_ = 0;
+    }
+  } else if (userInput.isKeyLeft()) {
+    if (dirX_ != 1) {
+      dirX_ = 1;
+      dirY_ = 0;
+    }
+  } else if (userInput.isKeyRight()) {
+    if (dirX_ != -1) {
+      dirX_ = 1;
+      dirY_ = 0;
+    }
   }
-  // Ignore the change of direction if it is illegal
-  if (oldVx + dirX_ == 0 && oldVy + dirY_ == 0) {
-    dirX_ = oldVx;
-    dirY_ = oldVy;
-  }
-
-  return false;
 }
