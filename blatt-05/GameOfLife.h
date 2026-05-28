@@ -1,32 +1,32 @@
 // Created by eh295
 
 #pragma once
+#include "./TerminalManager.h"
 #include <ncurses.h>
 #include <unistd.h>
-#include "./TerminalManager.h"
-// Dimensions of the window.
-extern int numRows;
-extern int numCols;
+
+class GameOfLife {
+public:
+  // Current position of each cell
+  int posX_;
+  int posY_;
+  
+  bool *a = actualState;
+  bool *n = nextState;
+  bool actualState[];
+  bool nextState[];
+};
 
 // We will need these two variables to iterate trough our field.
 extern int row;
 extern int col;
 
-// Two one-dimensional arrays with the states (true or false) of each cell.
-// actualState: Is the state of the cell we are looking for alive (true) or dead
-// (false) ? nextState: Do we need to change the state of the cell or not ?
-extern bool actualState[];
-extern bool nextState[];
 
 // Two pointers a and n.
 // a points to the entry in the actualState array.
 // n points to the entry in the nextState array.
 extern bool *a;
 extern bool *n;
-
-// posX and posY are the position of each cell.
-extern int posX;
-extern int posY;
 
 //
 extern int numSteps;

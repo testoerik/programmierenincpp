@@ -10,12 +10,12 @@ public:
   bool isKeyR();
   bool isKeyQ();
   bool isKeyG();
-  bool isKeyMouse(); 
+  bool isKeyMouse();
 };
 
 class TerminalManager {
 private:
-  // The total number of logical pixels on the screen.
+  // The total number of pixels on the screen.
   int numRows_;
   int numCols_;
 

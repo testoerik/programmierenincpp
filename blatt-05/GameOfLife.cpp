@@ -4,8 +4,6 @@
 
 int numRows;
 int numCols;
-int posX;
-int posY;
 int row;
 int col;
 int numAliveCells;
@@ -17,39 +15,21 @@ bool actualState[MAX_NUM_CELLS] = {0};
 bool nextState[MAX_NUM_CELLS];
 
 // ___________________________________________________________________________
-bool *a = actualState;
-bool *n = nextState;
-
-// ___________________________________________________________________________
-void initTerminal() {
-  initscr();
-  cbreak();
-  noecho();
-  curs_set(false);
-  nodelay(stdscr, true);
-  keypad(stdscr, true);
-  mousemask(ALL_MOUSE_EVENTS, NULL);
-  mouseinterval(0);
-  start_color();
-
-  init_pair(1, COLOR_GREEN, COLOR_BLACK);
-  numCols = COLS / 2;
-  numRows = LINES;
-}
-
+TerminalManager::TerminalManager() {}
 // ___________________________________________________________________________
 void initGame() {
-  posX = numCols / 2;
-  posY = numRows / 2;
+  GameOfLife gameOfLife;
+  gameOfLife.posX_ = numCols / 2;
+  gameOfLife.posY_ = numRows / 2;
   // Clean actualState and nextState.
   for (int i = 0; i < MAX_NUM_CELLS; ++i) {
-    actualState[i] = false;
-    nextState[i] = false;
+    gameOfLife.actualState[i] = false;
+    gameOfLife.nextState[i] = false;
   }
 
   // Update both a and n because a or n could contain garbage.
-  a = actualState;
-  n = nextState;
+  a = gameOfLife.actualState;
+  n = gameOfLife.nextState;
   stateGame = false;
   numAliveCells = 0;
 }
@@ -82,7 +62,7 @@ void showState() {
 }
 
 // ___________________________________________________________________________
-bool procesUserInput(UserInput userInput) {
+bool processUserInput(UserInput userInput) {
   if (userInput.isKeyMouse()) {
     MEVENT event;
     if (getmouse(&event) == OK) {
@@ -118,8 +98,8 @@ bool procesUserInput(UserInput userInput) {
       a[(row + 2) * numCols + (col + 1)] = true;
       a[(row + 2) * numCols + (col + 2)] = true;
     }
-  } else {
   }
+  return true;
 }
 
 // ___________________________________________________________________________

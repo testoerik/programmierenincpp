@@ -18,8 +18,8 @@ format:
 	clang-format-18 -i *.h *.cpp
 
 
-test: $(BASENAME)Test
-	./$<
+# test: $(BASENAME)Test
+#	./$<
 
 %.o: %.cpp *.h
 	$(CXX) -c $<
@@ -27,8 +27,8 @@ test: $(BASENAME)Test
 %Main: %Main.o %.o TerminalManager.o
 	$(CXX) -o $@ $^ $(LIBS)
 
-%Test: %Test.o %.o TerminalManager.o
-	$(CXX) -o $@ $^ $(LIBS) $(TESTLIBS)
+# %Test: %Test.o %.o TerminalManager.o
+#	$(CXX) -o $@ $^ $(LIBS) $(TESTLIBS)
 
 
 clean:

@@ -5,8 +5,8 @@ int main() {
   initTerminal();
   initGame();
   TerminalManager terminalManager;
-  UserInput userInput = terminalManager.getUserInput(); 
   while (true) {
+    UserInput userInput = terminalManager.getUserInput();
     if (processUserInput(userInput) == false) {
       break;
     }
