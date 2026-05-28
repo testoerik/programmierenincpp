@@ -49,4 +49,4 @@ void updateState();
 
 // Handles all the possible user inputs, for example space key for pause or
 // playing, 'q' for quit etc.
-bool processUserInput(int keycode);
+bool processUserInput(UserInput userInput);

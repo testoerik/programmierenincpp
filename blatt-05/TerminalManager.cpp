@@ -51,11 +51,11 @@ UserInput TerminalManager::getUserInput() {
 }
 
 // _____________________________________________________________________________
-bool UserInput::isKeyQ() { return keycode_ == "q"; }
-bool UserInput::isKeyG() { return keycode_ == "g"; }
-bool UserInput::isKeyR() { return keycode_ == "r"; }
-bool UserInput::isKeyS() { return keycode_ == "s"; }
-bool UserInput::isKeySpace() { return keycode_ == "  "; }
-bool UserInput::isKeyMouse { return keycode_ == KEY_MOUSE; }
+bool UserInput::isKeyQ() { return keycode_ == 'q'; }
+bool UserInput::isKeyG() { return keycode_ == 'g'; }
+bool UserInput::isKeyR() { return keycode_ == 'r'; }
+bool UserInput::isKeyS() { return keycode_ == 's'; }
+bool UserInput::isKeySpace() { return keycode_ == '  '; }
+bool UserInput::isKeyMouse() { return keycode_ == KEY_MOUSE; }
 // _____________________________________________________________________________
 TerminalManager::~TerminalManager() { endwin(); }

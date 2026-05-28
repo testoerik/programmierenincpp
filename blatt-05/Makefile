@@ -24,10 +24,10 @@ test: $(BASENAME)Test
 %.o: %.cpp *.h
 	$(CXX) -c $<
 
-%Main: %Main.o %.o
+%Main: %Main.o %.o TerminalManager.o
 	$(CXX) -o $@ $^ $(LIBS)
 
-%Test: %Test.o %.o
+%Test: %Test.o %.o TerminalManager.o
 	$(CXX) -o $@ $^ $(LIBS) $(TESTLIBS)
 
 

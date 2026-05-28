@@ -4,8 +4,10 @@
 int main() {
   initTerminal();
   initGame();
+  TerminalManager terminalManager;
+  UserInput userInput = terminalManager.getUserInput(); 
   while (true) {
-    if (processUserInput(getch()) == false) {
+    if (processUserInput(userInput) == false) {
       break;
     }
     if (stateGame == true) {

@@ -82,21 +82,19 @@ void showState() {
 }
 
 // ___________________________________________________________________________
-bool UserInput(UserInput userInput) {
-    if (userInput.isKeyMouse()) {
+bool procesUserInput(UserInput userInput) {
+  if (userInput.isKeyMouse()) {
     MEVENT event;
-	    if (getmouse(&event) == OK) {
-	      if (event.bstate & BUTTON1_PRESSED) {
-		row = event.y;
-		col = event.x / 2;
-		a[row * numCols + col] = !a[row * numCols + col];
-	      }
-	    }
+    if (getmouse(&event) == OK) {
+      if (event.bstate & BUTTON1_PRESSED) {
+        row = event.y;
+        col = event.x / 2;
+        a[row * numCols + col] = !a[row * numCols + col];
+      }
     }
-    else if (userInput.isKeySpace()) {
-    	stateGame = !stateGame;
-    }
-    else if (userInput.isKeyR()) {
+  } else if (userInput.isKeySpace()) {
+    stateGame = !stateGame;
+  } else if (userInput.isKeyR()) {
     for (int row = 0; row < numRows; ++row) {
       for (int col = 0; col < numCols; ++col) {
         if (rand() % 5 == 0) {
@@ -105,17 +103,14 @@ bool UserInput(UserInput userInput) {
           a[row * numCols + col] = false;
         }
       }
-    }   
     }
-    else if (userInput.isKeyQ()) {
-	    endwin();
-	    printf("Game ended");
-	    return false;
-  }
-  else if (userInput.isKeyS()) {
+  } else if (userInput.isKeyQ()) {
+    endwin();
+    printf("Game ended");
+    return false;
+  } else if (userInput.isKeyS()) {
     updateState();
-  }
-  else if (userInput.isKeyG()) {
+  } else if (userInput.isKeyG()) {
     if ((row >= 0 && row + 2 < numRows) && (col >= 0 && col + 2 < numCols)) {
       a[row * numCols + (col + 1)] = true;
       a[(row + 1) * numCols + (col + 2)] = true;
@@ -123,10 +118,9 @@ bool UserInput(UserInput userInput) {
       a[(row + 2) * numCols + (col + 1)] = true;
       a[(row + 2) * numCols + (col + 2)] = true;
     }
-    } else {
-      }
+  } else {
+  }
 }
-
 
 // ___________________________________________________________________________
 int numAliveNeighbors(int row, int col) {
