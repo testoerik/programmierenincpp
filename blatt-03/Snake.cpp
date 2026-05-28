@@ -3,7 +3,10 @@
 
 // ____________________________________________________________________________
 void Snake::play() {
+  terminalManager_ = new TerminalManager();
   terminalManager_->setup();
+  numPixelsX_ = terminalManager_->numCols();
+  numPixelsY_ = terminalManager_->numRows();
   initGame();
   drawBorder(TerminalManager::Green);
   drawSnake(TerminalManager::Red);
@@ -106,7 +109,7 @@ void Snake::handleKey(UserInput userInput) {
     }
   } else if (userInput.isKeyLeft()) {
     if (dirX_ != 1) {
-      dirX_ = 1;
+      dirX_ = -1;
       dirY_ = 0;
     }
   } else if (userInput.isKeyRight()) {

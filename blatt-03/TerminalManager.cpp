@@ -16,7 +16,7 @@ void TerminalManager::setup() {
   // Initialize the colors we need for the game.
 
   init_pair(1, COLOR_GREEN, COLOR_BLACK);
-
+  init_pair(2, COLOR_RED, COLOR_BLACK);
   // Set the logical dimensions of the screen.
   numRows_ = LINES;
   numCols_ = COLS / 2;
@@ -25,9 +25,13 @@ void TerminalManager::setup() {
 void TerminalManager::drawPixel(int row, int col, int color) {
   if (color == COLOR_GREEN) {
     attron(COLOR_PAIR(1));
+  } else if (color == COLOR_RED) {
+    attron(COLOR_PAIR(2));
   }
   attron(A_REVERSE);
   mvprintw(row, 2 * col, "  ");
+
+  attroff(A_REVERSE);
 }
 UserInput TerminalManager::getUserInput() {
   UserInput userInput;
