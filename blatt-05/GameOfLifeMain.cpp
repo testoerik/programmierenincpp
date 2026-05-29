@@ -3,7 +3,6 @@
 
 int main() {
   TerminalManager terminalManager;
-  GameOfLife gameOfLife;
   GameOfLife gameOfLife(&terminalManager);
   gameOfLife.play();
 };

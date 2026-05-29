@@ -6,25 +6,11 @@
 #include <unistd.h>
 
 class GameOfLife {
-public:
-  // Current position of each cell.
-  int posX_;
-  int posY_;
-  bool *actlStPtr_ = actualState_;
-  bool *nxtStPtr_ = nextState_;
-  
-  // Play Game of Life.
-  void play();
-
 private:
   static const int MAX_NUM_CELLS = 10'000;
   bool actualState_[MAX_NUM_CELLS];
   bool nextState_[MAX_NUM_CELLS];
-
-  // We will need these two variables to iterate trough our field.
-  int row_;
-  int col_;
-
+  TerminalManager *terminalManager;
   //
   int numSteps_;
   int numAliveCells_;
@@ -47,4 +33,20 @@ private:
   // Handles all the possible user inputs, for example space key for pause or
   // playing, 'q' for quit etc.
   bool processUserInput(UserInput userInput);
+public:
+  // Two variables to iterate.
+  int row_;
+  int col_;
+  
+  bool cellVal_;
+  // Constructor
+  explicit GameOfLife(TerminalManager *terminalManager_);
+  // Current position of each cell.
+  int posX_;
+  int posY_;
+  bool *actlStPtr_ = actualState_;
+  bool *nxtStPtr_ = nextState_;
+  
+  // Play Game of Life.
+  void play();
 };

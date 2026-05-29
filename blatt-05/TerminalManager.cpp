@@ -3,9 +3,7 @@
 
 // ____________________________________________________________________________
 int TerminalManager::White = COLOR_WHITE;
-int TerminalManager::Red = COLOR_RED;
-int TerminalManager::Green = COLOR_GREEN;
-
+int TerminalManager::Blue = COLOR_BLUE;
 // ____________________________________________________________________________
 TerminalManager::TerminalManager() {
   // Initialize ncurses and some settings suitable for our game.
@@ -18,9 +16,7 @@ TerminalManager::TerminalManager() {
 
   // Initialize all the colors we need for the game.
   start_color();
-  init_pair(1, COLOR_WHITE, COLOR_BLACK);
-  init_pair(2, COLOR_RED, COLOR_BLACK);
-  init_pair(3, COLOR_GREEN, COLOR_BLACK);
+  init_pair(1, COLOR_BLUE, COLOR_WHITE);
 
   // Set the logical dimensions of the screen.
   numRows_ = LINES;
@@ -30,42 +26,15 @@ TerminalManager::TerminalManager() {
 // _____________________________________________________________________________
 void TerminalManager::drawPixel(int row, int col, int color) {
   if (color == COLOR_WHITE) {
+    attron(COLOR_PAIR(1) | A_REVERSE);
+    mvprintw(row, 2 * col, "  ");
+    attroff(A_REVERSE);
+  } else {
     attron(COLOR_PAIR(1));
-  } else if (color == COLOR_RED) {
-    attron(COLOR_PAIR(2));
-  } else if (color == COLOR_GREEN) {
-    attron(COLOR_PAIR(3));
+    mvprintw(row, 2 * col, "  ");
   }
-  attron(A_REVERSE);
-  mvprintw(row, 2 * col, "  ");
 }
 
-// ___________________________________________________________________________
-void TerminalManager::showState() {
-  start_color();
-  attron(COLOR_PAIR(1));
-
-  numAliveCells = 0;
-
-  for (int row = 0; row < numRows - 1; ++row) {
-    for (int col = 0; col < numCols; ++col) {
-      bool cellValue = a[row * numCols + col];
-      if (cellValue) {
-        numAliveCells += 1;
-        attron(A_REVERSE);
-      }
-      mvprintw(row, 2 * col, "  ");
-      if (cellValue) {
-        attroff(A_REVERSE);
-      }
-    }
-  }
-  attron(A_REVERSE);
-  mvprintw(numRows - 1, 0, "Alive Cells: %d", numAliveCells);
-  attroff(A_REVERSE);
-  attroff(COLOR_PAIR(1));
-  refresh();
-}
 // _____________________________________________________________________________
 void TerminalManager::refresh() { ::refresh(); }
 
