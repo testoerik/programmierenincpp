@@ -2,40 +2,48 @@
 #include <cstdlib>
 #include <ncurses.h>
 
-int numRows;
-int numCols;
-int row;
-int col;
-int numAliveCells;
-bool stateGame;
-
 // ___________________________________________________________________________
 const int MAX_NUM_CELLS = 10'000;
 bool actualState[MAX_NUM_CELLS] = {0};
 bool nextState[MAX_NUM_CELLS];
+GameOfLife::play() {
+  
+  while (true) {
+    UserInput userInput = terminalManager.getUserInput();
+    if (processUserInput(userInput) == false) {
+      break;
+    }
+    if (stateGame == true) {
+      updateState();
+    }
+    showState();
+    usleep(50'000);
+  }
+  endwin();
+}
+// ___________________________________________________________________________
+GameOfLife::GameOfLife(TerminalManager *terminalManager) {
+  terminalManager_ = terminalManager;
 
-// ___________________________________________________________________________
-TerminalManager::TerminalManager() {}
-// ___________________________________________________________________________
-void initGame() {
-  GameOfLife gameOfLife;
-  gameOfLife.posX_ = numCols / 2;
-  gameOfLife.posY_ = numRows / 2;
+  int cols_ = terminalManager_->numCols_;
+  int rows_ = terminalManager_->numRows_;
+  posX_ = cols_ / 2;
+  posY_ = rows_ / 2;
   // Clean actualState and nextState.
   for (int i = 0; i < MAX_NUM_CELLS; ++i) {
-    gameOfLife.actualState[i] = false;
-    gameOfLife.nextState[i] = false;
+    actualState_[i] = false;
+    nextState_[i] = false;
   }
 
   // Update both a and n because a or n could contain garbage.
-  a = gameOfLife.actualState;
-  n = gameOfLife.nextState;
-  stateGame = false;
-  numAliveCells = 0;
+  actlStPtr_ = actualState_;
+  nxtStPtr_= nextState_;
+  stateGame_ = false;
+  numAliveCells_ = 0;
 }
 
 // ___________________________________________________________________________
-void showState() {
+GameOfLife::ShowState() {
   start_color();
   attron(COLOR_PAIR(1));
 
@@ -62,7 +70,7 @@ void showState() {
 }
 
 // ___________________________________________________________________________
-bool processUserInput(UserInput userInput) {
+GameOfLife::processUserInput(UserInput userInput) {
   if (userInput.isKeyMouse()) {
     MEVENT event;
     if (getmouse(&event) == OK) {
@@ -103,7 +111,7 @@ bool processUserInput(UserInput userInput) {
 }
 
 // ___________________________________________________________________________
-int numAliveNeighbors(int row, int col) {
+GameOfLife::numAliveNeighbors(int row, int col) {
   int aliveCount = 0;
   for (int i = -1; i <= 1; ++i) {
     for (int j = -1; j <= 1; ++j) {
@@ -123,7 +131,7 @@ int numAliveNeighbors(int row, int col) {
   return aliveCount;
 }
 // ___________________________________________________________________________
-void updateState() {
+GameOfLife::updateState() {
   for (int row = 0; row < numRows; ++row) {
     for (int col = 0; col < numCols; ++col) {
       int neighbors = numAliveNeighbors(row, col);
