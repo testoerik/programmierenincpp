@@ -2,5 +2,8 @@
 #include <unistd.h>
 
 int main() {
-  GameOfLife::play();
+  TerminalManager terminalManager;
+  GameOfLife gameOfLife;
+  GameOfLife gameOfLife(&terminalManager);
+  gameOfLife.play();
 };

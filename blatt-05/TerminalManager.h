@@ -40,7 +40,8 @@ public:
 
   // Draw a pixel at the given logical position in the given color.
   void drawPixel(int col, int row, int color);
-
+  // Show State of each cell.
+  void showState();
   // Read user keyboard or mouse input.
   UserInput getUserInput();
 };

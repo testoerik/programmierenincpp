@@ -40,6 +40,32 @@ void TerminalManager::drawPixel(int row, int col, int color) {
   mvprintw(row, 2 * col, "  ");
 }
 
+// ___________________________________________________________________________
+void TerminalManager::showState() {
+  start_color();
+  attron(COLOR_PAIR(1));
+
+  numAliveCells = 0;
+
+  for (int row = 0; row < numRows - 1; ++row) {
+    for (int col = 0; col < numCols; ++col) {
+      bool cellValue = a[row * numCols + col];
+      if (cellValue) {
+        numAliveCells += 1;
+        attron(A_REVERSE);
+      }
+      mvprintw(row, 2 * col, "  ");
+      if (cellValue) {
+        attroff(A_REVERSE);
+      }
+    }
+  }
+  attron(A_REVERSE);
+  mvprintw(numRows - 1, 0, "Alive Cells: %d", numAliveCells);
+  attroff(A_REVERSE);
+  attroff(COLOR_PAIR(1));
+  refresh();
+}
 // _____________________________________________________________________________
 void TerminalManager::refresh() { ::refresh(); }
 

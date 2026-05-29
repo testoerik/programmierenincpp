@@ -1,22 +1,17 @@
 #include "GameOfLife.h"
 #include <cstdlib>
-#include <ncurses.h>
 
-// ___________________________________________________________________________
-const int MAX_NUM_CELLS = 10'000;
-bool actualState[MAX_NUM_CELLS] = {0};
-bool nextState[MAX_NUM_CELLS];
-GameOfLife::play() {
+void GameOfLife::play() {
   
   while (true) {
-    UserInput userInput = terminalManager.getUserInput();
+    UserInput userInput = terminalManager_->getUserInput();
     if (processUserInput(userInput) == false) {
       break;
     }
     if (stateGame == true) {
       updateState();
     }
-    showState();
+    terminalManager_->showState();
     usleep(50'000);
   }
   endwin();
@@ -42,53 +37,27 @@ GameOfLife::GameOfLife(TerminalManager *terminalManager) {
   numAliveCells_ = 0;
 }
 
-// ___________________________________________________________________________
-GameOfLife::ShowState() {
-  start_color();
-  attron(COLOR_PAIR(1));
-
-  numAliveCells = 0;
-
-  for (int row = 0; row < numRows - 1; ++row) {
-    for (int col = 0; col < numCols; ++col) {
-      bool cellValue = a[row * numCols + col];
-      if (cellValue) {
-        numAliveCells += 1;
-        attron(A_REVERSE);
-      }
-      mvprintw(row, 2 * col, "  ");
-      if (cellValue) {
-        attroff(A_REVERSE);
-      }
-    }
-  }
-  attron(A_REVERSE);
-  mvprintw(numRows - 1, 0, "Alive Cells: %d", numAliveCells);
-  attroff(A_REVERSE);
-  attroff(COLOR_PAIR(1));
-  refresh();
-}
 
 // ___________________________________________________________________________
-GameOfLife::processUserInput(UserInput userInput) {
+bool GameOfLife::processUserInput(UserInput userInput) {
   if (userInput.isKeyMouse()) {
     MEVENT event;
     if (getmouse(&event) == OK) {
       if (event.bstate & BUTTON1_PRESSED) {
-        row = event.y;
-        col = event.x / 2;
-        a[row * numCols + col] = !a[row * numCols + col];
+        row_ = event.y;
+        col_ = event.x / 2;
+        a[row_ * numCols_ + col_] = !a[row_ * numCols_ + _col];
       }
     }
   } else if (userInput.isKeySpace()) {
-    stateGame = !stateGame;
+    stateGame_ = !stateGame_;
   } else if (userInput.isKeyR()) {
-    for (int row = 0; row < numRows; ++row) {
-      for (int col = 0; col < numCols; ++col) {
+    for (int row_ = 0; row_ < numRows_; ++row_) {
+      for (int col_ = 0; col_ < numCols_; ++col_) {
         if (rand() % 5 == 0) {
-          a[row * numCols + col] = true;
+          a[row_ * numCols_ + col_] = true;
         } else {
-          a[row * numCols + col] = false;
+          a[row_ * numCols_ + col_] = false;
         }
       }
     }
@@ -99,52 +68,52 @@ GameOfLife::processUserInput(UserInput userInput) {
   } else if (userInput.isKeyS()) {
     updateState();
   } else if (userInput.isKeyG()) {
-    if ((row >= 0 && row + 2 < numRows) && (col >= 0 && col + 2 < numCols)) {
-      a[row * numCols + (col + 1)] = true;
-      a[(row + 1) * numCols + (col + 2)] = true;
-      a[(row + 2) * numCols + (col + 0)] = true;
-      a[(row + 2) * numCols + (col + 1)] = true;
-      a[(row + 2) * numCols + (col + 2)] = true;
+    if ((row_ >= 0 && row_ + 2 < numRows_) && (col_ >= 0 && col_ + 2 < numCols_)) {
+      a[row_ * numCols_ + (col_ + 1)] = true;
+      a[(row_ + 1) * numCols_ + (col_ + 2)] = true;
+      a[(row_ + 2) * numCols_ + (col_ + 0)] = true;
+      a[(row_ + 2) * numCols_ + (col_ + 1)] = true;
+      a[(row_ + 2) * numCols_ + (col_ + 2)] = true;
     }
   }
   return true;
 }
 
 // ___________________________________________________________________________
-GameOfLife::numAliveNeighbors(int row, int col) {
-  int aliveCount = 0;
+int GameOfLife::numAliveNeighbors(int row_, int col_) {
+  int aliveCount_ = 0;
   for (int i = -1; i <= 1; ++i) {
     for (int j = -1; j <= 1; ++j) {
-      int nRow = row + i;
-      int nCol = col + j;
+      int nRow = row_ + i;
+      int nCol = col_ + j;
       if (i == 0 && j == 0) {
         continue;
       }
-      if ((nRow >= 0 && nRow < numRows) && (nCol >= 0 && nCol < numCols)) {
-        if (a[nRow * numCols + nCol]) {
-          aliveCount += 1;
+      if ((nRow >= 0 && nRow < numRows_) && (nCol >= 0 && nCol < numCols_)) {
+        if (a[nRow * numCols_ + nCol]) {
+          aliveCount_ += 1;
         }
         continue;
       }
     }
   }
-  return aliveCount;
+  return aliveCount_;
 }
 // ___________________________________________________________________________
-GameOfLife::updateState() {
-  for (int row = 0; row < numRows; ++row) {
-    for (int col = 0; col < numCols; ++col) {
-      int neighbors = numAliveNeighbors(row, col);
-      if (a[row * numCols + col] && (neighbors == 2 || neighbors == 3)) {
-        n[row * numCols + col] = true;
-      } else if (a[row * numCols + col] == false && neighbors == 3) {
-        n[row * numCols + col] = true;
+void GameOfLife::updateState() {
+  for (int row_ = 0; row_ < numRows; ++row_) {
+    for (int col_ = 0; col_ < numCols; ++col_) {
+      int neighbors_ = numAliveNeighbors(row_, col_);
+      if (a[row_ * numCols_ + col_] && (neighbors_ == 2 || neighbors_ == 3)) {
+        n_[row_ * numCols_ + col_] = true;
+      } else if (a_[row_ * numCols_ + col_] == false && neighbors_ == 3) {
+        n_[row_ * numCols_ + col_] = true;
       } else {
-        n[row * numCols + col] = false;
+        n_[row_ * numCols_ + col_] = false;
       }
     }
   }
-  bool *tmp = a;
-  a = n;
-  n = tmp;
+  bool *tmp = a_;
+  a_ = n_;
+  n_ = tmp;
 }
