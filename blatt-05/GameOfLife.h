@@ -10,17 +10,14 @@ private:
   static const int MAX_NUM_CELLS = 10'000;
   bool actualState_[MAX_NUM_CELLS];
   bool nextState_[MAX_NUM_CELLS];
-  TerminalManager *terminalManager;
+  // Initialize TerminalManager.
+  TerminalManager *terminalManager_;
   //
   int numSteps_;
   int numAliveCells_;
 
   // State of the game: Is it playing (true) or paused (paused) ?
   bool stateGame_;
-
-  // Initializing the terminal and the field dimensions.
-  void initTerminal();
-  void initGame();
 
   // Show the state of each cell in the terminal.
   void showState();

@@ -7,13 +7,12 @@ void GameOfLife::play() {
     if (processUserInput(userInput) == false) {
       break;
     }
-    if (stateGame == true) {
+    if (stateGame_ == true) {
       updateState();
     }
-    terminalManager_->showState();
+    showState();
     usleep(50'000);
   }
-  terminalManager_->~TerminalManager();
 }
 
 // ___________________________________________________________________________
@@ -85,13 +84,13 @@ bool GameOfLife::processUserInput(UserInput userInput) {
   } else if (userInput.isKeyS()) {
     updateState();
   } else if (userInput.isKeyG()) {
-    if ((row_ >= 0 && row_ + 2 < numRows() _) &&
-        (col_ >= 0 && col_ + 2 < numCols() _)) {
-      actlStPtr_[row_ * numCols() _ + (col_ + 1)] = true;
-      actlStPtr_[(row_ + 1) * numCols() _ + (col_ + 2)] = true;
-      actlStPtr_[(row_ + 2) * numCols() _ + (col_ + 0)] = true;
-      actlStPtr_[(row_ + 2) * numCols() _ + (col_ + 1)] = true;
-      actlStPtr_[(row_ + 2) * numCols() _ + (col_ + 2)] = true;
+    if ((row_ >= 0 && row_ + 2 < numRows()) &&
+        (col_ >= 0 && col_ + 2 < numCols())) {
+      actlStPtr_[row_ * numCols() + (col_ + 1)] = true;
+      actlStPtr_[(row_ + 1) * numCols() + (col_ + 2)] = true;
+      actlStPtr_[(row_ + 2) * numCols() + (col_ + 0)] = true;
+      actlStPtr_[(row_ + 2) * numCols() + (col_ + 1)] = true;
+      actlStPtr_[(row_ + 2) * numCols() + (col_ + 2)] = true;
     }
   }
   return true;
@@ -107,9 +106,9 @@ int GameOfLife::numAliveNeighbors(int row_, int col_) {
       if (i == 0 && j == 0) {
         continue;
       }
-      if ((nRow >= 0 && nRow < numRows() _) &&
-          (nCol >= 0 && nCol < numCols() _)) {
-        if (a[nRow * numCols() _ + nCol]) {
+      if ((nRow >= 0 && nRow < numRows()) &&
+          (nCol >= 0 && nCol < numCols())) {
+        if (actlStPtr_[nRow * numCols() + nCol]) {
           aliveCount_ += 1;
         }
         continue;
@@ -123,13 +122,13 @@ void GameOfLife::updateState() {
   for (int row_ = 0; row_ < numRows(); ++row_) {
     for (int col_ = 0; col_ < numCols(); ++col_) {
       int neighbors_ = numAliveNeighbors(row_, col_);
-      if (a[row_ * numCols() _ + col_] &&
+      if (actlStPtr_[row_ * numCols() + col_] &&
           (neighbors_ == 2 || neighbors_ == 3)) {
         n_[row_ * numCols() _ + col_] = true;
-      } else if (a_[row_ * numCols() _ + col_] == false && neighbors_ == 3) {
-        n_[row_ * numCols() _ + col_] = true;
+      } else if (a_[row_ * numCols() + col_] == false && neighbors_ == 3) {
+        n_[row_ * numCols() + col_] = true;
       } else {
-        n_[row_ * numCols() _ + col_] = false;
+        nxtStPtr_[row_ * numCols() + col_] = false;
       }
     }
   }
