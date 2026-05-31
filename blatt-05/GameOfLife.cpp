@@ -58,7 +58,6 @@ bool GameOfLife::processUserInput(UserInput userInput) {
     int col = userInput.eventX();
     actlStPtr_[row * terminalManager_->numCols() + col] =
         !actlStPtr_[row * terminalManager_->numCols() + col];
-
   } else if (userInput.isKeySpace()) {
     stateGame_ = !stateGame_;
   } else if (userInput.isKeyR()) {
