@@ -11,6 +11,8 @@ public:
   bool isKeyQ();
   bool isKeyG();
   bool isKeyMouse();
+  int eventX();
+  int eventY();
 };
 
 class TerminalManager {

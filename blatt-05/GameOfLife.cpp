@@ -1,6 +1,5 @@
 #include "GameOfLife.h"
 #include <cstdlib>
-#include <ncurses.h>
 #include <unistd.h>
 // ___________________________________________________________________________
 void GameOfLife::play() {
@@ -55,15 +54,11 @@ GameOfLife::GameOfLife(TerminalManager *terminalManager) {
 // ___________________________________________________________________________
 bool GameOfLife::processUserInput(UserInput userInput) {
   if (userInput.isKeyMouse()) {
-    MEVENT event;
-    if (getmouse(&event) == OK) {
-      if (event.bstate & BUTTON1_PRESSED) {
-        int row = event.y;
-        int col = event.x / 2;
-        actlStPtr_[row * terminalManager_->numCols() + col] =
-            !actlStPtr_[row * terminalManager_->numCols() + col];
-      }
-    }
+    int row = userInput.eventY();
+    int col = userInput.eventX();
+    actlStPtr_[row * terminalManager_->numCols() + col] =
+        !actlStPtr_[row * terminalManager_->numCols() + col];
+
   } else if (userInput.isKeySpace()) {
     stateGame_ = !stateGame_;
   } else if (userInput.isKeyR()) {
