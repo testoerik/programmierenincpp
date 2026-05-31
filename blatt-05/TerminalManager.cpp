@@ -42,6 +42,15 @@ void TerminalManager::refresh() { ::refresh(); }
 UserInput TerminalManager::getUserInput() {
   UserInput userInput;
   userInput.keycode_ = getch();
+  if (userInput.isKeyMouse()) {
+    MEVENT event;
+    if (getmouse(&event) == OK) {
+      if (event.bstate & BUTTON1_PRESSED) {
+        int mouseX_ = event.x / 2;
+        int mouseY_ = event.y;
+      }
+    }
+  }
   return userInput;
 }
 
@@ -52,14 +61,6 @@ bool UserInput::isKeyR() { return keycode_ == 'r'; }
 bool UserInput::isKeyS() { return keycode_ == 's'; }
 bool UserInput::isKeySpace() { return keycode_ == 32; }
 bool UserInput::isKeyMouse() { return keycode_ == KEY_MOUSE; }
-int UserInput::eventX() {
-  MEVENT event;
-  return event.x / 2;
-}
-int UserInput::eventY() {
-  MEVENT event;
-  return event.y;
-}
 
 // _____________________________________________________________________________
 TerminalManager::~TerminalManager() { endwin(); }

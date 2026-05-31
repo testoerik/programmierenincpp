@@ -4,15 +4,16 @@
 class UserInput {
 public:
   int keycode_;
-
   bool isKeySpace();
   bool isKeyS();
   bool isKeyR();
   bool isKeyQ();
   bool isKeyG();
   bool isKeyMouse();
-  int eventX();
-  int eventY();
+  int mouseX_;
+  int mouseY_;
+  int eventX() { return mouseX_; }
+  int eventY() { return mouseY_; }
 };
 
 class TerminalManager {
