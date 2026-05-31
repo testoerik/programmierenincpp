@@ -20,13 +20,14 @@ private:
   int numCols_;
 
 public:
-  // Getters for the screen dimensions.
+  // Access to the screen dimensions.
   int numRows() { return numRows_; }
   int numCols() { return numCols_; }
 
-  // The colors supported by our terminal manager.
+  // The colors which this terminal manager can handle.
   static int White;
   static int Blue;
+
   // Initialize the terminal for use with ncurses commands.
   TerminalManager();
 

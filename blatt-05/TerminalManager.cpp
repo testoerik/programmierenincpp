@@ -13,12 +13,12 @@ TerminalManager::TerminalManager() {
   curs_set(false);
   nodelay(stdscr, true);
   keypad(stdscr, true);
-
-  // Initialize all the colors we need for the game.
+  mousemask(ALL_MOUSE_EVENTS, NULL);
+  mouseinterval(0);
   start_color();
-  init_pair(1, COLOR_BLUE, COLOR_WHITE);
 
-  // Set the logical dimensions of the screen.
+  init_pair(1, COLOR_WHITE, COLOR_BLUE);
+
   numRows_ = LINES;
   numCols_ = COLS / 2;
 }

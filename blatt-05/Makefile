@@ -2,7 +2,7 @@
 .PHONY: all compile checkstyle test clean format
 .PRECIOUS: %.o
 
-CXX = clang++-18
+CXX = clang++-18 -g
 BASENAME = GameOfLife
 LIBS = -lncurses
 TESTLIBS = -lgtest -lgtest_main -lpthread
