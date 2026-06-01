@@ -2,6 +2,7 @@
 
 #pragma once
 #include "./TerminalManager.h"
+#include <gtest/gtest_prod.h>
 
 class GameOfLife {
 private:
@@ -30,6 +31,7 @@ public:
 private:
   // Show the state of each cell in the terminal.
   void showState();
+  FRIEND_TEST(GameOfLife, showstate);
   // In this void function are the game of life rules.
   void updateState();
 

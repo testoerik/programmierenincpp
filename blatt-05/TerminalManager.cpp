@@ -41,13 +41,17 @@ void TerminalManager::refresh() { ::refresh(); }
 // _____________________________________________________________________________
 UserInput TerminalManager::getUserInput() {
   UserInput userInput;
+  userInput.mouseX_ = 0;
+  userInput.mouseY_ = 0;
   userInput.keycode_ = getch();
   if (userInput.isKeyMouse()) {
     MEVENT event;
     if (getmouse(&event) == OK) {
       if (event.bstate & BUTTON1_PRESSED) {
-        int mouseX_ = event.x / 2;
-        int mouseY_ = event.y;
+        userInput.mouseX_ = event.x / 2;
+        userInput.mouseY_ = event.y;
+      } else {
+        userInput.keycode_ = 0;
       }
     }
   }

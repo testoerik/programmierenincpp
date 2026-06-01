@@ -1,3 +1,4 @@
+// Created by eh295
 #include "GameOfLife.h"
 #include <cstdlib>
 #include <unistd.h>
