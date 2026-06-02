@@ -31,13 +31,14 @@ public:
 private:
   // Show the state of each cell in the terminal.
   void showState();
-  FRIEND_TEST(GameOfLife, showstate);
+  FRIEND_TEST(GameOfLife, showState);
   // In this void function are the game of life rules.
   void updateState();
-
+  FRIEND_TEST(GameOfLife, updateState);
   int numAliveNeighbors(int row, int col);
-
+  FRIEND_TEST(GameOfLife, numAliveNeighbors);
   // Handles all the possible user inputs, for example space key for pause or
   // playing, 'q' for quit etc.
   bool processUserInput(UserInput userInput);
+  FRIEND_TEST(GameOfLife, processUserInput);
 };
