@@ -19,10 +19,14 @@ void GameOfLife::play() {
 
 // ___________________________________________________________________________
 void GameOfLife::showState() {
+  if (terminalManager_ == nullptr) {
+    return;
+  }
+
   int numAliveCells = 0;
   for (int row = 0; row < terminalManager_->numRows() - 1; ++row) {
-    for (int col = 0; col < terminalManager_->numCols(); ++col) {
-      bool cellVal = actlStPtr_[row * terminalManager_->numCols() + col];
+    for (int col = 0; col < numCols_; ++col) {
+      bool cellVal = actlStPtr_[row * numCols_ + col];
       if (cellVal) {
         numAliveCells += 1;
         terminalManager_->drawPixel(row, col, TerminalManager::White);
@@ -35,15 +39,14 @@ void GameOfLife::showState() {
 }
 
 // ___________________________________________________________________________
-GameOfLife::GameOfLife(TerminalManager *terminalManager) {
+GameOfLife::GameOfLife(int rows, int cols, TerminalManager *terminalManager) {
   terminalManager_ = terminalManager;
-
   actlStPtr_ = actualState_;
   nxtStPtr_ = nextState_;
-  int cols_ = terminalManager_->numCols();
-  int rows_ = terminalManager_->numRows();
-  posX_ = cols_ / 2;
-  posY_ = rows_ / 2;
+  numRows_ = rows;
+  numCols_ = cols;
+  posX_ = cols / 2;
+  posY_ = rows / 2;
 
   for (int i = 0; i < MAX_NUM_CELLS; ++i) {
     actlStPtr_[i] = false;
@@ -57,17 +60,16 @@ bool GameOfLife::processUserInput(UserInput userInput) {
   if (userInput.isKeyMouse()) {
     int row = userInput.eventY();
     int col = userInput.eventX();
-    actlStPtr_[row * terminalManager_->numCols() + col] =
-        !actlStPtr_[row * terminalManager_->numCols() + col];
+    actlStPtr_[row * numCols_ + col] = !actlStPtr_[row * numCols_ + col];
   } else if (userInput.isKeySpace()) {
     stateGame_ = !stateGame_;
   } else if (userInput.isKeyR()) {
     for (int row = 0; row < terminalManager_->numRows(); ++row) {
-      for (int col = 0; col < terminalManager_->numCols(); ++col) {
+      for (int col = 0; col < numCols_; ++col) {
         if (rand() % 5 == 0) {
-          actlStPtr_[row * terminalManager_->numCols() + col] = true;
+          actlStPtr_[row * numCols_ + col] = true;
         } else {
-          actlStPtr_[row * terminalManager_->numCols() + col] = false;
+          actlStPtr_[row * numCols_ + col] = false;
         }
       }
     }
@@ -77,10 +79,10 @@ bool GameOfLife::processUserInput(UserInput userInput) {
     updateState();
   } else if (userInput.isKeyG()) {
     actlStPtr_[1] = true;
-    actlStPtr_[terminalManager_->numCols() + 2] = true;
-    actlStPtr_[2 * terminalManager_->numCols()] = true;
-    actlStPtr_[2 * terminalManager_->numCols() + 1] = true;
-    actlStPtr_[2 * terminalManager_->numCols() + 2] = true;
+    actlStPtr_[numCols_ + 2] = true;
+    actlStPtr_[2 * numCols_] = true;
+    actlStPtr_[2 * numCols_ + 1] = true;
+    actlStPtr_[2 * numCols_ + 2] = true;
   }
   return true;
 }
@@ -96,8 +98,8 @@ int GameOfLife::numAliveNeighbors(int row, int col) {
         continue;
       }
       if ((nRow >= 0 && nRow < terminalManager_->numRows()) &&
-          (nCol >= 0 && nCol < terminalManager_->numCols())) {
-        if (actlStPtr_[nRow * terminalManager_->numCols() + nCol]) {
+          (nCol >= 0 && nCol < numCols_)) {
+        if (actlStPtr_[nRow * numCols_ + nCol]) {
           aliveCount += 1;
         }
         continue;
@@ -110,16 +112,15 @@ int GameOfLife::numAliveNeighbors(int row, int col) {
 // ___________________________________________________________________________
 void GameOfLife::updateState() {
   for (int row = 0; row < terminalManager_->numRows(); ++row) {
-    for (int col = 0; col < terminalManager_->numCols(); ++col) {
+    for (int col = 0; col < numCols_; ++col) {
       int neighbors_ = numAliveNeighbors(row, col);
-      if (actlStPtr_[row * terminalManager_->numCols() + col] &&
+      if (actlStPtr_[row * numCols_ + col] &&
           (neighbors_ == 2 || neighbors_ == 3)) {
-        nxtStPtr_[row * terminalManager_->numCols() + col] = true;
-      } else if (actlStPtr_[row * terminalManager_->numCols() + col] == false &&
-                 neighbors_ == 3) {
-        nxtStPtr_[row * terminalManager_->numCols() + col] = true;
+        nxtStPtr_[row * numCols_ + col] = true;
+      } else if (actlStPtr_[row * numCols_ + col] == false && neighbors_ == 3) {
+        nxtStPtr_[row * numCols_ + col] = true;
       } else {
-        nxtStPtr_[row * terminalManager_->numCols() + col] = false;
+        nxtStPtr_[row * numCols_ + col] = false;
       }
     }
   }

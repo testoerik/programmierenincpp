@@ -10,6 +10,8 @@ private:
   int posX_;
   int posY_;
 
+  int numRows_;
+  int numCols_;
   static const int MAX_NUM_CELLS = 10'000;
 
   bool actualState_[MAX_NUM_CELLS];
@@ -24,7 +26,7 @@ private:
 
 public:
   // Constructor
-  GameOfLife(TerminalManager *terminalManager);
+  GameOfLife(int rows, int cols, TerminalManager *terminalManager = nullptr);
   // Play Game of Life.
   void play();
 

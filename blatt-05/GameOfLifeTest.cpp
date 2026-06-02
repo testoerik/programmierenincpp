@@ -2,8 +2,7 @@
 #include <gtest/gtest.h>
 
 TEST(GameOfLife, showState) {
-  TerminalManager terminalManager;
-  GameOfLife gameOfLife(&terminalManager);
+  GameOfLife gameOfLife(60, 60, nullptr);
   gameOfLife.actlStPtr_[60] = true;
   gameOfLife.showState();
   ASSERT_EQ(gameOfLife.actlStPtr_[60], true);
@@ -13,13 +12,15 @@ TEST(GameOfLife, showState) {
 TEST(GameOfLife, processUserInput) {
 
   UserInput userInput;
-  GameOfLife gameOfLife(nullptr);
+  GameOfLife gameOfLife(20, 20, nullptr);
   userInput.keycode_ = 'g';
-  int nCols = (gameOfLife.posX_ * 2);
+  int nCols = gameOfLife.numCols_;
+
   gameOfLife.processUserInput(userInput);
+
   ASSERT_TRUE(gameOfLife.actlStPtr_[1]);
-  ASSERT_TRUE(gameOfLife.actlStPtr_[2 * (nCols * 2) + 2]);
-  ASSERT_FALSE(gameOfLife.actlStPtr_[3 * (nCols * 2)]);
+  ASSERT_TRUE(gameOfLife.actlStPtr_[2 * (nCols) + 2]);
+  ASSERT_FALSE(gameOfLife.actlStPtr_[3 * nCols]);
 
   gameOfLife.stateGame_ = true;
   userInput.keycode_ = 32;
@@ -38,8 +39,8 @@ TEST(GameOfLife, processUserInput) {
 }
 
 TEST(GameOfLife, numAliveNeighbors) {
-  GameOfLife gameOfLife(nullptr);
-  int nCols = (gameOfLife.posX_ * 2);
+  GameOfLife gameOfLife(35, 45, nullptr);
+  int nCols = gameOfLife.numCols_;
   gameOfLife.actlStPtr_[2 * nCols + 1] = true;
   gameOfLife.actlStPtr_[3 * nCols] = true;
   gameOfLife.actlStPtr_[3 * nCols + 1] = true;
