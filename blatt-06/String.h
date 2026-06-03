@@ -1,10 +1,12 @@
 // Created by eh295
-
+#include <cstdio>
+#include <cstdlib>
 class String {
 public:
-void size();
-
+  size_t size();
+  String();
 private:
+  size_t sizeOfString_;
 };
 
 class StringSorter {
