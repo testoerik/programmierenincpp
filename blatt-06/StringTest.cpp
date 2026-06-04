@@ -11,21 +11,20 @@ TEST(String, DefaultConstructedStringHasSize0) {
   String s1;
   ASSERT_EQ(0u, s1.size());
 }
-//
-// // The c_str() (a const char*) returned by a default constructed string
-// // must be empty and terminated with a null byte.
-// TEST(String, DefaultConstructedStringIsNullTerminated) {
-//   String s1;
-//   ASSERT_EQ('\0', s1.c_str()[0]);
-// }
-//
-// // Test const-correctness of the String class.
-// TEST(String, ConstCorrectness) {
-//   const String s1;
-//   ASSERT_EQ('\0', s1.c_str()[0]);
-//   ASSERT_EQ(0u, s1.size());
-// }
-//
+
+// The c_str() (a const char*) returned by a default constructed string
+// must be empty and terminated with a null byte.
+TEST(String, DefaultConstructedStringIsNullTerminated) {
+  String s1;
+  ASSERT_EQ('\0', s1.c_str()[0]);
+}
+// Test const-correctness of the String class.
+TEST(String, ConstCorrectness) {
+  const String s1;
+  ASSERT_EQ('\0', s1.c_str()[0]);
+  ASSERT_EQ(0u, s1.size());
+}
+
 // // Test the assignment operator
 // TEST(String, Set1) {
 //   String s1;

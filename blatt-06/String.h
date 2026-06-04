@@ -4,9 +4,12 @@
 class String {
 public:
   size_t size();
+  const char* c_str();
   String();
+
 private:
   size_t sizeOfString_;
+  char* characters_;  
 };
 
 class StringSorter {
