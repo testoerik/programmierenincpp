@@ -25,48 +25,46 @@ TEST(String, ConstCorrectness) {
   ASSERT_EQ(0u, s1.size());
 }
 
-// // Test the assignment operator
-// TEST(String, Set1) {
-//   String s1;
-//   s1 = "hallo";
-//   ASSERT_EQ(5u, s1.size());
-//
-//   const char *c = s1.c_str();
-//   ASSERT_EQ('h', c[0]);
-//   ASSERT_EQ('a', c[1]);
-//   ASSERT_EQ('l', c[2]);
-//   ASSERT_EQ('l', c[3]);
-//   ASSERT_EQ('o', c[4]);
-//   ASSERT_EQ('\0', c[5]);
-//
-//   // Note: The following test is equivalent to the manual testing
-//   // of the bytes above, and we will use this short-hand from
-//   // now on:
-//   ASSERT_STREQ("hallo", s1.c_str());
-// }
-//
-// // Test that the assignment operator indeed copies the string.
-// TEST(String, Set2) {
-//   char *dynamicString = new char[4]{'b', 'y', 'e', '\0'};
-//   String s1;
-//   s1 = dynamicString;
-//   delete[] dynamicString;
-//   // Now `dynamicString` does not exist anymore.
-//   ASSERT_STREQ("bye", s1.c_str());
-// }
-//
+// Test the assignment operator
+TEST(String, Set1) {
+  String s1;
+  s1 = "hallo";
+  ASSERT_EQ(5u, s1.size());
+
+  const char *c = s1.c_str();
+  ASSERT_EQ('h', c[0]);
+  ASSERT_EQ('a', c[1]);
+  ASSERT_EQ('l', c[2]);
+  ASSERT_EQ('l', c[3]);
+  ASSERT_EQ('o', c[4]);
+  ASSERT_EQ('\0', c[5]);
+
+  // Note: The following test is equivalent to the manual testing
+  // of the bytes above, and we will use this short-hand from
+  // now on:
+  ASSERT_STREQ("hallo", s1.c_str());
+}
+
+// Test that the assignment operator indeed copies the string.
+TEST(String, Set2) {
+  char *dynamicString = new char[4]{'b', 'y', 'e', '\0'};
+  String s1;
+  s1 = dynamicString;
+  delete[] dynamicString;
+  // Now `dynamicString` does not exist anymore.
+  ASSERT_STREQ("bye", s1.c_str());
+}
+
 // // Test the copy constructor.
-// TEST(String, CopyConstructor) {
-//   String s1;
-//   s1 = "string1";
-//   String s2(s1);
-//
-//   ASSERT_EQ(7u, s2.size());
-//   ASSERT_STREQ("string1", s2.c_str());
-//
-//   ASSERT_EQ(7u, s1.size());
-//   ASSERT_STREQ("string1", s1.c_str());
-// }
+TEST(String, CopyConstructor) {
+  String s1;
+  s1 = "string1";
+  String s2(s1);
+  ASSERT_EQ(7u, s2.size());
+  ASSERT_STREQ("string1", s2.c_str());
+  ASSERT_EQ(7u, s1.size());
+  ASSERT_STREQ("string1", s1.c_str());
+}
 //
 // // Test the copy assignment operator.
 // TEST(String, CopyAssignment) {
