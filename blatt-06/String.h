@@ -23,12 +23,11 @@ private:
 
 class StringSorter {
 public:
-  size_t size() const;
-  const char *c_str() const;
-  // Constructor.
+  size_t size();
   StringSorter(const size_t &num);
+  String &operator[](int index);
 
 private:
   size_t num_;
-  char *emptStr_;
+  String *strings_;
 };

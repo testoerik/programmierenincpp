@@ -53,16 +53,7 @@ String &String::operator=(const String &s) {
   characters_[sizeOfString_] = '\0';
   return *this;
 }
-StringSorter::StringSorter(const size_t &num) {
-  num_ = num;
-  emptStr_ = new char[num_];
-  for (int i = 0; i < num_; i++) {
-    emptStr_[i] = "";
-  }
-}
-
-size_t StringSorter::size() const { return num_; }
-
-const char *StringSorter::c_str const { return emptStr_; }
-
+StringSorter::StringSorter(const size_t &num) { num_ = num; }
+size_t StringSorter::size() { return num_; }
+String &StringSorter::operator[](int index) { return strings_[index]; }
 String::~String() { delete[] characters_; }
