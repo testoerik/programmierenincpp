@@ -65,49 +65,43 @@ TEST(String, CopyConstructor) {
   ASSERT_EQ(7u, s1.size());
   ASSERT_STREQ("string1", s1.c_str());
 }
-//
-// // Test the copy assignment operator.
-// TEST(String, CopyAssignment) {
-//   String s1;
-//   s1 = "string1";
-//   String s2;
-//   s2 = s1;
-//
-//   ASSERT_EQ(7u, s2.size());
-//   ASSERT_STREQ("string1", s2.c_str());
-//   ASSERT_EQ(7u, s1.size());
-//   ASSERT_STREQ("string1", s1.c_str());
-// }
-//
-// // Test that self-copy works
-// TEST(String, SelfCopyAssignment) {
-//   String s1;
-//   s1 = "string1";
-//   // Note, we could simply write `s1 = s1` but the `-Wdreprecated` complains.
-//   const String *ptr = &s1;
-//   s1 = *ptr;
-//   ASSERT_EQ(7u, s1.size());
-//   ASSERT_STREQ("string1", s1.c_str());
-// }
-//
-// // The StringSorter stores n strings and takes the number n as a
-// // constructor argument.
-// TEST(StringSorter, Constructor) {
-//   StringSorter sorter(5);
-//   ASSERT_EQ(5u, sorter.size());
-// }
-//
-// // After construction, the StringSorter stores n empty strings
-// // which can be accessed via the [] operator.
-// TEST(StringSorter, AccessOperatorRead) {
-//   StringSorter sorter(5);
-//   for (int i = 0; i < 5; ++i) {
-//     ASSERT_STREQ("", sorter[i].c_str());
-//     ASSERT_EQ(0u, sorter[i].size());
-//   }
-// }
-//
-// // Test that we can also use the operator[] to modify the contents of the
+// Test the copy assignment operator.
+TEST(String, CopyAssignment) {
+  String s1;
+  s1 = "string1";
+  String s2;
+  s2 = s1;
+  ASSERT_EQ(7u, s2.size());
+  ASSERT_STREQ("string1", s2.c_str());
+  ASSERT_EQ(7u, s1.size());
+  ASSERT_STREQ("string1", s1.c_str());
+}
+// Test that self-copy works
+TEST(String, SelfCopyAssignment) {
+  String s1;
+  s1 = "string1";
+  // Note, we could simply write `s1 = s1` but the `-Wdreprecated` complains.
+  const String *ptr = &s1;
+  s1 = *ptr;
+  ASSERT_EQ(7u, s1.size());
+  ASSERT_STREQ("string1", s1.c_str());
+}
+// The StringSorter stores n strings and takes the number n as a
+// constructor argument.
+TEST(StringSorter, Constructor) {
+  StringSorter sorter(5);
+  ASSERT_EQ(5u, sorter.size());
+}
+// After construction, the StringSorter stores n empty strings
+// which can be accessed via the [] operator.
+TEST(StringSorter, AccessOperatorRead) {
+  StringSorter sorter(5);
+  for (int i = 0; i < 5; ++i) {
+    ASSERT_STREQ("", sorter[i].c_str());
+    ASSERT_EQ(0u, sorter[i].size());
+  }
+}
+// Test that we can also use the operator[] to modify the contents of the
 // // Strings.
 // TEST(StringSorter, AccessOperatorWrite) {
 //   StringSorter sorter(5);

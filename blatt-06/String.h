@@ -5,9 +5,15 @@ class String {
 public:
   size_t size() const;
   const char *c_str() const;
+  // Assignement operator.
   String &operator=(const char *s);
-  String(const char *s);
+  // Copy constructor.
+  String(const String &s);
+  // (Default) constructor.
   String();
+  // Copy assignement operator.
+  String &operator=(const String &s);
+  // Default destructor.
   ~String();
 
 private:
@@ -16,5 +22,13 @@ private:
 };
 
 class StringSorter {
-  void sorter(int arg);
+public:
+  size_t size() const;
+  const char *c_str() const;
+  // Constructor.
+  StringSorter(const size_t &num);
+
+private:
+  size_t num_;
+  char *emptStr_;
 };

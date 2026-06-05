@@ -32,23 +32,37 @@ String &String::operator=(const char *s) {
   sizeOfString_ = sizeOfString;
   return *this;
 }
-String::String(const char *s) {
-  int i = 0;
-  int sizeOfString = 0;
-  while (true) {
-    if (s[i] == '\n') {
-      break;
-    } else {
-      i++;
-      sizeOfString++;
-    }
+String::String(const String &s) {
+  sizeOfString_ = s.sizeOfString_;
+  characters_ = new char[sizeOfString_ + 1];
+  for (size_t i = 0; i < s.sizeOfString_; i++) {
+    characters_[i] = s.characters_[i];
   }
-  characters_ = new char[sizeOfString + 1];
-  for (int i = 0; i < sizeOfString; i++) {
-    characters_[i] = s[i];
-  }
-  characters_[sizeOfString] = '\0';
-  sizeOfString_ = sizeOfString;
+  characters_[sizeOfString_] = '\0';
 }
+String &String::operator=(const String &s) {
+  if (this == &s) {
+    return *this;
+  }
+  delete[] characters_;
+  sizeOfString_ = s.sizeOfString_;
+  characters_ = new char[sizeOfString_ + 1];
+  for (size_t i = 0; i < s.sizeOfString_; i++) {
+    characters_[i] = s.characters_[i];
+  }
+  characters_[sizeOfString_] = '\0';
+  return *this;
+}
+StringSorter::StringSorter(const size_t &num) {
+  num_ = num;
+  emptStr_ = new char[num_];
+  for (int i = 0; i < num_; i++) {
+    emptStr_[i] = "";
+  }
+}
+
+size_t StringSorter::size() const { return num_; }
+
+const char *StringSorter::c_str const { return emptStr_; }
 
 String::~String() { delete[] characters_; }
