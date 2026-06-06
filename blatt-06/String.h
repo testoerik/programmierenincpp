@@ -26,8 +26,11 @@ public:
   size_t size();
   StringSorter(const size_t &num);
   String &operator[](int index);
+  char *swap(int x, int y);
+  ~StringSorter();
 
 private:
   size_t num_;
   String *strings_;
+  char *tmp_:
 };

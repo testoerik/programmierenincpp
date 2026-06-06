@@ -102,44 +102,39 @@ TEST(StringSorter, AccessOperatorRead) {
   }
 }
 // Test that we can also use the operator[] to modify the contents of the
-// // Strings.
-// TEST(StringSorter, AccessOperatorWrite) {
-//   StringSorter sorter(5);
-//   sorter[0] = "sein";
-//   sorter[1] = "oder";
-//   sorter[2] = "nicht";
-//   sorter[3] = "sein";
-//
-//   ASSERT_STREQ("sein", sorter[0].c_str());
-//   ASSERT_STREQ("oder", sorter[1].c_str());
-//   ASSERT_STREQ("nicht", sorter[2].c_str());
-//   ASSERT_STREQ("sein", sorter[3].c_str());
-//   ASSERT_STREQ("", sorter[4].c_str());
-// }
-//
-// // The swap method is a useful building block for sorting.
-// // Hint: We already swapped something in the GameOfLife, but this time it's
-// // Strings instead of pointers.
-// TEST(StringSorter, Swap) {
-//   StringSorter sorter(4);
-//   sorter[0] = "faul";
-//   sorter[1] = "im";
-//   sorter[2] = "etwas";
-//   sorter[3] = "ist";
-//
-//   sorter.swap(0, 2);
-//
-//   ASSERT_STREQ("etwas", sorter[0].c_str());
-//   ASSERT_STREQ("im", sorter[1].c_str());
-//   ASSERT_STREQ("faul", sorter[2].c_str());
-//   ASSERT_STREQ("ist", sorter[3].c_str());
-//
-//   sorter.swap(1, 3);
-//   ASSERT_STREQ("etwas", sorter[0].c_str());
-//   ASSERT_STREQ("ist", sorter[1].c_str());
-//   ASSERT_STREQ("faul", sorter[2].c_str());
-//   ASSERT_STREQ("im", sorter[3].c_str());
-// }
+// Strings.
+TEST(StringSorter, AccessOperatorWrite) {
+  StringSorter sorter(5);
+  sorter[0] = "sein";
+  sorter[1] = "oder";
+  sorter[2] = "nicht";
+  sorter[3] = "sein";
+  ASSERT_STREQ("sein", sorter[0].c_str());
+  ASSERT_STREQ("oder", sorter[1].c_str());
+  ASSERT_STREQ("nicht", sorter[2].c_str());
+  ASSERT_STREQ("sein", sorter[3].c_str());
+  ASSERT_STREQ("", sorter[4].c_str());
+}
+// The swap method is a useful building block for sorting.
+// Hint: We already swapped something in the GameOfLife, but this time it's
+// Strings instead of pointers.
+TEST(StringSorter, Swap) {
+  StringSorter sorter(4);
+  sorter[0] = "faul";
+  sorter[1] = "im";
+  sorter[2] = "etwas";
+  sorter[3] = "ist";
+  sorter.swap(0, 2);
+  ASSERT_STREQ("etwas", sorter[0].c_str());
+  ASSERT_STREQ("im", sorter[1].c_str());
+  ASSERT_STREQ("faul", sorter[2].c_str());
+  ASSERT_STREQ("ist", sorter[3].c_str());
+  sorter.swap(1, 3);
+  ASSERT_STREQ("etwas", sorter[0].c_str());
+  ASSERT_STREQ("ist", sorter[1].c_str());
+  ASSERT_STREQ("faul", sorter[2].c_str());
+  ASSERT_STREQ("im", sorter[3].c_str());
+}
 //
 // // Sort must be implemented using BubbleSort. This is slow and shouldn't
 // // be used in practice, but it is simple to implement and will be useful
