@@ -151,7 +151,7 @@ TEST(StringSorter, AccessOperatorWrite) {
 // The swap method is a useful building block for sorting.
 // Hint: We already swapped something in the GameOfLife, but this time it's
 // Strings instead of pointers.
-TEST(StringSorter, Swap) {
+TEST(StringSorter, SwapWithCopy) {
   StringSorter sorter(4);
   sorter[0] = "faul";
   sorter[1] = "im";
@@ -171,7 +171,25 @@ TEST(StringSorter, Swap) {
   ASSERT_STREQ("faul", sorter[2].c_str());
   ASSERT_STREQ("im", sorter[3].c_str());
 }
+// Test the swapWithMove() function which should be faster than the swapWithCopy
+// function.
+TEST(StringSorter, SwapWithMove) {
+  StringSorter sorter(4); // Calls the copy constructor.
+  sorter[0] = "hallo";
+  sorter[1] = "hi";
+  sorter[2] = "bonjour";
+  sorter[3] = "Guten Tag";
 
+  sorter.swapWithMove(0, 2);
+
+  ASSERT_STREQ("bonjour", sorter[0].c_str());
+  ASSERT_STREQ("hallo", sorter[2].c_str());
+
+  sorter.swapWithMove(2, 3);
+
+  ASSERT_STREQ("Guten Tag", sorter[2].c_str());
+  ASSERT_STREQ("hallo", sorter[3].c_str());
+}
 // Sort must be implemented using BubbleSort. This is slow and shouldn't
 // be used in practice, but it is simple to implement and will be useful
 // in sheet-07.

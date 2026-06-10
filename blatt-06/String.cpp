@@ -114,7 +114,7 @@ void StringSorter::sortWithCopy() {
     }
   }
 }
-void StringSorter::swapWithMove(size_t&& x, size_t&& y) {
+void StringSorter::swapWithMove(size_t x, size_t y) {
   String tmp = std::move(strings_[x]);
   strings_[x] = std::move(strings_[y]);
   strings_[y] = std::move(tmp);
