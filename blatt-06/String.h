@@ -3,16 +3,47 @@ class String {
 public:
   // Constructor.
   String();
-  // Getter for the size of the string.
-  size_t size();
-  // Returns a c_str.
+
+  // Copy constructor.
+  String(const String &s);
+
+  // Move constructor.
+  String(String &&other);
+
+  size_t size() const;
+
   const char *c_str() const;
-  // Destructor.
+
+  // Overload of the assignement operator.
+  String &operator=(const char *s);
+
+  // Overload of the copy assignement operator.
+  String &operator=(const String &s);
+
+  // Move assignment operator.
+  String &operator=(String &&other);
+
+  // Destructor, whichs deletes the characters_ member
   ~String();
 
 private:
-  // A string.
-  String *string_;
-  // Size of string after initialization stored in sizeOfString_.
   size_t sizeOfString_;
+  char *characters_;
+};
+
+class StringSorter {
+public:
+  // Constructor, which takes an int as an argument.
+  StringSorter(const size_t &num);
+  size_t size();
+  String &operator[](int index);
+  void swap(int x, int y);
+
+  void sortWithCopy();
+  // Destructor, which deletes the member strings_;
+  ~StringSorter();
+
+private:
+  String *strings_;
+  size_t stringsNum_;
 };
