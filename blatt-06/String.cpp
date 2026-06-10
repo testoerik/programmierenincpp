@@ -1,5 +1,6 @@
 #include "./String.h"
 #include <cstring>
+#include <utility>
 //____________________________________________________________________________
 String::String() {
   sizeOfString_ = 0;
@@ -95,7 +96,7 @@ size_t StringSorter::size() { return stringsNum_; }
 String &StringSorter::operator[](int index) { return strings_[index]; }
 
 //____________________________________________________________________________
-void StringSorter::swap(int x, int y) {
+void StringSorter::swapWithCopy(size_t x, size_t y) {
   String tmp = strings_[y];
   strings_[y] = strings_[x];
   strings_[x] = tmp;
@@ -106,7 +107,23 @@ void StringSorter::sortWithCopy() {
   for (size_t j = 0; j < stringsNum_; j++) {
     for (size_t i = 0; i < stringsNum_ - 1; i++) {
       if (strcmp(strings_[i].c_str(), strings_[i + 1].c_str()) > 0) {
-        swap(i, i + 1);
+        swapWithCopy(i, i + 1);
+      } else {
+        continue;
+      }
+    }
+  }
+}
+void StringSorter::swapWithMove(size_t&& x, size_t&& y) {
+  String tmp = std::move(strings_[x]);
+  strings_[x] = std::move(strings_[y]);
+  strings_[y] = std::move(tmp);
+}
+void StringSorter::sortWithMove() {
+  for (size_t j = 0; j < stringsNum_; j++) {
+    for (size_t i = 0; i < stringsNum_; i++) {
+      if (strcmp(strings_[i].c_str(), strings_[i + 1].c_str()) > 0) {
+        swapWithMove(i, i + 1);
       } else {
         continue;
       }

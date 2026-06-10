@@ -5,7 +5,7 @@
 
 #include "./String.h"
 #include <gtest/gtest.h>
-
+#include <utility>
 // After calling the default constructor, the size of a String must be 0.
 TEST(String, DefaultConstructedStringHasSize0) {
   String s1;
@@ -68,7 +68,17 @@ TEST(String, CopyConstructor) {
   ASSERT_EQ(7u, s1.size());
   ASSERT_STREQ("string1", s1.c_str());
 }
+// Test the move constructor.
+TEST(String, MoveConstructor) {
+  String s1; // Calls the constructor.
+  s1 = "string1";
+  String s2 = std::move(s1); // Calls the move constructor;}
+  ASSERT_STREQ(nullptr, s1.c_str());
+  ASSERT_EQ(0u, s1.size());
 
+  ASSERT_STREQ("string1", s2.c_str());
+  ASSERT_EQ(7u, s2.size());
+}
 // Test the copy assignment operator.
 TEST(String, CopyAssignment) {
   String s1;
@@ -92,7 +102,19 @@ TEST(String, SelfCopyAssignment) {
   ASSERT_EQ(7u, s1.size());
   ASSERT_STREQ("string1", s1.c_str());
 }
+// Test the move assignment operator.
+TEST(String, MoveAssignment) {
+  String s1;    // Calls constructor.
+  s1 = "hallo"; // Calls assignement operator.
+  ASSERT_EQ(5u, s1.size());
+  String tmp = std::move(s1); // Calls move assignement operator.
+  ASSERT_EQ(0u, s1.size());   // s1 should be empty.
+  ASSERT_EQ(nullptr, s1.c_str());
+  ASSERT_EQ(5u, tmp.size());
+  ASSERT_STREQ("hallo", tmp.c_str());
+}
 
+// Tests for the StringSorter class.
 // The StringSorter stores n strings and takes the number n as a
 // constructor argument.
 TEST(StringSorter, Constructor) {
@@ -136,14 +158,14 @@ TEST(StringSorter, Swap) {
   sorter[2] = "etwas";
   sorter[3] = "ist";
 
-  sorter.swap(0, 2);
+  sorter.swapWithCopy(0, 2);
 
   ASSERT_STREQ("etwas", sorter[0].c_str());
   ASSERT_STREQ("im", sorter[1].c_str());
   ASSERT_STREQ("faul", sorter[2].c_str());
   ASSERT_STREQ("ist", sorter[3].c_str());
 
-  sorter.swap(1, 3);
+  sorter.swapWithCopy(1, 3);
   ASSERT_STREQ("etwas", sorter[0].c_str());
   ASSERT_STREQ("ist", sorter[1].c_str());
   ASSERT_STREQ("faul", sorter[2].c_str());
@@ -173,35 +195,35 @@ TEST(StringSorter, Sort) {
 
 // The following tests were added AFTER the sheet was finished.
 // They are not required to pass for blatt-06.
-TEST(StringSorter, CopyConstructor) {
-  StringSorter sorter(4);
-  sorter[0] = "der";
-  sorter[1] = "rest";
-  sorter[2] = "ist";
-  sorter[3] = "schweigen";
-
-  // Copy constructor.
-  StringSorter sorter2{sorter};
-  StringSorter sorter3(0);
-  // Copy assignment
-  sorter3 = sorter2;
-
-  ASSERT_STREQ("der", sorter[0].c_str());
-  ASSERT_STREQ("rest", sorter[1].c_str());
-  ASSERT_STREQ("ist", sorter[2].c_str());
-  ASSERT_STREQ("schweigen", sorter[3].c_str());
-
-  ASSERT_STREQ("der", sorter2[0].c_str());
-  ASSERT_STREQ("rest", sorter2[1].c_str());
-  ASSERT_STREQ("ist", sorter2[2].c_str());
-  ASSERT_STREQ("schweigen", sorter2[3].c_str());
-
-  ASSERT_STREQ("der", sorter3[0].c_str());
-  ASSERT_STREQ("rest", sorter3[1].c_str());
-  ASSERT_STREQ("ist", sorter3[2].c_str());
-  ASSERT_STREQ("schweigen", sorter3[3].c_str());
-
-  ASSERT_EQ(4u, sorter.size());
-  ASSERT_EQ(4u, sorter2.size());
-  ASSERT_EQ(4u, sorter3.size());
-}
+// TEST(StringSorter, CopyConstructor) {
+//   StringSorter sorter(4);
+//   sorter[0] = "der";
+//   sorter[1] = "rest";
+//   sorter[2] = "ist";
+//   sorter[3] = "schweigen";
+//
+//   // Copy constructor.
+//   StringSorter sorter2{sorter};
+//   StringSorter sorter3(0);
+//   // Copy assignment
+//   sorter3 = sorter2;
+//
+//   ASSERT_STREQ("der", sorter[0].c_str());
+//   ASSERT_STREQ("rest", sorter[1].c_str());
+//   ASSERT_STREQ("ist", sorter[2].c_str());
+//   ASSERT_STREQ("schweigen", sorter[3].c_str());
+//
+//   ASSERT_STREQ("der", sorter2[0].c_str());
+//   ASSERT_STREQ("rest", sorter2[1].c_str());
+//   ASSERT_STREQ("ist", sorter2[2].c_str());
+//   ASSERT_STREQ("schweigen", sorter2[3].c_str());
+//
+//   ASSERT_STREQ("der", sorter3[0].c_str());
+//   ASSERT_STREQ("rest", sorter3[1].c_str());
+//   ASSERT_STREQ("ist", sorter3[2].c_str());
+//   ASSERT_STREQ("schweigen", sorter3[3].c_str());
+//
+//   ASSERT_EQ(4u, sorter.size());
+//   ASSERT_EQ(4u, sorter2.size());
+//   ASSERT_EQ(4u, sorter3.size());
+// }

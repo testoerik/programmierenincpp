@@ -37,9 +37,10 @@ public:
   StringSorter(const size_t &num);
   size_t size();
   String &operator[](int index);
-  void swap(int x, int y);
-
+  void swapWithCopy(size_t x, size_t y);
+  void swapWithMove(size_t&& x, size_t&& y);
   void sortWithCopy();
+  void sortWithMove();
   // Destructor, which deletes the member strings_;
   ~StringSorter();
 
