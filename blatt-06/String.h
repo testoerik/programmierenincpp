@@ -35,6 +35,8 @@ class StringSorter {
 public:
   // Constructor, which takes an int as an argument.
   StringSorter(const size_t &num);
+  // Copy constructor.
+  StringSorter(const StringSorter &other);
   size_t size();
   String &operator[](int index);
   void swapWithCopy(size_t x, size_t y);

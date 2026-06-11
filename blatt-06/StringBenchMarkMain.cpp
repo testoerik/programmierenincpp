@@ -4,7 +4,10 @@
 
 int main() {
   char basisNum = '1';
-  int n = rand() % 6000;
+  srand(time(nullptr));
+
+  // Generate random number between 10001 and 1999.
+  int n = rand() % 10000 + 10000;
 
   StringSorter sorterCopy(n);
   StringSorter sorterMove(n);
@@ -17,14 +20,19 @@ int main() {
     sorterCopy[i] = tmpBuffer;
     sorterMove[i] = tmpBuffer;
   }
+  printf("Sorting %d strings with copy...\n", n);
   auto startCopy = clock();
   sorterCopy.sortWithCopy();
   auto endCopy = clock();
   double timeCopy = (endCopy - startCopy) / (double)CLOCKS_PER_SEC;
-  printf("Time for sorting %d objects with copy: %.2f seconds\n", n, timeCopy);
+  printf("Time for sorting %d strings with copy: %.2f seconds.\n", n, timeCopy);
+  printf("Sorting %d strings with move...\n", n);
   auto startMove = clock();
   sorterMove.sortWithMove();
   auto endMove = clock();
   double timeMove = (endMove - startMove) / (double)CLOCKS_PER_SEC;
-  printf("Time for sorting %d objects with move: %.2f seconds\n", n, timeMove);
+  printf("Time for sorting %d strings with move: %.2f seconds.\n", n, timeMove);
+  printf(
+      "Sorting %d strings with move is %.2f seconds faster than with copy!\n",
+      n, timeCopy - timeMove);
 }

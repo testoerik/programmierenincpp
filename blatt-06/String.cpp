@@ -88,7 +88,29 @@ StringSorter::StringSorter(const size_t &num) {
   stringsNum_ = num;
   strings_ = new String[stringsNum_];
 }
+// Copy assignment.
+String &StringSorter::operator=(const String &other) {
+  if (this != other) {
+    delete[] characters_;
+    sizeOfString_ = other.sizeOfString_;
+    characters_ = new char[sizeOfString_ + 1];
+    for (size_t i = 0; i < sizeOfString_; i++) {
+      characters_[i] = other.characters_[i];
+    }
+    characters_[sizeOfString_ + 1] = '\0';
+  }
+  return *this;
+}
+// Copy constructor.
+StringSorter::StringSorter(const StringSorter &other) {
+  stringsNum_ = other.stringsNum_;
+  strings_ = new String[stringsNum_ + 1];
 
+  for (size_t i = 0; i < stringsNum_; i++) {
+    strings_[i] = other.strings_[i];
+  }
+  strings_[stringsNum_] = '\0';
+}
 //____________________________________________________________________________
 size_t StringSorter::size() { return stringsNum_; }
 
@@ -121,7 +143,7 @@ void StringSorter::swapWithMove(size_t x, size_t y) {
 }
 void StringSorter::sortWithMove() {
   for (size_t j = 0; j < stringsNum_; j++) {
-    for (size_t i = 0; i < stringsNum_; i++) {
+    for (size_t i = 0; i < stringsNum_ - 1; i++) {
       if (strcmp(strings_[i].c_str(), strings_[i + 1].c_str()) > 0) {
         swapWithMove(i, i + 1);
       } else {

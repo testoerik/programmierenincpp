@@ -2,7 +2,7 @@
 .PRECIOUS: %.o
 .PHONY: all compile checkstyle test clean
 
-CXX = clang++-18 -Wall -Wextra -Wdeprecated -fsanitize=address
+CXX = clang++-18 -Wall -Wextra -Wdeprecated -O3
 MAIN_BINARY = $(basename $(wildcard *Main.cpp))
 TEST_BINARY = $(basename $(wildcard *Test.cpp))
 LIBS = -lncurses

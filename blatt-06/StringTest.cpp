@@ -213,35 +213,31 @@ TEST(StringSorter, Sort) {
 
 // The following tests were added AFTER the sheet was finished.
 // They are not required to pass for blatt-06.
-// TEST(StringSorter, CopyConstructor) {
-//   StringSorter sorter(4);
-//   sorter[0] = "der";
-//   sorter[1] = "rest";
-//   sorter[2] = "ist";
-//   sorter[3] = "schweigen";
-//
-//   // Copy constructor.
-//   StringSorter sorter2{sorter};
-//   StringSorter sorter3(0);
-//   // Copy assignment
-//   sorter3 = sorter2;
-//
-//   ASSERT_STREQ("der", sorter[0].c_str());
-//   ASSERT_STREQ("rest", sorter[1].c_str());
-//   ASSERT_STREQ("ist", sorter[2].c_str());
-//   ASSERT_STREQ("schweigen", sorter[3].c_str());
-//
-//   ASSERT_STREQ("der", sorter2[0].c_str());
-//   ASSERT_STREQ("rest", sorter2[1].c_str());
-//   ASSERT_STREQ("ist", sorter2[2].c_str());
-//   ASSERT_STREQ("schweigen", sorter2[3].c_str());
-//
-//   ASSERT_STREQ("der", sorter3[0].c_str());
-//   ASSERT_STREQ("rest", sorter3[1].c_str());
-//   ASSERT_STREQ("ist", sorter3[2].c_str());
-//   ASSERT_STREQ("schweigen", sorter3[3].c_str());
-//
-//   ASSERT_EQ(4u, sorter.size());
-//   ASSERT_EQ(4u, sorter2.size());
-//   ASSERT_EQ(4u, sorter3.size());
-// }
+TEST(StringSorter, CopyConstructor) {
+  // Constructor.
+  StringSorter sorter(4);
+  sorter[0] = "der";
+  sorter[1] = "rest";
+  sorter[2] = "ist";
+  sorter[3] = "schweigen";
+  // Copy constructor.
+  StringSorter sorter2{sorter};
+  StringSorter sorter3(0);
+  // Copy assignment
+  sorter3 = sorter2;
+  ASSERT_STREQ("der", sorter[0].c_str());
+  ASSERT_STREQ("rest", sorter[1].c_str());
+  ASSERT_STREQ("ist", sorter[2].c_str());
+  ASSERT_STREQ("schweigen", sorter[3].c_str());
+  ASSERT_STREQ("der", sorter2[0].c_str());
+  ASSERT_STREQ("rest", sorter2[1].c_str());
+  ASSERT_STREQ("ist", sorter2[2].c_str());
+  ASSERT_STREQ("schweigen", sorter2[3].c_str());
+  ASSERT_STREQ("der", sorter3[0].c_str());
+  ASSERT_STREQ("rest", sorter3[1].c_str());
+  ASSERT_STREQ("ist", sorter3[2].c_str());
+  ASSERT_STREQ("schweigen", sorter3[3].c_str());
+  ASSERT_EQ(4u, sorter.size());
+  ASSERT_EQ(4u, sorter2.size());
+  ASSERT_EQ(4u, sorter3.size());
+}
