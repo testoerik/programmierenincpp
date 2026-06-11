@@ -43,10 +43,10 @@ public:
   void swapWithMove(size_t x, size_t y);
   void sortWithCopy();
   void sortWithMove();
-  // Destructor, which deletes the member strings_;
+  // Destructor, which deletes the member arrOfStrings_;
   ~StringSorter();
 
 private:
-  String *strings_;
-  size_t stringsNum_;
+  String *arrOfStrings_;
+  size_t numOfStrings_;
 };

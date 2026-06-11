@@ -85,50 +85,48 @@ String::String(String &&other) {
 }
 //____________________________________________________________________________
 StringSorter::StringSorter(const size_t &num) {
-  stringsNum_ = num;
-  strings_ = new String[stringsNum_];
+  numOfStrings_ = num;
+  arrOfStrings_ = new String[numOfStrings_];
 }
 // Copy assignment.
-String &StringSorter::operator=(const String &other) {
-  if (this != other) {
-    delete[] characters_;
-    sizeOfString_ = other.sizeOfString_;
-    characters_ = new char[sizeOfString_ + 1];
-    for (size_t i = 0; i < sizeOfString_; i++) {
-      characters_[i] = other.characters_[i];
+StringSorter &StringSorter::operator=(const StringSorter &other) {
+  if (this != &other) {
+    delete[] arrOfStrings_;
+    numOfStrings_ = other.numOfStrings_;
+    arrOfStrings_ = new String[numOfStrings_];
+    for (size_t i = 0; i < numOfStrings_; i++) {
+      arrOfStrings_[i] = other.arrOfStrings_[i];
     }
-    characters_[sizeOfString_ + 1] = '\0';
   }
   return *this;
 }
 // Copy constructor.
 StringSorter::StringSorter(const StringSorter &other) {
-  stringsNum_ = other.stringsNum_;
-  strings_ = new String[stringsNum_ + 1];
+  numOfStrings_ = other.numOfStrings_;
+  arrOfStrings_ = new String[numOfStrings_];
 
-  for (size_t i = 0; i < stringsNum_; i++) {
-    strings_[i] = other.strings_[i];
+  for (size_t i = 0; i < numOfStrings_; i++) {
+    arrOfStrings_[i] = other.arrOfStrings_[i];
   }
-  strings_[stringsNum_] = '\0';
 }
 //____________________________________________________________________________
-size_t StringSorter::size() { return stringsNum_; }
+size_t StringSorter::size() { return numOfStrings_; }
 
 //____________________________________________________________________________
-String &StringSorter::operator[](int index) { return strings_[index]; }
+String &StringSorter::operator[](int index) { return arrOfStrings_[index]; }
 
 //____________________________________________________________________________
 void StringSorter::swapWithCopy(size_t x, size_t y) {
-  String tmp = strings_[y];
-  strings_[y] = strings_[x];
-  strings_[x] = tmp;
+  String tmp = arrOfStrings_[y];
+  arrOfStrings_[y] = arrOfStrings_[x];
+  arrOfStrings_[x] = tmp;
 }
 
 //_____________________________________________________________________________
 void StringSorter::sortWithCopy() {
-  for (size_t j = 0; j < stringsNum_; j++) {
-    for (size_t i = 0; i < stringsNum_ - 1; i++) {
-      if (strcmp(strings_[i].c_str(), strings_[i + 1].c_str()) > 0) {
+  for (size_t j = 0; j < numOfStrings_; j++) {
+    for (size_t i = 0; i < numOfStrings_ - 1; i++) {
+      if (strcmp(arrOfStrings_[i].c_str(), arrOfStrings_[i + 1].c_str()) > 0) {
         swapWithCopy(i, i + 1);
       } else {
         continue;
@@ -137,14 +135,14 @@ void StringSorter::sortWithCopy() {
   }
 }
 void StringSorter::swapWithMove(size_t x, size_t y) {
-  String tmp = std::move(strings_[x]);
-  strings_[x] = std::move(strings_[y]);
-  strings_[y] = std::move(tmp);
+  String tmp = std::move(arrOfStrings_[x]);
+  arrOfStrings_[x] = std::move(arrOfStrings_[y]);
+  arrOfStrings_[y] = std::move(tmp);
 }
 void StringSorter::sortWithMove() {
-  for (size_t j = 0; j < stringsNum_; j++) {
-    for (size_t i = 0; i < stringsNum_ - 1; i++) {
-      if (strcmp(strings_[i].c_str(), strings_[i + 1].c_str()) > 0) {
+  for (size_t j = 0; j < numOfStrings_; j++) {
+    for (size_t i = 0; i < numOfStrings_ - 1; i++) {
+      if (strcmp(arrOfStrings_[i].c_str(), arrOfStrings_[i + 1].c_str()) > 0) {
         swapWithMove(i, i + 1);
       } else {
         continue;
@@ -156,4 +154,4 @@ void StringSorter::sortWithMove() {
 String::~String() { delete[] characters_; }
 
 //____________________________________________________________________________
-StringSorter::~StringSorter() { delete[] strings_; }
+StringSorter::~StringSorter() { delete[] arrOfStrings_; }
