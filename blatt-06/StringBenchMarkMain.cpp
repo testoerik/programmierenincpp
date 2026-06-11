@@ -3,14 +3,14 @@
 #include <ctime>   // For time measuring.
 
 int main() {
-  StringSorter s1(100);
-  StringSorter s2(std::move(s1));
-
-  // Create a random number n.
-  int n = drand48() * 256;
-  for (int i = 0; i < 100; i++) {
-    String tmp = std::move(drand48() * 256);
-    s1[i] = tmp;
-    s2[i] = tmp;
-  }  
+  char tmpBuffer[101];
+  int n = rand() % 100;
+  for (int i = 0; i < n; i++) {
+    for (int j = 0; j < 100; j++) {
+      tempBuffer[i] = rand() % 10;
+    }
+  }
+  tmpBuffer[100] = '\0';
+  String tmp;
+  tmp = tmpBuffer;
 }
