@@ -45,8 +45,10 @@ public:
   // Get the first value of the stored sequence. This must not be called if the
   // buffer is empty, else the behavior is undefined.
   T pop();
+  // Getter for fieldSize_;
+  size_t getFieldSize() { return fieldSize_; }
 
 private:
   size_t fieldSize_;
-  T fieldOfElements_;
+  T *fieldOfElements_;
 };

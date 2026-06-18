@@ -2,6 +2,7 @@
 #include <gtest/gtest.h>
 
 TEST(RingBufferTest, RingBufferConstructor) {
-  RingBuffer RingBuffer(5);
-  ASSERT_EQ(fieldSize_, 5);
+  // Stores 5 integers.
+  RingBuffer<int> rb1(5);
+  ASSERT_EQ(rb1.getFieldSize(), 5);
 }
