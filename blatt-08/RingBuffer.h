@@ -23,6 +23,8 @@ public:
   RingBuffer(RingBuffer &&) = delete;
   RingBuffer &operator=(RingBuffer &&) = delete;
 
+  // Subscript operator.
+  operator[](int i) const;
   // Destructor.
   ~RingBuffer();
 
@@ -45,22 +47,11 @@ public:
   // Get the first value of the stored sequence. This must not be called if the
   // buffer is empty, else the behavior is undefined.
   T pop();
-  // Getter for fieldSize_;
-  size_t getFieldSize() { return fieldSize_; }
+
+  // Get max field size.
+  size_t getMaxFieldSize() const;
 
 private:
   size_t fieldSize_;
   T *fieldOfElements_;
-};
-
-class RingBufferInt {
-public:
-  // Constructor.
-  RingBufferInt(int capacity);
-  // Destructor.
-  ~RingBufferInt();
-  // Getter for fieldSize_.
-private:
-  int fieldSize_;
-  int *fieldOfElements_;
 };
