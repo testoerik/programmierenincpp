@@ -23,8 +23,6 @@ public:
   RingBuffer(RingBuffer &&) = delete;
   RingBuffer &operator=(RingBuffer &&) = delete;
 
-  // Subscript operator.
-  operator[](int i) const;
   // Destructor.
   ~RingBuffer();
 
@@ -54,4 +52,5 @@ public:
 private:
   size_t fieldSize_;
   T *fieldOfElements_;
+  size_t numOfElements_;
 };

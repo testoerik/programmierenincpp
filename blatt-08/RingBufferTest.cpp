@@ -10,5 +10,5 @@ TEST(RingBufferTest, RingBufferConstructor) {
 
 TEST(RingBufferTest, RingBufferSize) {
   RingBuffer<int> rb2(3);
-  ASSERT_EQ(rb2.size(), 1);
+  ASSERT_EQ(rb2.size(), 0);
 }
