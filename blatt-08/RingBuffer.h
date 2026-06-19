@@ -52,3 +52,15 @@ private:
   size_t fieldSize_;
   T *fieldOfElements_;
 };
+
+class RingBufferInt {
+public:
+  // Constructor.
+  RingBufferInt(int capacity);
+  // Destructor.
+  ~RingBufferInt();
+  // Getter for fieldSize_.
+private:
+  int fieldSize_;
+  int *fieldOfElements_;
+};

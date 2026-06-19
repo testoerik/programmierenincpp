@@ -3,6 +3,7 @@
 
 TEST(RingBufferTest, RingBufferConstructor) {
   // Stores 5 integers.
-  RingBuffer<int> rb1(5);
-  ASSERT_EQ(rb1.getFieldSize(), 5);
+  size_t capacity1 = 5;
+  RingBuffer<int> rb1(capacity1);
+  ASSERT_EQ(rb1.getFieldSize(), capacity1);
 }
