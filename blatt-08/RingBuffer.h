@@ -5,6 +5,7 @@
 
 #pragma once
 #include <cstddef>
+#include <gtest/gtest_prod.h>
 
 // A simple ring buffer with a fixed capacity. It stores a sequence of elements,
 // to which we can push at the end and pop from the beginning.
@@ -53,4 +54,7 @@ private:
   size_t fieldSize_;
   T *fieldOfElements_;
   size_t numOfElements_;
+  int head_;
+  int tail_;
+  FRIEND_TEST(RingBufferTest, RingBuffer);
 };

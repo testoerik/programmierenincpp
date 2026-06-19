@@ -9,6 +9,15 @@ TEST(RingBufferTest, RingBufferConstructor) {
 }
 
 TEST(RingBufferTest, RingBufferSize) {
-  RingBuffer<int> rb2(3);
+  size_t capacity2 = 3;
+  RingBuffer<int> rb2(capacity2);
   ASSERT_EQ(rb2.size(), 0);
+  ASSERT_TRUE(rb2.isEmpty());
+  ASSERT_FALSE(rb2.isFull());
+}
+
+TEST(RingBufferTest, RingBufferPush) {
+  size_t capacity3 = 4;
+  RingBuffer<int> rb3(capacity3);
+  ASSERT_EQ(head_, 3);
 }
