@@ -16,8 +16,10 @@ TEST(RingBufferTest, RingBufferSize) {
   ASSERT_FALSE(rb2.isFull());
 }
 
-TEST(RingBufferTest, RingBufferPush) {
+TEST(RingBufferTest, RingBuffer) {
   size_t capacity3 = 4;
   RingBuffer<int> rb3(capacity3);
-  ASSERT_EQ(head_, 3);
+  rb3.push(47);
+  ASSERT_FALSE(rb3.isEmpty();
+  // ASSERT_EQ(head_, 3);
 }

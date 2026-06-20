@@ -51,10 +51,10 @@ public:
   size_t getMaxFieldSize() const;
 
 private:
+  FRIEND_TEST(RingBufferTest, RingBuffer);
   size_t fieldSize_;
   T *fieldOfElements_;
   size_t numOfElements_;
   int head_;
   int tail_;
-  FRIEND_TEST(RingBufferTest, RingBuffer);
 };

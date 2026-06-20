@@ -6,7 +6,7 @@ template <typename T> RingBuffer<T>::RingBuffer(size_t capacity) {
 
   numOfElements_ = 0;
 
-  head_ = fieldSize_ - 1;
+  head_ = 0;
   tail_ = 0;
 }
 
@@ -27,11 +27,13 @@ template <typename T> bool RingBuffer<T>::isFull() const {
 }
 
 template <typename T> void RingBuffer<T>::push(T value) {
-  if (fieldOfElements_.isFull()) {
-    return;
+  if (isFull()) {
+    // FIFO
   } else {
-    fieldOfElements_[head_] = value;
-  }
+    fieldOfElements_[tail_] = value;
+    numOfElements_++;
+    tail_ = (tail_ + 1) % fieldSize_;
+    }
 }
 // Destructor of class template.
 template <typename T> RingBuffer<T>::~RingBuffer() {
