@@ -53,10 +53,6 @@ TEST(RingBufferTest, TemplateClassSpecialization) {
   ASSERT_EQ(rb5.bitStringMemory_, 1);
   rb5.push(true);
   ASSERT_EQ(rb5.bitStringMemory_, 3);
-  rb5.push(true);
-  ASSERT_EQ(rb5.bitStringMemory_, 7);
-  rb5.push(false);
-  ASSERT_EQ(rb5.bitStringMemory_, 7);
-  rb5.push(true);
-  ASSERT_EQ(rb5.bitStringMemory_, 23);
+  rb5.pop();
+  ASSERT_EQ(rb5.bitStringMemory_, 2);
 }

@@ -64,23 +64,24 @@ RingBuffer<bool>::RingBuffer(size_t capacity) {
 void RingBuffer<bool>::push(bool value) {
   if (value) {
     if (bitStringMemory_ == 0) {
-      bitStringMemory_ += 1;
-      tail_++;
+      bitStringMemory_ |= 1;
+      tail_ = (tail_ + 1) % bitStringSize_;
       numOfBits_++;
     } else {
-      bitStringMemory_ += 1  << tail_;
-      tail_++;
+      bitStringMemory_ |= 1ULL << tail_;
+      tail_ = (tail_ + 1) % bitStringSize_;
       numOfBits_++;
     }
   } else {
-    bitStringMemory_ += 0 << tail_;
-    tail_++;
+    bitStringMemory_ |= 0 << tail_;
+    tail_ = (tail_ + 1) % bitStringSize_;
     numOfBits_++;
   }
 }
 
 bool RingBuffer<bool>::pop() {
-  bool firstElement = head_;
-  bitStringMemory_ -= 1 << head_;
+  bool firstElement = (bitStringMemory_ & (1ULL << head_) != 0);
+  head_ = (head_ + 1) % bitStringSize_;
   numOfBits_--;
-  head_++;}
+  return firstElement;
+}
