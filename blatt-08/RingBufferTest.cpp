@@ -49,4 +49,14 @@ TEST(RingBufferTest, RingBufferFloat) {
 TEST(RingBufferTest, TemplateClassSpecialization) {
   size_t capacity5 = 2;
   RingBuffer<bool> rb5(capacity5);
+  rb5.push(true);
+  ASSERT_EQ(rb5.bitStringMemory_, 1);
+  rb5.push(true);
+  ASSERT_EQ(rb5.bitStringMemory_, 3);
+  rb5.push(true);
+  ASSERT_EQ(rb5.bitStringMemory_, 7);
+  rb5.push(false);
+  ASSERT_EQ(rb5.bitStringMemory_, 7);
+  rb5.push(true);
+  ASSERT_EQ(rb5.bitStringMemory_, 23);
 }

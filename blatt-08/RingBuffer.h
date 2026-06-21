@@ -64,10 +64,8 @@ template <> class RingBuffer<bool> {
 public:
   // Constructor which needs 8 bytes of storage.
   explicit RingBuffer(size_t capacity);
-  // Destructor.
-  ~RingBuffer();
   // Return the number of elements that are currently stored in the sequence.
-  double size() const;
+  size_t size() const;
   // Return true if and only if the sequence is empty.
   bool isEmpty() const;
   // Return true if and only if the sequence is full.
@@ -76,6 +74,7 @@ public:
   void push(bool value);
   // Get the first element in the sequence.
   bool pop();
+
 private:
   // Capacity of the called constructor for a Bitstring.
   size_t bitStringSize_;
@@ -86,7 +85,6 @@ private:
   // Index for push() member function (0 to 63).
   int tail_;
   // 64 bits.
+  FRIEND_TEST(RingBufferTest, TemplateClassSpecialization); 
   uint64_t bitStringMemory_;
-  
 };
-

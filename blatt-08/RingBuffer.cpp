@@ -54,8 +54,33 @@ template class RingBuffer<float>;
 // Constructor.
 RingBuffer<bool>::RingBuffer(size_t capacity) {
   bitStringSize_ = capacity;
-  char bitStringBuffer[bitStringSize_];
-  for (int i = 0; (i < 64) && (i < bitStringSize_); i++) {
-    bitStringBuffer[i] = '0';
+  bitStringMemory_ = 0;
+  numOfBits_ = 0;
+
+  head_ = 0;
+  tail_ = 0;
+}
+
+void RingBuffer<bool>::push(bool value) {
+  if (value) {
+    if (bitStringMemory_ == 0) {
+      bitStringMemory_ += 1;
+      tail_++;
+      numOfBits_++;
+    } else {
+      bitStringMemory_ += 1  << tail_;
+      tail_++;
+      numOfBits_++;
+    }
+  } else {
+    bitStringMemory_ += 0 << tail_;
+    tail_++;
+    numOfBits_++;
   }
 }
+
+bool RingBuffer<bool>::pop() {
+  bool firstElement = head_;
+  bitStringMemory_ -= 1 << head_;
+  numOfBits_--;
+  head_++;}
