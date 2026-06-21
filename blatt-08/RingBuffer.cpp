@@ -27,13 +27,20 @@ template <typename T> bool RingBuffer<T>::isFull() const {
 }
 
 template <typename T> void RingBuffer<T>::push(T value) {
-  if (isFull()) {
-    // FIFO
-  } else {
-    fieldOfElements_[tail_] = value;
-    numOfElements_++;
-    tail_ = (tail_ + 1) % fieldSize_;
-    }
+  fieldOfElements_[tail_] = value;
+  numOfElements_++;
+  tail_ = (tail_ + 1) % fieldSize_;
+}
+
+template <typename T> T RingBuffer<T>::pop() {
+  T firstElement = fieldOfElements_[head_];
+  numOfElements_--;
+  head_ = (head_ + 1) % fieldSize_;
+  return firstElement;
+}
+
+template <typename T> T RingBuffer<T>::operator[](int index) const {
+  return fieldOfElements_[index];
 }
 // Destructor of class template.
 template <typename T> RingBuffer<T>::~RingBuffer() {
@@ -42,3 +49,13 @@ template <typename T> RingBuffer<T>::~RingBuffer() {
 // Explicit template class instantiation.
 template class RingBuffer<int>;
 template class RingBuffer<float>;
+
+// Specialization of the class template.
+// Constructor.
+RingBuffer<bool>::RingBuffer(size_t capacity) {
+  bitStringSize_ = capacity;
+  char bitStringBuffer[bitStringSize_];
+  for (int i = 0; (i < 64) && (i < bitStringSize_); i++) {
+    bitStringBuffer[i] = '0';
+  }
+}

@@ -5,6 +5,7 @@
 
 #pragma once
 #include <cstddef>
+#include <cstdint>
 #include <gtest/gtest_prod.h>
 
 // A simple ring buffer with a fixed capacity. It stores a sequence of elements,
@@ -46,15 +47,46 @@ public:
   // Get the first value of the stored sequence. This must not be called if the
   // buffer is empty, else the behavior is undefined.
   T pop();
-
+  // Subscript operator.
+  T operator[](int index) const;
   // Get max field size.
   size_t getMaxFieldSize() const;
 
 private:
-  FRIEND_TEST(RingBufferTest, RingBuffer);
   size_t fieldSize_;
   T *fieldOfElements_;
   size_t numOfElements_;
   int head_;
   int tail_;
 };
+// Specialization for bool.
+template <> class RingBuffer<bool> {
+public:
+  // Constructor which needs 8 bytes of storage.
+  explicit RingBuffer(size_t capacity);
+  // Destructor.
+  ~RingBuffer();
+  // Return the number of elements that are currently stored in the sequence.
+  double size() const;
+  // Return true if and only if the sequence is empty.
+  bool isEmpty() const;
+  // Return true if and only if the sequence is full.
+  bool isFull() const;
+  // Add a bool to the end of the sequence.
+  void push(bool value);
+  // Get the first element in the sequence.
+  bool pop();
+private:
+  // Capacity of the called constructor for a Bitstring.
+  size_t bitStringSize_;
+  // Number of bits that are currently stored.
+  size_t numOfBits_;
+  // Index for pop() member function (0 to 63);
+  int head_;
+  // Index for push() member function (0 to 63).
+  int tail_;
+  // 64 bits.
+  uint64_t bitStringMemory_;
+  
+};
+

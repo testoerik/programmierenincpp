@@ -16,10 +16,37 @@ TEST(RingBufferTest, RingBufferSize) {
   ASSERT_FALSE(rb2.isFull());
 }
 
-TEST(RingBufferTest, RingBuffer) {
+TEST(RingBufferTest, RingBufferInt) {
   size_t capacity3 = 4;
   RingBuffer<int> rb3(capacity3);
+  ASSERT_TRUE(rb3.isEmpty());
+  ASSERT_FALSE(rb3.isFull());
   rb3.push(47);
-  ASSERT_FALSE(rb3.isEmpty();
+  rb3.push(56);
+  rb3.push(48);
+  rb3.push(49);
+  ASSERT_TRUE(rb3.isFull());
+  ASSERT_EQ(rb3.pop(), 47);
+  rb3.push(456);
+  ASSERT_EQ(rb3[0], 456);
+  ASSERT_EQ(rb3.pop(), 56);
+  rb3.push(123);
+  ASSERT_EQ(rb3[1], 123);
   // ASSERT_EQ(head_, 3);
+}
+
+TEST(RingBufferTest, RingBufferFloat) {
+  size_t capacity4 = 5;
+  RingBuffer<float> rb4(capacity4);
+  ASSERT_TRUE(rb4.isEmpty());
+  ASSERT_FALSE(rb4.isFull());
+  rb4.push(4.67);
+  rb4.push(3.14);
+  rb4.push(4.89);
+  ASSERT_FLOAT_EQ(rb4.pop(), 4.67);
+}
+
+TEST(RingBufferTest, TemplateClassSpecialization) {
+  size_t capacity5 = 2;
+  RingBuffer<bool> rb5(capacity5);
 }
