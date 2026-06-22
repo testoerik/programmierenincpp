@@ -85,6 +85,6 @@ private:
   // Index for push() member function (0 to 63).
   int tail_;
   // 64 bits.
-  FRIEND_TEST(RingBufferTest, TemplateClassSpecialization); 
+  FRIEND_TEST(RingBufferTest, TemplateClassSpecialization);
   uint64_t bitStringMemory_;
 };

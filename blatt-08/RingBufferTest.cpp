@@ -47,16 +47,47 @@ TEST(RingBufferTest, RingBufferFloat) {
 }
 
 TEST(RingBufferTest, TemplateClassSpecialization) {
-  size_t capacity5 = 2;
-  RingBuffer<bool> rb5(capacity5);
-  rb5.push(true);
-  ASSERT_EQ(rb5.bitStringMemory_, 1);
-  rb5.push(true);
-  ASSERT_EQ(rb5.bitStringMemory_, 3);
-  rb5.pop();
-  ASSERT_EQ(rb5.bitStringMemory_, 2);
-  rb5.pop();
-  ASSERT_EQ(rb5.bitStringMemory_, 0);
-  rb5.push(true);
-  ASSERT_EQ(rb5.bitStringMemory_, 1);
+  {
+    size_t capacity5 = 2;
+    RingBuffer<bool> rb5(capacity5);
+    rb5.push(true);
+    ASSERT_EQ(rb5.bitStringMemory_, 1);
+    rb5.push(true);
+    ASSERT_EQ(rb5.bitStringMemory_, 3);
+    rb5.pop();
+    ASSERT_EQ(rb5.bitStringMemory_, 2);
+    rb5.pop();
+    ASSERT_EQ(rb5.bitStringMemory_, 0);
+    rb5.push(true);
+    ASSERT_EQ(rb5.bitStringMemory_, 1);
+  }
+  {
+    size_t capacity6 = 2;
+    RingBuffer<bool> rb6(capacity6);
+    ASSERT_TRUE(rb6.isEmpty());
+    ASSERT_FALSE(rb6.isFull());
+    rb6.push(true);
+    rb6.push(true);
+    ASSERT_FALSE(rb6.isEmpty());
+    ASSERT_TRUE(rb6.isFull());
+  }
+  {
+    size_t capacity7 = 64;
+    RingBuffer<bool> rb7(capacity7);
+    ASSERT_FALSE(rb7.isFull());
+    for (int i = 0; i < capacity7; i++) {
+      rb7.push(true);
+    }
+    ASSERT_TRUE(rb7.isFull());
+    ASSERT_EQ(rb7.tail_, 0);
+    for (int i = 0; i < capacity7; i++) {
+      rb7.pop();
+    }
+    ASSERT_TRUE(rb7.isEmpty());
+    ASSERT_FALSE(rb7.isFull());
+    ASSERT_EQ(rb7.head_, 0);
+    rb7.push(true);
+    ASSERT_EQ(rb7.tail_, 1);
+    ASSERT_FALSE(rb7.isEmpty());
+  }
 }
