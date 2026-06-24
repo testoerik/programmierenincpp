@@ -1,7 +1,7 @@
 #pragma once
 #include "./TerminalManager.h"
-#include <vector>
+#include <string>
 class HeatMap {
 public:
-	readPointsFromFile(const std::string& filename);	
+  readPointsFromFile(const std::string &filename);
 };
