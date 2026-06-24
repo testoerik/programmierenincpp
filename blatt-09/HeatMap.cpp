@@ -2,7 +2,7 @@
 #include <fstream>
 #include <iostream>
 #include <string>
-HeatMap::void readPointsFromFile(const std::string &filename) {
+void HeatMap::readPointsFromFile(const std::string &filename) {
   // Open the file.
   std::ifstream file(filename);
   // Path to file could be wrong.
@@ -25,5 +25,10 @@ HeatMap::void readPointsFromFile(const std::string &filename) {
     Point point;
     point.longitude_ = pointX;
     point.latitude_ = pointY;
-    vOfpoints_.push_back(point);
+    vOfPoints_.push_back(point);
   }
+}
+void HeatMap::computeHeatMap(size_t numRows, size_t numCols, float aspectRatio)
+// Iterate over vOfPoints ? How ?
+// Linear Transformation ?
+{}
