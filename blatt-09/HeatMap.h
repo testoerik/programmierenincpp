@@ -3,14 +3,15 @@
 #include <string>
 #include <vector>
 
-class HeatMap {
-public:
-  void readPointsFromFile(const std::string &filename);
-  std::vector<Point> points_;
-};
-
 struct Point {
   //.
   float longitude_;
   float latitude_;
+};
+
+class HeatMap {
+public:
+  auto points();
+  void readPointsFromFile(const std::string &filename);
+  std::vector<Point> vOfpoints_;
 };

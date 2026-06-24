@@ -12,12 +12,18 @@ HeatMap::void readPointsFromFile(const std::string &filename) {
   }
   std::string line;
   while (std::getline(file, line)) {
-    Point point;
     // Extracting the coordinates.
-    point.longitude_ = std::stof(line.substr(
-        (line.find('(') + 1), ((line.find(' ') - 1) - (line.find('(') + 1))));
-    point.latitude_ = std::stof(line.substr(
-        (line.find(' ') + 1), ((line.find(')') - 1) - (line.find(' ') + 1))));
-    points_.push_back(point);
-   }
-}
+    // Extracting x-coordinate.
+    size_t posFirstX = (line.find('(') + 1);
+    size_t posLastX = (line.find(',') - 1);
+    float pointX = stof(line.substr(posFirstX, (posLastX - posFirstX)));
+    // Extracting y-coordinate.
+    size_t posFirstY = (line.find(',') + 2);
+    size_t posLastY = (line.find(')') - 1);
+    float pointY = stof(line.substr(posFirstY, (posLastY - posFirstY)));
+    // Instantiating point class.
+    Point point;
+    point.longitude_ = pointX;
+    point.latitude_ = pointY;
+    vOfpoints_.push_back(point);
+  }
