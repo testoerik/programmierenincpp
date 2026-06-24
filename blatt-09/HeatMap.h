@@ -9,6 +9,11 @@ struct Point {
   float latitude_;
 };
 
+struct Cell {
+  int pixelRow_;
+  int pixelCol_;
+};
+
 class HeatMap {
 public:
   // Getter function for vOfPoints_;
@@ -18,9 +23,9 @@ public:
   // Compute heatmap.
   void computeHeatMap(size_t numRows, size_t numCols, float aspectRatio);
   // Getter function which returns a reference to a unordered_map.
-  std::unordered_map<std::vector<int>, int> &heatMap() { return std::unordered_map<>; }
+  std::unordered_map<std::vector<Cell>, int> heatMap() { return m; }
 
 private:
   std::vector<Point> vOfPoints_;
-  std::unordered_map<>;
+  std::unordered_map<std::vector<Cell>, int> m;
 };
