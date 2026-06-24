@@ -3,5 +3,7 @@
 #include <string>
 class HeatMap {
 public:
-  readPointsFromFile(const std::string &filename);
+  void readPointsFromFile(const std::string &filename);
 };
+
+struct Point {}
