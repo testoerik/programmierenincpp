@@ -28,7 +28,20 @@ void HeatMap::readPointsFromFile(const std::string &filename) {
     vOfPoints_.push_back(point);
   }
 }
-void HeatMap::computeHeatMap(size_t numRows, size_t numCols, float aspectRatio)
-// Iterate over vOfPoints ? How ?
-// Linear Transformation ?
-{}
+void HeatMap::computeHeatMap(size_t numRows, size_t numCols,
+                            float aspectRatio) {
+  std::vector<float> vectorOfLongitudeVals;
+  std::vector<float> vectorOfLatitudeVals;
+  for (const auto& [longitude, latitude] : vOfPoints_) {
+	vectorOfLongitudeVals.push_back(longitude);
+	vectorOfLargitudeVals.push_back(largitude);
+  }
+  
+  float smallestLongitude = 0;
+  float largestLongitude = 0;
+  
+  float smallestLatitude = 0;
+  float largestLatitude = 0;
+  while (true) {
+	if !(smal}
+}

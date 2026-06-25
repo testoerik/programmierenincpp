@@ -13,8 +13,8 @@ struct Cell {
   int pixelRow_;
   int pixelCol_;
   // Check if we have a duplicate of Cell object.
-  bool operator==(const Cell &other) {
-    return pixelRow_ = other.pixelRow_ && pixelCol_ == other.pixelCol_;
+  bool operator==(const Cell &other) const {
+    return pixelRow_ == other.pixelRow_ && pixelCol_ == other.pixelCol_;
   }
 };
 
@@ -36,9 +36,9 @@ public:
   // Compute heatmap.
   void computeHeatMap(size_t numRows, size_t numCols, float aspectRatio);
   // Getter function which returns a reference to a unordered_map.
-  std::unordered_map<Cell, int> heatMap() { return m; }
+  std::unordered_map<Cell, int, CellHash> heatMap() { return m; }
 
 private:
   std::vector<Point> vOfPoints_;
-  std::unordered_map<Cell, int> m;
+  std::unordered_map<Cell, int, CellHash> m;
 };
