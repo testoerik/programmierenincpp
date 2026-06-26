@@ -1,5 +1,6 @@
 #include "./HeatMap.h"
 #include <algorithm>
+#include <cmath>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -47,15 +48,21 @@ void HeatMap::computeHeatMap(size_t numRows, size_t numCols,
   // Adjust geoWith.
   float adjustedGeoWidth = geoWidth * aspectRatio;
   // Compute.
-  float scaleX = numCols / adjustedGeoWidth;
-  float scaleY = numRows / geoHeight;
+  float scaleX = (numCols - 1) / adjustedGeoWidth;
+  float scaleY = (numRows - 1) / geoHeight;
   float finalScale = std::min(scaleX, scaleY);
 
+  float mappedWidth = adjustedGeoWidth * finalScale;
+  float mappedHeight = geoHeight * finalScale;
+  float offsetX = ((numCols - 1) - mappedWidth) / 2.0f;
+  float offsetY = ((numRows - 1) - mappedHeight) / 2.0f;
+
   for (const auto &point : vOfPoints_) {
-    float lon = point.longitude_;
-    float lat = point.latitude_;
-    int col = (lon - smallestLongitude) / finalScale;
-    int row = (lat - smallestLatitude) / finalScale;
+
+    int col = std::round(offsetX + (point.longitude_ - smallestLongitude) *
+                                       aspectRatio * finalScale);
+    int row =
+        std::round(offsetY + (largestLatitude - point.latitude_) * finalScale);
     Cell currentCell{row, col};
     m[currentCell]++;
   }
