@@ -1,4 +1,15 @@
+#pragma once
+#include <functional>
+#include <cstddef>
 
+struct Cell {
+  int pixelRow_;
+  int pixelCol_;
+  // Check if we have a duplicate of Cell object.
+  bool operator==(const Cell &other) const {
+    return pixelRow_ == other.pixelRow_ && pixelCol_ == other.pixelCol_;
+  }
+};
 
 struct CellHash {
   // Hashfunction as functor.
@@ -8,18 +19,4 @@ struct CellHash {
     // Avoid collision.
     return h1 ^ (h2 << 1);
   }
-};
-class Cell {
-private:
-  int pixelRow_;
-  int pixelCol_;
-
-public:
-  // Check if we have a duplicate of Cell object.
-  bool operator==(const Cell &other) const {
-    return pixelRow_ == other.pixelRow_ && pixelCol_ == other.pixelCol_;
-  }
-  // Getter function which returns a reference to a unordered_map.
-  std::unordered_map<Cell, int, CellHash> heatMap() { return m; }
-  std::unordered_map<Cell, int, CellHash> m;
 };
