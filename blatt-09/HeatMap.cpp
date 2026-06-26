@@ -44,6 +44,17 @@ void HeatMap::computeHeatMap(size_t numRows, size_t numCols,
   float largestLatitude = iteratorPairY.second->latitude_;
   float geoHeight = largestLatitude - smallestLatitude;
   float geoWidth = largestLongitude - smallestLongitude;
-  float adjustedGeoHeight = geoWidth * aspectRatio;
-  float adjustesGeoWidth = geoHeight * aspectRatio; 
+  // Adjust geoWith.
+  float adjustedGeoWidth = geoWidth * aspectRatio;
+  // Comppute.
+  float scaleX = numCols / adjustedGeoWith;
+  float scaleY = numRows / geoHeight;
+  float finalScale = std::min(scaleX, scaleY);
+
+  for ([ lon, lat ] : vOfPoints_;) {
+    int col = (lat - smallestLatitude) * finalScale;
+    int row = (lon - smallestLongitude) * finalScale;
+    Cell currentCell{row, col};
+    m[currentCell]++;
+  }
 }
