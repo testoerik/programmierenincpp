@@ -42,4 +42,6 @@ void HeatMap::computeHeatMap(size_t numRows, size_t numCols,
       [](const Point &a, const Point &b) { return a.latitude_ < b.latitude_; });
   float smallestLatitude = iteratorPairY.first->latitude_;
   float largestLatitude = iteratorPairY.second->latitude_;
+  float height = largestLatitude - smallestLargitude;
+  float length = largestLongitude - smallestLongitude;
 }
