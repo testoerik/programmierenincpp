@@ -1,4 +1,5 @@
 #include "./HeatMap.h"
+#include <algorithm>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -29,19 +30,16 @@ void HeatMap::readPointsFromFile(const std::string &filename) {
   }
 }
 void HeatMap::computeHeatMap(size_t numRows, size_t numCols,
-                            float aspectRatio) {
-  std::vector<float> vectorOfLongitudeVals;
-  std::vector<float> vectorOfLatitudeVals;
-  for (const auto& [longitude, latitude] : vOfPoints_) {
-	vectorOfLongitudeVals.push_back(longitude);
-	vectorOfLargitudeVals.push_back(largitude);
-  }
-  
-  float smallestLongitude = 0;
-  float largestLongitude = 0;
-  
-  float smallestLatitude = 0;
-  float largestLatitude = 0;
-  while (true) {
-	if !(smal}
+                             float aspectRatio) {
+  auto iteratorPairX = std::minmax_element(vOfPoints_.begin(), vOfPoints_.end(),
+                                           [](const Point &a, const Point &b) {
+                                             return a.longitude_ < b.longitude_;
+                                           });
+  float smallestLongitude = iteratorPairX.first->longitude_;
+  float largestLongitude = iteratorPairX.second->longitude_;
+  auto iteratorPairY = std::minmax_element(
+      vOfPoints_.begin(), vOfPoints_.end(),
+      [](const Point &a, const Point &b) { return a.latitude_ < b.latitude_; });
+  float smallestLatitude = iteratorPairY.first->latitude_;
+  float largestLatitude = iteratorPairY.second->latitude_;
 }

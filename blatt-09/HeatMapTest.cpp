@@ -29,11 +29,11 @@ TEST(HeatMap, ComputeHeatMapMaxWidth) {
   const auto &m = heatMap.heatMap();
   ASSERT_EQ(5u, m.size());
   ASSERT_TRUE(m.count(Cell{3, 0}));
-  //   ASSERT_TRUE(m.count(Cell{3, 2}));
-  //   ASSERT_TRUE(m.count(Cell{1, 0}));
-  //   ASSERT_TRUE(m.count(Cell{1, 2}));
-  //   ASSERT_EQ(2u, m.at(Cell{1, 2}));
-  //   ASSERT_TRUE(m.count(Cell{2, 1}));
+  ASSERT_TRUE(m.count(Cell{3, 2}));
+  ASSERT_TRUE(m.count(Cell{1, 0}));
+  ASSERT_TRUE(m.count(Cell{1, 2}));
+  ASSERT_EQ(2u, m.at(Cell{1, 2}));
+  ASSERT_TRUE(m.count(Cell{2, 1}));
 }
 //
 // //
