@@ -34,50 +34,68 @@ void HeatMap::readPointsFromFile(const std::string &filename) {
 
 void HeatMap::computeHeatMap(size_t numRows, size_t numCols,
                              float aspectRatio) {
+  // Find the smallest and the biggest longitude.
   auto iteratorPairX = std::minmax_element(vOfPoints_.begin(), vOfPoints_.end(),
                                            [](const Point &a, const Point &b) {
                                              return a.longitude_ < b.longitude_;
                                            });
+
   float smallestLongitude = iteratorPairX.first->longitude_;
   float largestLongitude = iteratorPairX.second->longitude_;
-  
+
+  // Find the smallest and the biggest latitude.
   auto iteratorPairY = std::minmax_element(
       vOfPoints_.begin(), vOfPoints_.end(),
       [](const Point &a, const Point &b) { return a.latitude_ < b.latitude_; });
   float smallestLatitude = iteratorPairY.first->latitude_;
   float largestLatitude = iteratorPairY.second->latitude_;
-  
+
+  // Num of latitude.
   float geoHeight = largestLatitude - smallestLatitude;
+  // Num of longitude.
   float geoWidth = largestLongitude - smallestLongitude;
-  
-  // Bestimme die maximal mögliche Breite und Höhe in Indizes (Pixeln)
+
+  // Max num of available pixel for width.
   float maxPixelWidth = numCols - 1;
+  // Max num of available pixel for heights.
   float maxPixelHeight = numRows - 1;
-  
-  // Wir erzwingen, dass das gemappte Bild exakt das aspectRatio hat.
-  // Wir nehmen zuerst an, die Breite füllt den Platz voll aus:
+
+  // Aspect ratio of a single pixel.
+  float pixelWidth = 1.0f;
+  float pixelHeight = 1.0f;
+  // Wir berechnen die Proportionen eines einzelnen Pixel.
+  // Wir nutzen volle Breite des Bildschirm aus.
   float mappedWidth = maxPixelWidth;
-  float mappedHeight = mappedWidth / aspectRatio;
-  
-  // Wenn die Höhe dadurch den Bildschirm sprengt, ist in Wahrheit die Höhe das Limit:
-  if (mappedHeight > maxPixelHeight) {
-      mappedHeight = maxPixelHeight;
-      mappedWidth = mappedHeight * aspectRatio;
+  float mappedHeight = maxPixelHeight;
+  if (aspectRatio < 1.0f) {
+    pixelHeight = pixelWidth / aspectRatio;
+    // Die Breite darf nur (...) so lang sein wie die Höhe.
+    mappedWidth = maxPixelHeight * aspectRatio;
+    // Da wir die Breite (...) entsprechend verkleinert haben, müssen wir nicht
+    // überprüfen, ob diese noch in das Bild passt.
+  } else if (aspectRatio > 1.0f) {
+    // Die Breite ist (...) mal so lang wie die Höhe.
+    pixelWidth = pixelHeight * aspectRatio;
+    // Passt die Breite noch in das Bild ?
+    // Die Höhe muss dementsprechend angepasst werden.
+    maxPixelHeight = mappedWidth / aspectRatio;
   }
-  
-  // Jetzt berechnen wir unabhängige Skalierungsfaktoren für X und Y
+
   float scaleX = mappedWidth / geoWidth;
   float scaleY = mappedHeight / geoHeight;
 
-  // Zentrierung berechnen (Integer-Division sorgt für das richtige Runden/Abschneiden)
+  // Zentrierung berechnen (Integer-Division sorgt für das richtige
+  // Runden/Abschneiden)
   int offsetX = (numCols - 1 - static_cast<int>(std::round(mappedWidth))) / 2;
   int offsetY = (numRows - 1 - static_cast<int>(std::round(mappedHeight))) / 2;
 
   for (const auto &point : vOfPoints_) {
     // Punkte mit den unabhängigen Faktoren auf den Bildschirm projizieren
-    int col = std::round(offsetX + (point.longitude_ - smallestLongitude) * scaleX);
-    int row = std::round(offsetY + (largestLatitude - point.latitude_) * scaleY);
-    
+    int col =
+        std::round(offsetX + (point.longitude_ - smallestLongitude) * scaleX);
+    int row =
+        std::round(offsetY + (largestLatitude - point.latitude_) * scaleY);
+
     Cell currentCell{row, col};
     m[currentCell]++;
   }
