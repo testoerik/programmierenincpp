@@ -6,25 +6,21 @@
 #include <string>
 
 void HeatMap::readPointsFromFile(const std::string &filename) {
-  // Open the file.
   std::ifstream file(filename);
-  // Path to file could be wrong.
   if (!file) {
     std::cout << "The file cannot be opened !" << std::endl;
     exit(1);
   }
   std::string line;
   while (std::getline(file, line)) {
-    // Extracting the coordinates.
-    // Extracting x-coordinate.
     size_t posFirstX = (line.find('(') + 1);
     size_t posLastX = (line.find(',') - 1);
     float pointX = stof(line.substr(posFirstX, (posLastX - posFirstX)));
-    // Extracting y-coordinate.
+
     size_t posFirstY = (line.find(',') + 2);
     size_t posLastY = (line.find(')') - 1);
     float pointY = stof(line.substr(posFirstY, (posLastY - posFirstY)));
-    // Instantiating point class.
+
     Point point;
     point.longitude_ = pointX;
     point.latitude_ = pointY;
@@ -34,7 +30,6 @@ void HeatMap::readPointsFromFile(const std::string &filename) {
 
 void HeatMap::computeHeatMap(size_t numRows, size_t numCols,
                              float aspectRatio) {
-  // Find the smallest and the biggest longitude.
   auto iteratorPairX = std::minmax_element(vOfPoints_.begin(), vOfPoints_.end(),
                                            [](const Point &a, const Point &b) {
                                              return a.longitude_ < b.longitude_;
@@ -43,60 +38,63 @@ void HeatMap::computeHeatMap(size_t numRows, size_t numCols,
   float smallestLongitude = iteratorPairX.first->longitude_;
   float largestLongitude = iteratorPairX.second->longitude_;
 
-  // Find the smallest and the biggest latitude.
   auto iteratorPairY = std::minmax_element(
       vOfPoints_.begin(), vOfPoints_.end(),
       [](const Point &a, const Point &b) { return a.latitude_ < b.latitude_; });
   float smallestLatitude = iteratorPairY.first->latitude_;
   float largestLatitude = iteratorPairY.second->latitude_;
 
-  // Num of latitude.
-  float geoHeight = largestLatitude - smallestLatitude;
-  // Num of longitude.
-  float geoWidth = largestLongitude - smallestLongitude;
-
-  // Max num of available pixel for width.
   float maxPixelWidth = numCols - 1;
-  // Max num of available pixel for heights.
   float maxPixelHeight = numRows - 1;
 
-  // Aspect ratio of a single pixel.
-  float pixelWidth = 1.0f;
-  float pixelHeight = 1.0f;
-  // Wir berechnen die Proportionen eines einzelnen Pixel.
-  // Wir nutzen volle Breite des Bildschirm aus.
   float mappedWidth = maxPixelWidth;
-  float mappedHeight = maxPixelHeight;
-  if (aspectRatio < 1.0f) {
-    pixelHeight = pixelWidth / aspectRatio;
-    // Die Breite darf nur (...) so lang sein wie die Höhe.
-    mappedWidth = maxPixelHeight * aspectRatio;
-    // Da wir die Breite (...) entsprechend verkleinert haben, müssen wir nicht
-    // überprüfen, ob diese noch in das Bild passt.
-  } else if (aspectRatio > 1.0f) {
-    // Die Breite ist (...) mal so lang wie die Höhe.
-    pixelWidth = pixelHeight * aspectRatio;
-    // Passt die Breite noch in das Bild ?
-    // Die Höhe muss dementsprechend angepasst werden.
-    maxPixelHeight = mappedWidth / aspectRatio;
+  float mappedHeight = mappedWidth / aspectRatio;
+  if (mappedHeight > maxPixelHeight) {
+    mappedHeight = maxPixelHeight;
+    mappedWidth = mappedHeight * aspectRatio;
   }
+
+  float geoWidth = largestLongitude - smallestLongitude;
+  float geoHeight = largestLatitude - smallestLatitude;
 
   float scaleX = mappedWidth / geoWidth;
   float scaleY = mappedHeight / geoHeight;
 
-  // Zentrierung berechnen (Integer-Division sorgt für das richtige
-  // Runden/Abschneiden)
-  int offsetX = (numCols - 1 - static_cast<int>(std::round(mappedWidth))) / 2;
-  int offsetY = (numRows - 1 - static_cast<int>(std::round(mappedHeight))) / 2;
+  int offsetX = (maxPixelWidth - static_cast<int>(std::round(mappedWidth))) / 2;
+  int offsetY =
+      (maxPixelHeight - static_cast<int>(std::round(mappedHeight))) / 2;
 
   for (const auto &point : vOfPoints_) {
-    // Punkte mit den unabhängigen Faktoren auf den Bildschirm projizieren
     int col =
         std::round(offsetX + (point.longitude_ - smallestLongitude) * scaleX);
     int row =
         std::round(offsetY + (largestLatitude - point.latitude_) * scaleY);
 
     Cell currentCell{row, col};
-    m[currentCell]++;
+    unordMapCell_[currentCell]++;
+  }
+}
+
+void HeatMap::drawHeatMap(TerminalManager *) {
+  TerminalManager *terminalManager = nullptr;
+  if (unordMapCell_.empty()) {
+    return;
+  }
+  auto maxIterator = std::max_element(
+      unordMapCell_.begin(), unordMapCell_.end(),
+      [](const auto &a, const auto &b) { return a.second < b.second; });
+  int maxVal = maxIterator->second;
+
+  for (int i = 0; i < terminalManager->numRows(); i++) {
+    for (int j = 0; j < terminalManager->numCols(); j++) {
+      Cell currentCell{static_cast<float>(i), static_cast<float>(j)};
+      if (unordMapCell_[currentCell] > 0) {
+        float intensityCell = static_cast<float>(unordMapCell_[currentCell]) /
+                              static_cast<float>(maxVal);
+        terminalManager->drawPixel(i, j, true, intensityCell);
+      } else {
+        terminalManager->drawPixel(i, j, false, 0.0);
+      }
+    }
   }
 }

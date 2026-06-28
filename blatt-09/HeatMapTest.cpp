@@ -35,39 +35,31 @@ TEST(HeatMap, ComputeHeatMapMaxWidth) {
   ASSERT_EQ(2u, m.at(Cell{1, 2}));
   ASSERT_TRUE(m.count(Cell{2, 1}));
 }
-//
-// //
 // ___________________________________________________________________________
-// TEST(HeatMap, ComputeHeatMapMaxHeight) {
-//   HeatMap heatMap;
-//   heatMap.readPointsFromFile("testPoints.tsv");
-//   heatMap.computeHeatMap(3, 6, 1.0f);
-//
-//   const auto &m = heatMap.heatMap();
-//   ASSERT_EQ(5u, m.size());
-//
-//   ASSERT_TRUE(m.count(Cell{2, 0}));
-//   ASSERT_TRUE(m.count(Cell{2, 4}));
-//   ASSERT_TRUE(m.count(Cell{0, 0}));
-//   ASSERT_TRUE(m.count(Cell{0, 4}));
-//   ASSERT_EQ(2u, m.at(Cell{0, 4}));
-//   ASSERT_TRUE(m.count(Cell{1, 2}));
-// }
-//
-// //
+TEST(HeatMap, ComputeHeatMapMaxHeight) {
+  HeatMap heatMap;
+  heatMap.readPointsFromFile("testPoints.tsv");
+   heatMap.computeHeatMap(3, 6, 1.0f);
+  const auto &m = heatMap.heatMap();
+  ASSERT_EQ(5u, m.size());
+  ASSERT_TRUE(m.count(Cell{2, 0}));
+  ASSERT_TRUE(m.count(Cell{2, 4}));
+  ASSERT_TRUE(m.count(Cell{0, 0}));
+  ASSERT_TRUE(m.count(Cell{0, 4}));
+  ASSERT_EQ(2u, m.at(Cell{0, 4}));
+  ASSERT_TRUE(m.count(Cell{1, 2}));
+}
 // ___________________________________________________________________________
-// TEST(HeatMap, ComputeHeatMapAspectRatio) {
-//   HeatMap heatMap;
-//   heatMap.readPointsFromFile("testPoints.tsv");
-//   heatMap.computeHeatMap(6, 3, 0.5f);
-//
-//   const auto &m = heatMap.heatMap();
-//   ASSERT_EQ(5u, m.size());
-//
-//   ASSERT_TRUE(m.count(Cell{4, 0}));
-//   ASSERT_TRUE(m.count(Cell{4, 2}));
-//   ASSERT_TRUE(m.count(Cell{0, 0}));
-//   ASSERT_TRUE(m.count(Cell{0, 2}));
-//   ASSERT_EQ(2u, m.at(Cell{0, 2}));
-//   ASSERT_TRUE(m.count(Cell{2, 1}));
-// }
+TEST(HeatMap, ComputeHeatMapAspectRatio) {
+  HeatMap heatMap;
+  heatMap.readPointsFromFile("testPoints.tsv");
+  heatMap.computeHeatMap(6, 3, 0.5f);
+  const auto &m = heatMap.heatMap();
+  ASSERT_EQ(5u, m.size());
+  ASSERT_TRUE(m.count(Cell{4, 0}));
+  ASSERT_TRUE(m.count(Cell{4, 2}));
+  ASSERT_TRUE(m.count(Cell{0, 0}));
+  ASSERT_TRUE(m.count(Cell{0, 2}));
+  ASSERT_EQ(2u, m.at(Cell{0, 2}));
+  ASSERT_TRUE(m.count(Cell{2, 1}));
+}
