@@ -39,7 +39,7 @@ TEST(HeatMap, ComputeHeatMapMaxWidth) {
 TEST(HeatMap, ComputeHeatMapMaxHeight) {
   HeatMap heatMap;
   heatMap.readPointsFromFile("testPoints.tsv");
-   heatMap.computeHeatMap(3, 6, 1.0f);
+  heatMap.computeHeatMap(3, 6, 1.0f);
   const auto &m = heatMap.heatMap();
   ASSERT_EQ(5u, m.size());
   ASSERT_TRUE(m.count(Cell{2, 0}));

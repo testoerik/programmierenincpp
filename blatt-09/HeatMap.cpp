@@ -48,12 +48,11 @@ void HeatMap::computeHeatMap(size_t numRows, size_t numCols,
   float maxPixelHeight = numRows - 1;
 
   float mappedWidth = maxPixelWidth;
-  float mappedHeight = mappedWidth / aspectRatio;
+  float mappedHeight = mappedWidth * aspectRatio;
   if (mappedHeight > maxPixelHeight) {
     mappedHeight = maxPixelHeight;
     mappedWidth = mappedHeight * aspectRatio;
   }
-
   float geoWidth = largestLongitude - smallestLongitude;
   float geoHeight = largestLatitude - smallestLatitude;
 
@@ -75,8 +74,7 @@ void HeatMap::computeHeatMap(size_t numRows, size_t numCols,
   }
 }
 
-void HeatMap::drawHeatMap(TerminalManager *) {
-  TerminalManager *terminalManager = nullptr;
+void HeatMap::drawHeatMap(TerminalManager *terminalManager) {
   if (unordMapCell_.empty()) {
     return;
   }
@@ -87,8 +85,8 @@ void HeatMap::drawHeatMap(TerminalManager *) {
 
   for (int i = 0; i < terminalManager->numRows(); i++) {
     for (int j = 0; j < terminalManager->numCols(); j++) {
-      Cell currentCell{static_cast<float>(i), static_cast<float>(j)};
-      if (unordMapCell_[currentCell] > 0) {
+      Cell currentCell{i, j};
+      if (unordMapCell_.count(currentCell) > 0) {
         float intensityCell = static_cast<float>(unordMapCell_[currentCell]) /
                               static_cast<float>(maxVal);
         terminalManager->drawPixel(i, j, true, intensityCell);
