@@ -20,7 +20,7 @@ bool UserInput::isKeyLeft() { return keycode_ == KEY_LEFT; }
 bool UserInput::isKeyRight() { return keycode_ == KEY_RIGHT; }
 
 // _____________________________________________________________
-size_t TerminalManager::convertIntensityToColor(float intensity) const {
+size_t NcursesTerminalManager::convertIntensityToColor(float intensity) const {
   intensity = 1 - std::exp(-50.0 * intensity);
   int color = (COLORS - 1 - systemColors) * std::clamp(intensity, 0.0f, 1.0f) +
               systemColors;
@@ -28,7 +28,7 @@ size_t TerminalManager::convertIntensityToColor(float intensity) const {
 }
 
 // ____________________________________________________________________________
-TerminalManager::TerminalManager() {
+NcursesTerminalManager::NcursesTerminalManager() {
   initscr();
   start_color();
   cbreak();
@@ -44,7 +44,7 @@ TerminalManager::TerminalManager() {
   if (COLORS < 200) {
     endwin();
     throw std::runtime_error{
-        "The TerminalManager requires a terminal with"
+        "The NcursesTerminalManager requires a terminal with"
         " at least 200 colors. Consider setting `TERM=xterm-256color` before"
         " starting the application"};
   }
@@ -63,11 +63,11 @@ TerminalManager::TerminalManager() {
 }
 
 // ____________________________________________________________________________
-TerminalManager::~TerminalManager() { endwin(); }
+NcursesTerminalManager::~NcursesTerminalManager() { endwin(); }
 
 // ____________________________________________________________________________
-void TerminalManager::drawPixel(int row, int col, bool inverse,
-                                float intensity) {
+void NcursesTerminalManager::drawPixel(int row, int col, bool inverse,
+                                       float intensity) {
   int color = convertIntensityToColor(intensity);
   if (inverse)
     attron(A_REVERSE);
@@ -79,11 +79,11 @@ void TerminalManager::drawPixel(int row, int col, bool inverse,
 }
 
 // ____________________________________________________________________________
-void TerminalManager::refresh() { ::refresh(); }
+void NcursesTerminalManager::refresh() { ::refresh(); }
 
 // ___________________________________________________________________________
-void TerminalManager::drawString(int row, int col, const char *output,
-                                 float intensity) {
+void NcursesTerminalManager::drawString(int row, int col, const char *output,
+                                        float intensity) {
   int color = convertIntensityToColor(intensity);
   attron(COLOR_PAIR(color));
   mvaddstr(row, 2 * col, output);
@@ -91,7 +91,7 @@ void TerminalManager::drawString(int row, int col, const char *output,
 }
 
 // ___________________________________________________________________________
-UserInput TerminalManager::getUserInput() {
+UserInput NcursesTerminalManager::getUserInput() {
   UserInput userInput;
   userInput.keycode_ = getch();
   userInput.isMouseclick_ = false;
@@ -109,4 +109,4 @@ UserInput TerminalManager::getUserInput() {
 }
 
 // ___________________________________________________________________________
-int TerminalManager::numColors() { return COLORS; }
+int NcursesTerminalManager::numColors() { return COLORS; }
