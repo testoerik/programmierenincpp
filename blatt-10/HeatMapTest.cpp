@@ -80,27 +80,28 @@ TEST(HeatMap, DrawHeatMap) {
   heatMap.readPointsFromFile("testPoints.tsv");
   MockTerminalManager tm(6, 3);
   heatMap.computeHeatMap(tm.numRows(), tm.numCols(), 1.0f);
-  //  heatMap.drawHeatMap(&tm);
+  heatMap.drawHeatMap(&tm);
 
   // The expected intensity for all pixels that are expected to be drawn.
-  // const std::unordered_map<Cell, float> expectedPixels{
-  //     {Cell{3, 0}, 0.5f}, {Cell{3, 2}, 0.5f}, {Cell{1, 0}, 0.5f},
-  //     {Cell{1, 2}, 1.0f}, {Cell{2, 1}, 0.5f},
-  // };
+  const std::unordered_map<Cell, float> expectedPixels{
+      {Cell{3, 0}, 0.5f}, {Cell{3, 2}, 0.5f}, {Cell{1, 0}, 0.5f},
+      {Cell{1, 2}, 1.0f}, {Cell{2, 1}, 0.5f},
+  };
 
-  // for (int row = 0; row < tm.numRows(); ++row) {
-  //   for (int col = 0; col < tm.numCols(); ++col) {
-  //     // For each pixel, check whether it is actually drawn iff it is also
-  //     // expected.
-  //     bool pixelDrawn = tm.isPixelDrawn(row, col);
-  //     Cell cell{static_cast<size_t>(row), static_cast<size_t>(col)};
-  //     ASSERT_EQ(pixelDrawn, expectedPixels.count(cell));
+  for (int row = 0; row < tm.numRows(); ++row) {
+    for (int col = 0; col < tm.numCols(); ++col) {
+      // For each pixel, check whether it is actually drawn iff it is also
+      // expected.
+      bool pixelDrawn = tm.isPixelDrawn(row, col);
+      Cell cell{static_cast<size_t>(row), static_cast<size_t>(col)};
+      ASSERT_EQ(pixelDrawn, expectedPixels.count(cell));
 
-  //     // For drawn pixels, check the intensity.
-  //     if (pixelDrawn) {
-  //       ASSERT_TRUE(tm.isPixelInverse(row, col));
-  //       ASSERT_FLOAT_EQ(expectedPixels.at(cell), tm.getIntensity(row, col));
-  //     }
-  //   }
-  // }
+      //     // For drawn pixels, check the intensity.
+      //     if (pixelDrawn) {
+      //       ASSERT_TRUE(tm.isPixelInverse(row, col));
+      //       ASSERT_FLOAT_EQ(expectedPixels.at(cell), tm.getIntensity(row,
+      //       col));
+      //     }
+    }
+  }
 }

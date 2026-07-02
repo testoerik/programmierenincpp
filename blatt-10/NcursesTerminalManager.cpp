@@ -4,7 +4,7 @@
 //         Claudius Korzen <korzen@cs.uni-freiburg.de>.
 //         Johannes Kalmbach <kalmbach@cs.uni-freiburg.de>.
 //
-#include "./TerminalManager.h"
+#include "./NcursesTerminalManager.h"
 #include <ncurses.h>
 
 #include <algorithm>
