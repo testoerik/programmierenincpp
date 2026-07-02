@@ -6,8 +6,8 @@
 //
 
 #pragma once
-#include <cstddef>
 #include "./TerminalManager.h"
+#include <cstddef>
 
 // Class for the input from the user.
 class UserInput {
@@ -49,16 +49,8 @@ public:
   // Refresh the screen.
   void refresh() override;
 
-  // Get the dimensions of the screen.
-  int numRows() const { return numRows_; }
-  int numCols() const { return numCols_; }
-
   // Get the number of colors.
   int numColors();
-
-protected:
-  // The number of "logical" rows and columns of the screen.
-  int numRows_, numCols_;
 
 private:
   // Convert an intensity in the range [0.0, 1.0] to the index of the

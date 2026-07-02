@@ -6,8 +6,16 @@ MockTerminalManager::MockTerminalManager(int a, int b) {
 }
 void MockTerminalManager::drawPixel(int row, int col, bool inverse,
                                     float intensity) override {
-  for (const auto &b : heatMap())
-}
-bool MockTerminalManager::isPixelDrawn(int row, int col) {
-        if (
-}
+  PairIntensBool pairIntensBool;
+  if (inverse) {
+    pairIntensBool.intensity_ = intensity;
+    pairIntensBool.isPixel_ = true;
+    unordMap[row * numCols + col] = pairIntensBool;
+  }
+  bool MockTerminalManager::isPixelDrawn(int row, int col) {
+        if (unordMap.at(row * numCols + col) {
+      return true;
+	} else {
+      return false;
+	}
+  }

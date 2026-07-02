@@ -90,7 +90,7 @@ TEST(HeatMap, DrawHeatMap) {
 
   for (int row = 0; row < tm.numRows(); ++row) {
     for (int col = 0; col < tm.numCols(); ++col) {
-      // For each pixel, check whether it is actually drawn iff it is also
+      // For each pixel, check whether it is actually drawn if it is also
       // expected.
       bool pixelDrawn = tm.isPixelDrawn(row, col);
       Cell cell{static_cast<size_t>(row), static_cast<size_t>(col)};
