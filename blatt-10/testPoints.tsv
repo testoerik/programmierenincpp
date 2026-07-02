@@ -1,0 +1,6 @@
+POINT(0.0 0.0)	"BottomLeft"
+POINT(12.0 0.0)	"BottomRight"
+POINT(0.0 8.0)	"TopLeft"
+POINT(12.0 8.0)	"TopRight"
+POINT(12.0 8.0)	"TopRightDuplicate"
+POINT(6.0 4.0)	"Center"
