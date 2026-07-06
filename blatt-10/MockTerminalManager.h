@@ -25,6 +25,8 @@ public:
   bool isPixelDrawn(int row, int col);
   void drawPixel(int row, int col, bool inverse, float intensity) override;
   void refresh() override;
+  bool isPixelInverse(int row, int col);
+  float getIntensity(int row, int col);
 
 protected:
   std::unordered_map<int, PairIntensBool> unordMap;

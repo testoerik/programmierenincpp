@@ -18,7 +18,7 @@ int main(int argc, char **argv) {
     std::exit(1);
   }
 
-  TerminalManager tm;
+  NcursesTerminalManager tm;
   HeatMap heatMap;
   const size_t numRows = tm.numRows();
   const size_t numCols = tm.numCols();

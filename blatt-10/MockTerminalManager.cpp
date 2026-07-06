@@ -20,3 +20,11 @@ bool MockTerminalManager::isPixelDrawn(int row, int col) {
     return false;
   }
 }
+bool MockTerminalManager::isPixelInverse(int row, int col) { return true; }
+float MockTerminalManager::getIntensity(int row, int col) {
+  int key = row * numCols_ + col;
+  PairIntensBool pairIntensBool = unordMap[key];
+  return pairIntensBool.intensity_;
+}
+
+void MockTerminalManager::refresh() {}

@@ -96,12 +96,11 @@ TEST(HeatMap, DrawHeatMap) {
       Cell cell{static_cast<size_t>(row), static_cast<size_t>(col)};
       ASSERT_EQ(pixelDrawn, expectedPixels.count(cell));
 
-      //     // For drawn pixels, check the intensity.
-      //     if (pixelDrawn) {
-      //       ASSERT_TRUE(tm.isPixelInverse(row, col));
-      //       ASSERT_FLOAT_EQ(expectedPixels.at(cell), tm.getIntensity(row,
-      //       col));
-      //     }
+      // For drawn pixels, check the intensity.
+      if (pixelDrawn) {
+        ASSERT_TRUE(tm.isPixelInverse(row, col));
+        ASSERT_FLOAT_EQ(expectedPixels.at(cell), tm.getIntensity(row, col));
+      }
     }
   }
 }

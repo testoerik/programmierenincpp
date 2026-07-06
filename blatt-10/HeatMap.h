@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "./TerminalManager.h"
+#include "./NcursesTerminalManager.h"
 // Replace the previous line by the following lines to use
 // OpenGL
 // #include "./OpenGLTerminalManager.h"

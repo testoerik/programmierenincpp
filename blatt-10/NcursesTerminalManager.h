@@ -9,31 +9,15 @@
 #include "./TerminalManager.h"
 #include <cstddef>
 
-class UserInput {
-public:
-  bool isKeyUp();
-  bool isKeyDown();
-  bool isKeyLeft();
-  bool isKeyRight();
-  // The code of the key pressed.
-  int keycode_;
-  // Was the event a mousecklick.
-  bool isMouseclick_;
-  // If the event was a mousecklick, then the coordinates
-  // of the mouseclick are stored here.
-  int mouseX_ = -1;
-  int mouseY_ = -1;
-};
-// A class managing the input and output via the terminal, using ncurses.
 class NcursesTerminalManager : public TerminalManager {
 public:
   NcursesTerminalManager();
-  ~NcursesTerminalManager();
   UserInput getUserInput();
   void drawPixel(int row, int col, bool inverse, float intensity) override;
-  void refresh() override;
   void drawString(int row, int col, const char *output, float intensity = 1.0);
+  void refresh() override;
   int numColors();
+  ~NcursesTerminalManager();
 
 private:
   size_t convertIntensityToColor(float intensity) const;
