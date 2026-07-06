@@ -87,7 +87,8 @@ TEST(HeatMap, DrawHeatMap) {
       {Cell{3, 0}, 0.5f}, {Cell{3, 2}, 0.5f}, {Cell{1, 0}, 0.5f},
       {Cell{1, 2}, 1.0f}, {Cell{2, 1}, 0.5f},
   };
-
+  ASSERT_FALSE(tm.isPixelDrawn(0, 0));
+  ASSERT_FALSE(tm.isPixelDrawn(0, 1));
   for (int row = 0; row < tm.numRows(); ++row) {
     for (int col = 0; col < tm.numCols(); ++col) {
       // For each pixel, check whether it is actually drawn if it is also
@@ -100,7 +101,14 @@ TEST(HeatMap, DrawHeatMap) {
       if (pixelDrawn) {
         ASSERT_TRUE(tm.isPixelInverse(row, col));
         ASSERT_FLOAT_EQ(expectedPixels.at(cell), tm.getIntensity(row, col));
+      } else {
+        ASSERT_FALSE(tm.isPixelInverse(row, col));
       }
     }
   }
+}
+TEST(MockTerminalManger, drawPixel) {
+	HeatMap heatMap;
+	heatMap.readPointsFromFile("testPoints.tsv"); 
+	
 }

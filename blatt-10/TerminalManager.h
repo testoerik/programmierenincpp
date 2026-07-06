@@ -1,27 +1,11 @@
 #include <stddef.h>
 #pragma once
 
-class UserInput {
-public:
-  bool isKeyUp();
-  bool isKeyDown();
-  bool isKeyLeft();
-  bool isKeyRight();
-  // The code of the key pressed.
-  int keycode_;
-  // Was the event a mousecklick.
-  bool isMouseclick_;
-  // If the event was a mousecklick, then the coordinates
-  // of the mouseclick are stored here.
-  int mouseX_ = -1;
-  int mouseY_ = -1;
-};
 class TerminalManager {
 public:
-  virtual void drawPixel(int row, int col, bool inverse, float intensity);
-  virtual void refresh();
+  virtual void drawPixel(int row, int col, bool inverse, float intensity) = 0;
+  virtual void refresh() = 0;
   virtual ~TerminalManager() {}
-  UserInput getUserInput();
   // Get the dimensions of the screen.
   int numRows() const { return numRows_; }
   int numCols() const { return numCols_; }

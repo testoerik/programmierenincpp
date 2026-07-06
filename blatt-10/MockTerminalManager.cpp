@@ -14,13 +14,15 @@ void MockTerminalManager::drawPixel(int row, int col, bool inverse,
   }
 }
 bool MockTerminalManager::isPixelDrawn(int row, int col) {
-  if (unordMap.count(row * numCols_ + col) >= 1) {
+  if (unordMap.count(row * numCols_ + col) == 1) {
     return true;
   } else {
     return false;
   }
 }
-bool MockTerminalManager::isPixelInverse(int row, int col) { return true; }
+bool MockTerminalManager::isPixelInverse(int row, int col) {
+  return unordMap[row * numCols_ + col].isPixel_;
+}
 float MockTerminalManager::getIntensity(int row, int col) {
   int key = row * numCols_ + col;
   PairIntensBool pairIntensBool = unordMap[key];
