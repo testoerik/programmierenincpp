@@ -6,26 +6,20 @@ MockTerminalManager::MockTerminalManager(int a, int b) {
 }
 void MockTerminalManager::drawPixel(int row, int col, bool inverse,
                                     float intensity) {
-  PairIntensBool pairIntensBool;
-  if (inverse) {
-    pairIntensBool.intensity_ = intensity;
-    pairIntensBool.isPixel_ = true;
-    unordMap[row * numCols_ + col] = pairIntensBool;
-  }
+  PairIntensInverse pairIntensBool;
+  pairIntensBool.intensity_ = intensity;
+  pairIntensBool.inverse_ = inverse;
+  unordMap[row * numCols_ + col] = pairIntensBool;
 }
 bool MockTerminalManager::isPixelDrawn(int row, int col) {
-  if (unordMap.count(row * numCols_ + col) == 1) {
-    return true;
-  } else {
-    return false;
-  }
+  return unordMap[row * numCols_ + col].inverse_;
 }
 bool MockTerminalManager::isPixelInverse(int row, int col) {
-  return unordMap[row * numCols_ + col].isPixel_;
+  return unordMap[row * numCols_ + col].inverse_;
 }
 float MockTerminalManager::getIntensity(int row, int col) {
   int key = row * numCols_ + col;
-  PairIntensBool pairIntensBool = unordMap[key];
+  PairIntensInverse pairIntensBool = unordMap[key];
   return pairIntensBool.intensity_;
 }
 

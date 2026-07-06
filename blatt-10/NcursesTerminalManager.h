@@ -1,10 +1,3 @@
-// Copyright 2024, University of Freiburg,
-// Chair of Algorithms and Data Structures.
-// Author: Axel Lehmann <lehmann@cs.uni-freiburg.de>,
-//         Claudius Korzen <korzen@cs.uni-freiburg.de>.
-//         Johannes Kalmbach <kalmbach@cs.uni-freiburg.de>.
-//
-
 #pragma once
 #include "./TerminalManager.h"
 #include <cstddef>
@@ -27,7 +20,7 @@ public:
 };
 
 // A class managing the input and output via the terminal, using ncurses.
-class NcursesTerminalManager {
+class NcursesTerminalManager : public TerminalManager {
 public:
   // Constructor: initialize the terminal for use with ncurses.
   NcursesTerminalManager();
@@ -40,14 +33,14 @@ public:
 
   // Draw a "pixel" at the given position and with the given intensity between
   // The intensity has to be in [0.0, 1.0]
-  void drawPixel(int row, int col, bool inverse, float intensity);
+  void drawPixel(int row, int col, bool inverse, float intensity) override;
 
   // Draw a string at the given position and with the given intensity.
   // The intensity has to be in [0.0, 1.0]
   void drawString(int row, int col, const char *output, float intensity = 1.0);
 
   // Refresh the screen.
-  void refresh();
+  void refresh() override;
 
   // Get the dimensions of the screen.
   int numRows() const { return numRows_; }

@@ -107,8 +107,3 @@ TEST(HeatMap, DrawHeatMap) {
     }
   }
 }
-TEST(MockTerminalManger, drawPixel) {
-	HeatMap heatMap;
-	heatMap.readPointsFromFile("testPoints.tsv"); 
-	
-}
