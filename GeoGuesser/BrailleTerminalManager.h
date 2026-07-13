@@ -6,14 +6,19 @@
 class BrailleTerminalManager : public TerminalManager {
 public:
   void drawPixel(int row, int col, int color) override;
-  // Dive one col into 2 cols and one row into 8 rows so we can draw a Braille.
+  
   void drawBraillePattern(float row, float col, int color);
-
+  
+  void computeBraillePattern(std::vetor<struct>);
+  // Getter-Funktionen um die Bildschirm-Dimensionen (Spaltenzahl und Zeilenzahl) zu bekommen.
+  int numRows() const override { return numRows_; }
+  int numCols() const override { return numCols_; }
+  
 private:
   // Container which contains all braille pixel.
   std::vector<std::array<int, 8>> containerOfBraillePixels_;
   // Constructor which initializes the braille pixel and the container.
-  BrailleTerminalManager();
+  BrailleTerminalManager(std::vector<struct>);
   // Physical coordinates.
   int terminalX_;
   int terminalY_;

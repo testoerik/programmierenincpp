@@ -2,10 +2,10 @@
 .PRECIOUS: %.o
 .PHONY: all compile checkstyle test clean
 
-CXX = clang++-18 -std=c++17 -g -Wall -Wextra -Wdeprecated -fsanitize=address -I/usr/include/freetype2
+CXX = clang++-20 -std=c++17 -g -Wall -Wextra -Wdeprecated -fsanitize=address -I/usr/include/freetype2
 MAIN_BINARIES = $(basename $(wildcard *Main.cpp))
 TEST_BINARIES = $(basename $(wildcard *Test.cpp))
-LIBS = -lncurses
+LIBS = -lncursesw
 # use the following line if you use the OpenGL-based TerminalManager
 #LIBS = -lncurses  -lglfw -lGL -lX11 -lrt -ldl -lfreetype
 TESTLIBS = -lgtest -lgtest_main -lpthread
