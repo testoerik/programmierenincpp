@@ -16,7 +16,7 @@ vector<Point> parseLine(const string &input) {
 
   string objectName = input.substr(0, input.find('\t'));
   size_t start = input.find('\t') + 1;
-  if (start != string::npos) {
+  if (start == string::npos) {
     Point p1{0, 0};
     v1.push_back(p1);
     return v1;
@@ -24,7 +24,7 @@ vector<Point> parseLine(const string &input) {
     string objectCoordinates = input.substr(start);
 
     size_t posOpenBracket = objectCoordinates.find_first_of('(');
-    if (posOpenBracket != string::npos) {
+    if (posOpenBracket == string::npos) {
       Point p1{0, 0};
       v1.push_back(p1);
       return v1;
@@ -60,7 +60,7 @@ int main() {
   }
   for (auto &vec : vectorPoints) {
     for (auto &points : vec) {
-      cout << points.longitude_ << '\n' << points.latitude_ << '\n';
+      cout << '(' << points.longitude_ << ", " << points.latitude_ << ')' << '\n';
     }
   }
 }
