@@ -76,7 +76,10 @@ int main() {
   while (getline(pointsFile, line)) {
     vectorPoints.push_back(parseLine(line));
   }
-  for (auto &vec : vectorPoints) {
-	cout << vec << "\n";
+  for (const auto &vec : vectorPoints) {
+    for (const auto &points : vec) {
+      cout << '(' << points.longitude_ << ", " << points.latitude_ << ')'
+           << '\n';
+    }
   }
 }
