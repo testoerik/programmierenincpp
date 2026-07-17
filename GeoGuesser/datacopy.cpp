@@ -9,7 +9,7 @@ struct Point {
   float latitude_;  // breitengrad, row, y-Achse
 };
 
-void parseLine(const string &input) {
+vector<Point> parseLine(const string &input) {
   string slicedInput;
   string objectName;
   int count{0};
@@ -28,27 +28,55 @@ void parseLine(const string &input) {
   slicedInput = slicedInput.substr(start, slicedInputLength);
   int j{0};
   while (j < slicedInput.length()) {
-	if (slicedInput[j] == '(') {
-		slicedInput.replace(j, 1, "");
-		j = 0;
-        }
-	else if (slicedInput[j] == ')') {
-		slicedInput.replace(j, 1, "");
-		j += 1;
- 	}
-        else if (slicedInput[j] == ',') {
-		slicedInput.replace(j, 1, " ");
-		j += 1;
-	} else {
-		j += 1;
-	}
-   }
-   cout << slicedInput;
+    if (slicedInput[j] == '(') {
+      slicedInput.replace(j, 1, "");
+      j = 0;
+    } else if (slicedInput[j] == ')') {
+      slicedInput.replace(j, 1, "");
+      j += 1;
+    } else if (slicedInput[j] == ',') {
+      slicedInput.replace(j, 1, " ");
+      j += 1;
+    } else {
+      j += 1;
+    }
+  }
+  slicedInput.append(" ");
+  count = 0;
+  string lonString;
+  string latString;
+  vector<Point> v;
+  for (int k = 0; k < slicedInput.length(); ++k) {
+    if (slicedInput[k] == ' ') {
+      count += 1;
+      if (count == 2) {
+        count = 0;
+
+        float lonFloat = stof(lonString);
+        float latFloat = stof(latString);
+
+        lonString = "";
+        latString = "";
+
+        Point p{lonFloat, latFloat};
+        v.push_back(p);
+      }
+    } else if (count == 1) {
+      latString += slicedInput[k];
+    }
+    lonString += slicedInput[k];
+  }
+  return v;
 }
+
 int main() {
   string line;
   ifstream pointsFile("./tf-buildings.tsv");
+  vector<vector<Point>> vectorPoints;
   while (getline(pointsFile, line)) {
-    parseLine(line);
+    vectorPoints.push_back(parseLine(line));
+  }
+  for (auto &vec : vectorPoints) {
+	cout << vec << "\n";
   }
 }
