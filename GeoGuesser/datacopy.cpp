@@ -15,14 +15,14 @@ vector<Point> parseLine(const string &input) {
   
   string objectName = input.substr(0, input.find('\t'));
   string objectCoordinates = input.substr(input.find('\t') + 1);
+  replace(objectCoordinates.begin(), objectCoordinates.end(), '(', ' ');
+  replace(objectCoordinates.begin(), objectCoordinates.end(), ')', ' ');
+  replace(objectCoordinates.begin(), objectCoordinates.end(), ' ', ' ');
   stringstream coordinates(objectCoordinates);
   float lon;
   float lat;
-  char comma;
-  replace(objectCoordinates.begin(), objectCoordinates.end(), '(', ' ');
-  replace(objectCoordinates.begin(), objectCoordinates.end(), ')', ' ');
   vector<Point> v1;
-  while (coordinates >> lon >> lat >> comma) {
+  while (coordinates >> lon >> lat) {
 	Point p1{lon, lat};
 	v1.push_back(p1);
   }
