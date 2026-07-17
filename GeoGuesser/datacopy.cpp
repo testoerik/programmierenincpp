@@ -9,31 +9,41 @@ struct Point {
   float latitude_;  // breitengrad, row, y-Achse
 };
 
-vector<Point> points;
-
 void parseLine(const string &input) {
-  size_t pos1 = input.find_first_of('(');
-  size_t pos2 = input.find_last_of(')');
-  string stringCoordinates = input.substr(pos1, pos2);
-
-  int numComma = 0;
-  for (int i = 0; i < stringCoordinates.length(); ++i) {
-    if (stringCoordinates[i] == ',') {
-      numComma++;
+  string slicedInput;
+  string objectName;
+  int count{0};
+  for (int i = 0; i < input.length(); ++i) {
+    if (input[i] == 'P' || input[i] == 'M') {
+      break;
+    } else {
+      objectName += input[i];
+      ++count;
     }
   }
-  string strLon;
-  string strLat;
-  for (int j = 0; j < numComma; ++j) {
-    size_t posFrstBracket = stringCoordinates.find_first_of('(');
-    size_t posFrstSpace = stringCoordinates.find_first_of(' ');
-    size_t posFrstComma = stringCoordinates.find_first_of(',');
-
-    float lon = stof(stringCoordinates.substr(posFrstBracket, posFrstSpace));
-
-    cout << "lon: " << lon << '\n';
-    stringCoordinates = stringCoordinates.substr(posFrstComma);
-  }
+  objectName = input.substr(1, count - 4);
+  slicedInput = input.substr(count);
+  size_t start = slicedInput.find_first_of('(');
+  size_t slicedInputLength = slicedInput.find_last_of(')') - start;
+  slicedInput = slicedInput.substr(start, slicedInputLength);
+  int j{0};
+  while (j < slicedInput.length()) {
+	if (slicedInput[j] == '(') {
+		slicedInput.replace(j, 1, "");
+		j = 0;
+        }
+	else if (slicedInput[j] == ')') {
+		slicedInput.replace(j, 1, "");
+		j += 1;
+ 	}
+        else if (slicedInput[j] == ',') {
+		slicedInput.replace(j, 1, " ");
+		j += 1;
+	} else {
+		j += 1;
+	}
+   }
+   cout << slicedInput;
 }
 int main() {
   string line;
